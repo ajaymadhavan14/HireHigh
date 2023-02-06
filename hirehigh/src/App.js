@@ -5,7 +5,7 @@ import Login from './pages/seeker/Login';
 import Signup from './pages/seeker/Signup';
 import { AppContext } from './context/AppContext';
 import {Routes,Route,useNavigate, BrowserRouter} from 'react-router-dom'
-import Home from './pages/seeker/Home';
+import Home from './pages/seeker/LandingPage';
 
 function App() {
   return (

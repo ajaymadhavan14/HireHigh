@@ -1,5 +1,4 @@
 
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,36 +12,41 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from '../../axios/axios';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+
+
+
 
 const theme = createTheme();
 
-export default function SignUp() {
+export default function SeekerSignUp() {
+
+  const [firstName,setFirstName] = useState('')
+  const [email, setEmail] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [password, setPassword] = useState('')
+  const [phoneNumber,setPhoneNumber] = useState('')
 
     const navigate = useNavigate()
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
+    let data = new FormData(event.currentTarget);
+    data = {
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
-    });
+      phoneNumber: data.get('phoneNumber')
+    }
+    axios.post('/signup',data)
+    
   };
-
+    
+   
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -72,6 +76,7 @@ export default function SignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                 
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -92,6 +97,17 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="phoneNumber"
+                  type="number"
+                  label="Phone Number"
+                  name="phoneNumber"
+                  autoComplete="phoneNumber"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -130,7 +146,6 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );

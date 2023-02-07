@@ -10,23 +10,14 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import { color } from '@mui/system';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+
 
 const theme = createTheme();
 
@@ -45,9 +36,13 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={theme}>
+      <Typography sx={{marginLeft:"6%", color: '#6096B4'}}>
+            <h2 onClick={()=>navigate("/")} >HIREHIGH</h2>
+          </Typography>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
+        
           sx={{
             marginTop: 8,
             display: 'flex',
@@ -55,8 +50,9 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+          
+          <Avatar sx={{ m: 1, bgcolor: "#6096B4" }}>
+            <AccountCircleIcon/>
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
@@ -108,7 +104,6 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );

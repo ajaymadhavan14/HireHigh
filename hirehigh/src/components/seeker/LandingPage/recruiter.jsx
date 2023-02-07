@@ -8,7 +8,7 @@ export default function RecruiterContainer() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Box sx={{ bgcolor: "#66b8fa", height: "70vh", display: 'flex', flexDirection: 'row' }}>
+      <Box sx={{ bgcolor: "#BDCDD6", height: "70vh", display: 'flex', flexDirection: 'row' }}>
           <Typography sx={{width:"50%", textAlign:"center", alignSelf:"center" }}>
             <h1>Post your job for millions of people to see</h1>
           </Typography>

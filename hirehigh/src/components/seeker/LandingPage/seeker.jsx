@@ -11,7 +11,7 @@ export default function SeekerContainer() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Box sx={{ bgcolor: "#cfe8fc", height: "70vh", display: 'flex', flexDirection: 'row' }}>
+      <Box sx={{ bgcolor: "#93BFCF", height: "70vh", display: 'flex', flexDirection: 'row' }}>
           <Typography sx={{width:"50%", textAlign:"center", alignSelf:"center" }}>
             <h1>Find the right job or internship for you</h1>
           </Typography>

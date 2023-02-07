@@ -9,12 +9,14 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../axios/axios';
+import swal from 'sweetalert';
 
 
 
@@ -42,13 +44,22 @@ export default function SeekerSignUp() {
       password: data.get('password'),
       phoneNumber: data.get('phoneNumber')
     }
-    axios.post('/signup',data)
+    axios.post('/signup',data).then((response)=>{
+      if(response.data.status === 'success'){
+          navigate('/login')
+       }else{
+        swal("OOPS",response.data.message,'error')
+       }   
+    })
     
   };
     
    
   return (
     <ThemeProvider theme={theme}>
+      <Typography sx={{marginLeft:"6%", color: '#6096B4'}}>
+            <h2 onClick={()=>navigate("/")} >HIREHIGH</h2>
+          </Typography>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -59,8 +70,8 @@ export default function SeekerSignUp() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+          <Avatar sx={{ m: 1, bgcolor: "#6096B4" }}>
+            <PersonAddIcon/>
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up

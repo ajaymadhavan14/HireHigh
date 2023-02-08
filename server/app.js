@@ -1,9 +1,9 @@
 import express from 'express'
 import cors from "cors"
 import logger from 'morgan'
+import cookieParser from 'cookie-parser'
 import { config } from "dotenv"
 config()
-import cookieParser from 'cookie-parser'
 
 
 import dbconnection from './config/connection.js'

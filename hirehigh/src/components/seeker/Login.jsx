@@ -1,5 +1,4 @@
 
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,13 +8,14 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import { color } from '@mui/system';
+import axios from '../../axios/axios';
+import swal from 'sweetalert'
+import { useState } from 'react';
 
 
 
@@ -23,22 +23,39 @@ const theme = createTheme();
 
 export default function SignIn() {
 
-    const navigate = useNavigate()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
+  const navigate = useNavigate()
+
+  
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
+    let data = new FormData(event.currentTarget);
+    data = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+    }
+    console.log(data)
+    axios.post('/login',data).then((response)=>{
+      console.log(response)
+      if(!response.data.auth){
+        swal('sorry',response.data.message,'error')
+      }else{
+        localStorage.setItem("token",response.data.token)
+         navigate('/home')
+      }
+    })
+   
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Typography sx={{marginLeft:"6%", color: '#6096B4'}}>
+     <Button sx={{ marginLeft:"6%" }}>
+     <Typography sx={{ color: '#6096B4'}}>
             <h2 onClick={()=>navigate("/")} >HIREHIGH</h2>
           </Typography>
+     </Button>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

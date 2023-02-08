@@ -1,16 +1,13 @@
 import { Schema, model } from "mongoose";
 
-const userSignup = new Schema(
+const recruiterSignup = new Schema(
   {
-    firstName: {
+    companyName: {
       type: String,
       required: true,
       trim: true,
     },
-    lastName: {
-      type: String,
-      trim: true,
-    },
+
     email: {
       type: String,
       required: true,
@@ -25,7 +22,6 @@ const userSignup = new Schema(
       trim: true,
     },
     phoneNumber: {
-      required: true,
       type: Number,
       trim: true,
     },
@@ -33,4 +29,4 @@ const userSignup = new Schema(
   { timestamps: true }
 );
 
-export default model("users", userSignup);
+export default model("recruiter", recruiterSignup);

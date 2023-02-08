@@ -1,10 +1,10 @@
 import React from "react";
-import PermanentDrawerLeft from "../../components/seeker/Home/Center";
+import ResponsiveAppBar from "../../components/recruiter/Home/Navbar";
 
 function Home() {
   return (
     <div>
-      <PermanentDrawerLeft />
+      <ResponsiveAppBar />
     </div>
   );
 }

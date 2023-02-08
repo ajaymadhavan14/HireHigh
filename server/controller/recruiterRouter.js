@@ -1,33 +1,31 @@
-import userModel from "../model/userSignupSchema.js";
+import recruiterModel from "../model/recruiterSignupSchema.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const signupPost = async (req, res) => {
+const recruiterSignUpPost = async (req, res) => {
   console.log(req.body);
-  const { firstName, lastName, email, password, phoneNumber } = req.body;
-  const user = await userModel.findOne({ email: email });
+  const { companyName, email, password } = req.body;
+  const user = await recruiterModel.findOne({ email: email });
   if (user) {
     console.log(user);
     res.json({ status: "failed", message: "Email already exist login now" });
   } else {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password.trim(), salt);
-    await userModel.create({
-      firstName,
-      lastName,
+    await recruiterModel.create({
+      companyName,
       email,
       password: hashPassword,
-      phoneNumber,
     });
     res.json({ status: "success", message: "signup success" });
   }
 };
 
-const signinPost = async (req, res) => {
+const recruiterSignInPost = async (req, res) => {
   console.log(req.body);
 
   const { email, password } = req.body;
-  const user = await userModel.findOne({ email: email });
+  const user = await recruiterModel.findOne({ email: email });
   if (user) {
     const isMatch = await bcrypt.compare(password, user.password);
     if (user.email === email && isMatch) {
@@ -59,4 +57,4 @@ const signinPost = async (req, res) => {
   }
 };
 
-export default { signupPost, signinPost };
+export default { recruiterSignUpPost, recruiterSignInPost };

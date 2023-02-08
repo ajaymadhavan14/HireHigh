@@ -1,13 +1,12 @@
-
-import React from 'react'
-import SignIn from '../../components/seeker/Login'
+import React from "react";
+import SignIn from "../../components/seeker/Login";
 
 function Login() {
   return (
     <div>
-      <SignIn/>
+      <SignIn />
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;

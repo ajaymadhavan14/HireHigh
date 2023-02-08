@@ -8,8 +8,7 @@ config()
 
 import dbconnection from './config/connection.js'
 import seekerRouter from "./routes/seekerRouter.js"
-// const seekerRouter = require('./routes/seekerRouter')
-// import recruiterRouter from './routes/recruiterRouter.js'
+import recruiterRouter from './routes/recruiterRouter.js'
 // import adminRouter from './routes/adminRouter.js'
 
 const port = process.env.PORT
@@ -25,7 +24,7 @@ app.use(cookieParser())
 
 
 app.use('/',seekerRouter)
-// app.use('/recruiter',recruiterRouter)
+app.use('/recruiter',recruiterRouter)
 // app.use('/admin',adminRouter)
 
 app.use(dbconnection)

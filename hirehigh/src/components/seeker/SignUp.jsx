@@ -56,7 +56,8 @@ export default function SeekerSignUp() {
    
   return (
     <ThemeProvider theme={theme}>
-      <Typography sx={{marginLeft:"6%", color: '#6096B4'}}>
+      <Typography sx={{marginLeft:"6%", color: '#6096B4', cursor: 'pointer',
+    width: 'fit-content'}}>
             <h2 onClick={()=>navigate("/")} >HIREHIGH</h2>
           </Typography>
       <Container component="main" maxWidth="xs">

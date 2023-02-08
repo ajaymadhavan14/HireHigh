@@ -1,10 +1,10 @@
 import React from "react";
-import SignUp from "../../components/seeker/SignUp";
+import VendorSignUp from "../../components/recruiter/SignUp";
 
 function Signup() {
   return (
     <div>
-      <SignUp />
+      <VendorSignUp />
     </div>
   );
 }

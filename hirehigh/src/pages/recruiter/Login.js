@@ -1,12 +1,12 @@
-import React from 'react'
-import RSignIn from '../../components/recruiter/Login'
+import React from "react";
+import VendorSignIn from "../../components/recruiter/Login";
 
 function Login() {
   return (
     <div>
-      <RSignIn/>
+      <VendorSignIn />
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;

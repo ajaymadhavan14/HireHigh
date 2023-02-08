@@ -36,7 +36,7 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     }
-    console.log(data)
+    
     axios.post('/login',data).then((response)=>{
       console.log(response)
       if(!response.data.auth){
@@ -51,11 +51,9 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={theme}>
-     <Button sx={{ marginLeft:"6%" }}>
-     <Typography sx={{ color: '#6096B4'}}>
+     <Typography sx={{ color: '#6096B4',cursor: 'pointer', width: 'fit-content',marginLeft:"6%" }}>
             <h2 onClick={()=>navigate("/")} >HIREHIGH</h2>
           </Typography>
-     </Button>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

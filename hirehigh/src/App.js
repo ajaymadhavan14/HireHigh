@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 
 import SeLogin from './pages/seeker/Login';
@@ -6,8 +5,10 @@ import SeSignup from './pages/seeker/Signup';
 import { AppContext } from './context/AppContext';
 import {Routes,Route,useNavigate, BrowserRouter} from 'react-router-dom'
 import LandingPage from './pages/seeker/LandingPage';
-import Home from './pages/seeker/Home';
+import SeHome from './pages/seeker/Home';
 import ReLogin from './pages/recruiter/Login'
+import ReSingup from './pages/recruiter/Signup'
+import ReHome from './pages/recruiter/Home'
 
 function App() {
   return (
@@ -20,9 +21,15 @@ function App() {
       
         <Route path='/signup' element={<SeSignup/>}/>
 
-        <Route path='/home' element={<Home/>}/> 
+        <Route path='/home' element={<SeHome/>}/> 
         
-        <Route path='/recruiter/Login' element={<ReLogin/>}/> 
+        <Route path='/recruiter/login' element={<ReLogin/>}/> 
+
+        <Route path='/recruiter/signup' element={<ReSingup/>}/> 
+
+        <Route path='/recruiter/home' element={<ReHome/>}/> 
+
+
 
         
       </Routes>

@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../components/LandingPage/Footer";
+import MiddleContainer from "../../components/LandingPage/Middle";
 import SearchAppBar from "../../components/LandingPage/Navbar";
 import RecruiterContainer from "../../components/LandingPage/recruiter";
 import SeekerContainer from "../../components/LandingPage/seeker";
@@ -12,6 +13,7 @@ function LandingPage() {
     <div>
       <SearchAppBar />
       <SeekerContainer />
+      <MiddleContainer/>
       <RecruiterContainer />
     </div>
   );

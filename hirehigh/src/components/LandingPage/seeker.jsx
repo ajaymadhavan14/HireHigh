@@ -11,13 +11,24 @@ export default function SeekerContainer() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Box sx={{ bgcolor: "#93BFCF", height: "70vh", display: 'flex', flexDirection: 'row' }}>
-          <Typography sx={{width:"50%", textAlign:"center", alignSelf:"center" }}>
-            <h1>Find the right job or internship for you</h1>
+      <Box sx={{ bgcolor: "#F1F5F9", height: "70vh", display: 'flex', flexDirection: 'row' }}>
+        <Box sx={{width:"50%", alignSelf:"center",textAlign:"center"}}>
+        <Typography sx={{fontSize:"10vh"}}>
+          Find Your Next 
           </Typography>
-          <Typography sx={{width:"50%", alignSelf:"center",textAlign:"center"}}>
+          <Typography sx={{fontSize:"10vh"}}>
+          Dream Job
+          </Typography>
+          <Typography >
            <Button variant="contained" onClick={()=>navigate("/login")}>Click Here</Button>
           </Typography>
+        </Box>
+         <Box sx={{width:"50%", alignSelf:"center",textAlign:"center"}}>
+         <img  src="/HH-B.png"
+          alt="Loading...">
+         </img>
+         </Box>
+         
       </Box>
     </React.Fragment>
   );

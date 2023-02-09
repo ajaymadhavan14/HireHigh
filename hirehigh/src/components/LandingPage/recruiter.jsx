@@ -6,17 +6,34 @@ import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 
 export default function RecruiterContainer() {
-   const navigate = useNavigate()
+  const navigate = useNavigate()
+
   return (
     <React.Fragment>
       <CssBaseline />
-      <Box sx={{ bgcolor: "#BDCDD6", height: "70vh", display: 'flex', flexDirection: 'row' }}>
-          <Typography sx={{width:"50%", textAlign:"center", alignSelf:"center" }}>
-            <h1>Post your job for millions of people to see</h1>
+      <Box sx={{ bgcolor: "#F1F5F9", height: "70vh", display: 'flex', flexDirection: 'row' }}>
+
+      <Box sx={{width:"50%", alignSelf:"center",textAlign:"center"}}>
+         <img  src="/HH-B-R.png"
+          alt="Loading..."
+          style={{height:"60vh"}}>
+         </img>
+         </Box>
+         
+        <Box sx={{width:"50%", alignSelf:"center",textAlign:"center"}}>
+        <Typography sx={{fontSize:"8vh"}}>
+         We Build Lasting 
+         <br></br>
+         Relationships Between
+         <br></br>
+          Candidates & Businesses
           </Typography>
-          <Typography sx={{width:"50%", alignSelf:"center",textAlign:"center"}}>
+         
+          <Typography sx={{mt:3}} >
            <Button variant="contained" onClick={()=>navigate("/recruiter/login")}>Click Here</Button>
           </Typography>
+        </Box>
+        
       </Box>
     </React.Fragment>
   );

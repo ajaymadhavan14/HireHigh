@@ -27,6 +27,11 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import TaskIcon from '@mui/icons-material/Task';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import MessageIcon from '@mui/icons-material/Message';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 
 function Copyright(props) {
@@ -42,27 +47,9 @@ function Copyright(props) {
   );
 }
 
-const openedMixin = (theme) => ({
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    overflowX: 'hidden',
-  });
-  
-  const closedMixin = (theme) => ({
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: 'hidden',
-    width: `calc(${theme.spacing(7)} + 1px)`,
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(${theme.spacing(8)} + 1px)`,
-    },
-  });
 
+  
+  
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
@@ -181,7 +168,7 @@ function DashboardContent() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {['My jobs', 'Messages', 'Hire Candidates', 'Sort List'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -197,7 +184,11 @@ function DashboardContent() {
                     justifyContent: 'center',
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    {index   === 0 ?<InboxIcon/> : null }
+                    {index   === 1 ?<MessageIcon/> : null }
+                  {index   === 2 ?<TaskIcon/> : null }
+                  {index   === 3 ?<NoteAddIcon/> : null }
+
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -206,7 +197,7 @@ function DashboardContent() {
         </List>
         <Divider />
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          {['Name', 'Profile', 'Logout'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -222,7 +213,11 @@ function DashboardContent() {
                     justifyContent: 'center',
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {index   === 0 ?<BusinessIcon/> : null }
+                  {index   === 1 ?<AccountBoxIcon/> : null }
+                  {index   === 2 ?<LogoutIcon/> : null }
+
+
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>

@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -53,9 +54,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchAppBar() {
+  const navigate = useNavigate()
   return (
     <Box sx={{ flexGrow: 1, }}>
-      <AppBar position="static" sx={{bgcolor:"#6096B4"}}>
+      <AppBar position="static" sx={{bgcolor:"#F1F5F9"}}>
         <Toolbar>
           <IconButton
             size="large"
@@ -71,11 +73,12 @@ export default function SearchAppBar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block',color:"black" } }}
+            onClick={()=>navigate("/")}
           >
-            HIREHIGH
+           <h3 style={{cursor: 'pointer',width: 'fit-content',color:"#6096B4"}}> HIREHIGH</h3>
           </Typography>
-          <Search>
+          <Search sx={{color:"black"}}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>

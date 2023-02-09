@@ -5,11 +5,15 @@ import cookieParser from 'cookie-parser'
 import { config } from "dotenv"
 config()
 
+// import bcrypt from "bcrypt";
+// import adminDB from './model/adminSchema.js'
+
+
 
 import dbconnection from './config/connection.js'
 import seekerRouter from "./routes/seekerRouter.js"
 import recruiterRouter from './routes/recruiterRouter.js'
-// import adminRouter from './routes/adminRouter.js'
+import adminRouter from './routes/adminRouter.js'
 
 const port = process.env.PORT
 const app = express()
@@ -22,10 +26,22 @@ app.use(express.json({extended: false, limit: '50mb'}));
 app.use(express.static("public"))
 app.use(cookieParser())
 
+// const addadmin =  async() => {
+// let password = "123456"
+// let salt = await bcrypt.genSalt(10)
+// let pass = await bcrypt.hash(password, salt)
+// let email = "admin@gmail.com"
+//  await adminDB.insertMany({
+//     email:email,
+//     password:pass,
+//   })
+// }
+//  addadmin()
+
 
 app.use('/',seekerRouter)
 app.use('/recruiter',recruiterRouter)
-// app.use('/admin',adminRouter)
+app.use('/admin',adminRouter)
 
 app.use(dbconnection)
 

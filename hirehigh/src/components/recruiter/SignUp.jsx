@@ -95,7 +95,7 @@ export default function VendorSignUp() {
             <Grid sx={{ backgroundColor:'#fff' , border:'1px solid lightgray', p:2 , borderRadius:'10px'}} container spacing={2}>
                 <Grid item sx={{display: { xs: 'none', sm: 'flex' }}} xs={12} sm={6}>
                     <Box sx={{ textAlign:'center' }}>
-                        <img style={{margin:'40px',width:'300px',height:'55vh', cursor:"pointer"}} src="/HireHigh-logos_black (5).png" alt="Loading..." onClick={()=>{navigate("/")}}/>
+                        <img style={{width: "55vh", height: "55vh", cursor:"pointer"}} src="/HH-L.png" alt="Loading..." onClick={()=>{navigate("/")}}/>
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm={6}>

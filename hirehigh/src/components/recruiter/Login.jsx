@@ -74,8 +74,8 @@ export default function VendorSignIn() {
             <Grid sx={{display: { xs: 'none', sm: 'flex' }}} item xs={12} sm={6}>
               <Box sx={{ textAlign:'center' }}>
                 <img
-                  style={{ margin: "40px", width: "300px", height: "55vh", cursor:"pointer" }}
-                  src="/HireHigh-logos_black (5).png"
+                  style={{  width: "55vh", height: "55vh", cursor:"pointer" }}
+                  src="/HH-L.png"
                   alt="Loading..."
                   onClick={()=>{navigate("/")}}
                 />

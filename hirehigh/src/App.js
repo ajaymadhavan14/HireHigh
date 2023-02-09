@@ -9,6 +9,8 @@ import SeHome from './pages/seeker/Home';
 import ReLogin from './pages/recruiter/Login'
 import ReSingup from './pages/recruiter/Signup'
 import ReHome from './pages/recruiter/Home'
+import AdLogin from './pages/admin/Login'
+import AdDashboard from './pages/admin/Dashboard'
 
 function App() {
   return (
@@ -28,6 +30,12 @@ function App() {
         <Route path='/recruiter/signup' element={<ReSingup/>}/> 
 
         <Route path='/recruiter/home' element={<ReHome/>}/> 
+
+        <Route path='/admin/login' element={<AdLogin/>}/> 
+
+        <Route path='/admin/home' element={<AdDashboard/>}/> 
+
+
 
 
 

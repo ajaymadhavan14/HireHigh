@@ -1,10 +1,10 @@
 import React from "react";
-import ResponsiveAppBar from "../../components/recruiter/Home/Navbar";
+import Dashboard from "../../components/recruiter/Home/Home";
 
 function Home() {
   return (
     <div>
-      <ResponsiveAppBar />
+      <Dashboard/>
     </div>
   );
 }

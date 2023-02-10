@@ -59,4 +59,22 @@ const signinPost = async (req, res) => {
   }
 };
 
-export default { signupPost, signinPost };
+const isUserAuth = async (req, res) => {
+  try {
+  let userDetails = await userModel.findById(req.userId)
+  userDetails.auth=true;
+
+  res.json({
+      "username":userDetails.firstName,
+      "email":userDetails.email,
+      "auth":true,
+      "image":userDetails.image||null
+  })
+  } catch (error) {
+      
+  }
+  
+
+}
+
+export default { signupPost, signinPost,isUserAuth };

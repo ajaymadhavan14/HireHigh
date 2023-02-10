@@ -2,7 +2,6 @@ import './App.css';
 
 import SeLogin from './pages/seeker/Login';
 import SeSignup from './pages/seeker/Signup';
-import { AppContext } from './context/AppContext';
 import {Routes,Route,useNavigate, BrowserRouter} from 'react-router-dom'
 import LandingPage from './pages/seeker/LandingPage';
 import SeHome from './pages/seeker/Home';
@@ -11,10 +10,23 @@ import ReSingup from './pages/recruiter/Signup'
 import ReHome from './pages/recruiter/Home'
 import AdLogin from './pages/admin/Login'
 import AdDashboard from './pages/admin/Dashboard'
+import { AppContext } from './context/AppContext';
+
+import { Provider } from 'react-redux'
+import { store } from './redux/store';
+import { useState } from 'react';
+
+
 
 function App() {
+  
+  const [ userDetails, setUserDetails ] = useState({})
+
+ 
   return (
-     <AppContext.Provider>
+    <Provider store={store}>
+     <AppContext.Provider value={{userDetails,setUserDetails}} >
+
       <BrowserRouter>
       <Routes>
         <Route  exact  path='/'   element={<LandingPage/>}/>
@@ -43,8 +55,8 @@ function App() {
       </Routes>
       </BrowserRouter>
       
-     </AppContext.Provider>
-    
+      </AppContext.Provider>
+      </Provider>
   );
 }
 

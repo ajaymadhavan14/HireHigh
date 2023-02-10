@@ -1,5 +1,4 @@
 
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,27 +11,81 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import WorkIcon from '@mui/icons-material/Work';
 import { Grid } from '@mui/material';
+import {useSelector} from 'react-redux'
+import { useEffect, useState } from 'react';
+import axios from '../../../axios/axios'
+import { useDispatch } from 'react-redux';
+import {userDetails} from '../../../redux/seeker'
+import { useNavigate } from 'react-router-dom';
+import Swal2 from 'sweetalert2'
+
+
 
  const drawerWidth = 260;
 
 export default function PermanentDrawerLeft() {
+    const navigate = useNavigate()
+    const dispatch = useDispatch(userDetails)
+
+    useEffect(()=>{
+      axios.get('/isUserAuth',{
+       headers:{"x-access-token":localStorage.getItem("token")}
+      }).then((response)=>{
+        console.log(response.data)
+        if(!response.data.auth){
+          
+           navigate('/')
+  
+        } else{
+           dispatch(userDetails(response.data))
+        }
+      })
+    },[])
+     
+    const LogOut = () => {
+        Swal2.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#f04f4f',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('token');
+                // Swal.fire(
+                //     'Deleted!',
+                //     'Your file has been deleted.',
+                //     'success'
+                // )
+                navigate('/login')
+
+            }
+          })
+    }
+    const { user } = useSelector((state)=>state.userInfo)
+
   return (
     <>
     <AppBar
                 position="fixed"
                 sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
             >
-                <Toolbar>
+                <Toolbar sx={{justifyContent:"space-between"}}>
                 <Typography variant="h6" noWrap component="div">
                     HIREHIGH
                 </Typography>
+                <Typography variant="h6" noWrap component="div" sx={{}}>
+                {user.username}
+                </Typography>
                 </Toolbar>
+                
 
             </AppBar>
     <Grid sx={{ display:'flex' }}>
@@ -65,16 +118,26 @@ export default function PermanentDrawerLeft() {
                 </List>
                 <Divider />
                 <List>
-                {['profile', 'Logout'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                    <ListItemButton>
+               
+                    <ListItem  disablePadding>
+                    <ListItemButton  >
                         <ListItemIcon>
-                        {index % 2 === 0 ? <AccountBoxIcon/> : <LogoutIcon/> }
+                       <AccountBoxIcon/> 
                         </ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItemButton>
+                        <ListItemText  >Profile</ListItemText>
+                    </ListItemButton >
+                    
                     </ListItem>
-                ))}
+              
+                    <ListItem  disablePadding>
+                    <ListItemButton  onClick={LogOut}>
+                        <ListItemIcon>
+                       <LogoutIcon/>
+                        </ListItemIcon>
+                        <ListItemText  >Logout</ListItemText>
+                    </ListItemButton >
+                    
+                    </ListItem>
                 </List>
             </Drawer>
         </Grid>

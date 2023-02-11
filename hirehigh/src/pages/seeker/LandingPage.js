@@ -5,12 +5,11 @@ import RecruiterContainer from '../../components/LandingPage/Recruiter';
 import SeekerContainer from '../../components/LandingPage/Seeker';
 
 function LandingPage() {
-
   return (
     <div>
       <SearchAppBar />
       <SeekerContainer />
-      <MiddleContainer/>
+      <MiddleContainer />
       <RecruiterContainer />
     </div>
   );

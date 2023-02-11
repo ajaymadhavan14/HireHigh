@@ -1,11 +1,9 @@
+import express from 'express';
+import recruiterController from '../controller/recruiterController.js';
 
-import express from 'express'
-import recruiterController from '../controller/recruiterController.js'
+const router = express.Router();
 
-const router = express.Router()
+router.post('/signup', recruiterController.recruiterSignUpPost);
+router.post('/login', recruiterController.recruiterSignInPost);
 
-router.post('/signup',recruiterController.recruiterSignUpPost)
-router.post('/login',recruiterController.recruiterSignInPost)
-
-export default router
-
+export default router;

@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -20,11 +18,19 @@ import axios from '../../axios/axios';
 const theme = createTheme();
 
 export default function SeekerSignUp() {
-  const [firstName, setFirstName] = useState('');
-  const [email, setEmail] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [password, setPassword] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [firstName, setFirstName] = useState(false);
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastName, setLastName] = useState(false);
+  const [lastNameError, setLastNameError] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState(false);
+  const [phoneNumberError, setPhoneNumberError] = useState('');
+  const [email, setEmail] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [password, setPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
+  const [confPassword, setConfPassword] = useState(false);
+  const [confPasswordError, setConfPasswordError] = useState('');
+  const [totalRequired, setTotalRequired] = useState('');
 
   const navigate = useNavigate();
 
@@ -37,16 +43,86 @@ export default function SeekerSignUp() {
       email: data.get('email'),
       password: data.get('password'),
       phoneNumber: data.get('phoneNumber'),
+      confPassword: data.get('confPassword'),
     };
-    axios.post('/signup', data).then((response) => {
-      if (response.data.status === 'success') {
-        navigate('/login');
+    if (data.firstName && data.lastName && data.email && data.password
+      && data.phoneNumber && data.confPassword) {
+      const regName = /^[a-zA-Z]+$/;
+      const regEmail = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
+      const regPhone = /^[0-9]+$/;
+      setTotalRequired('');
+      if (regName.test(data.firstName)) {
+        setFirstName(false);
+        setFirstNameError('');
+        if (regName.test(data.lastName)) {
+          setLastName(false);
+          setLastNameError('');
+          if (regEmail.test(data.email)) {
+            setEmail(false);
+            setEmailError('');
+            if (regPhone.test(data.phoneNumber)) {
+              setPhoneNumber(false);
+              setPhoneNumberError('');
+              if (data.phoneNo.length === 10) {
+                setPhoneNumber(false);
+                setPhoneNumberError('');
+                if (data.password.length >= 6) {
+                  setPassword(false);
+                  setPasswordError('');
+                  if (data.password === data.confPassword) {
+                    setPassword(false);
+                    setConfPassword(false);
+                    setPasswordError('');
+                    setConfPasswordError('');
+                    axios.post('/signup', data).then((response) => {
+                      if (response.data.status === 'success') {
+                        navigate('/login');
+                      } else {
+                        swal('OOPS', response.data.message, 'error');
+                      }
+                    });
+                  } else {
+                    setPassword(true);
+                    setConfPassword(true);
+                    setPasswordError('Password is not match');
+                    setConfPasswordError('Password is not match');
+                  }
+                } else {
+                  setPassword(true);
+                  setPasswordError('Minimum 6 character');
+                }
+              } else {
+                setPhoneNumber(true);
+                setPhoneNumberError('Please enter 10 digit');
+              }
+            } else {
+              setPhoneNumber(true);
+              setPhoneNumberError('Please Enter valid Phone no');
+            }
+          } else {
+            setEmail(true);
+            setEmailError('Please enter valid Email');
+          }
+        } else {
+          setLastName(true);
+          setLastNameError('Please enter valid Name');
+        }
       } else {
-        swal('OOPS', response.data.message, 'error');
+        setFirstName(true);
+        setFirstNameError('Please enter valid Name');
       }
-    });
+    } else {
+      setTotalRequired('Please enter your Details');
+    }
+  //   axios.post('/signup', data).then((response) => {
+  //     if (response.data.status === 'success') {
+  //       navigate('/login');
+  //     } else {
+  //       swal('OOPS', response.data.message, 'error');
+  //     }
+  //   });
+  // };
   };
-
   return (
     <ThemeProvider theme={theme}>
       <Typography sx={{
@@ -74,7 +150,11 @@ export default function SeekerSignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
+          {/* <Box sx={{ backgroundColor: '#ffc5c5', borderRadius: '3px' }}>
+            <p style={{ color: 'red' }}>{totalRequired}</p>
+          </Box> */}
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+              {totalRequired && <Typography mb={0.5} sx={{ color: 'red', fontFamily: 'sans-serif' }} align="center">{totalRequired}</Typography>}
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -85,7 +165,8 @@ export default function SeekerSignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
-
+                  error={firstName}
+                  helperText={firstNameError}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -96,6 +177,8 @@ export default function SeekerSignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  error={lastName}
+                  helperText={lastNameError}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -106,6 +189,8 @@ export default function SeekerSignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  error={email}
+                  helperText={emailError}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -117,6 +202,8 @@ export default function SeekerSignUp() {
                   label="Phone Number"
                   name="phoneNumber"
                   autoComplete="phoneNumber"
+                  error={phoneNumber}
+                  helperText={phoneNumberError}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -128,12 +215,21 @@ export default function SeekerSignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  error={password}
+                  helperText={passwordError}
                 />
               </Grid>
               <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
+                <TextField
+                  required
+                  fullWidth
+                  name="confPassword"
+                  label="Cofirm Password"
+                  type="password"
+                  id="confPassword"
+                  autoComplete="new-password"
+                  error={confPassword}
+                  helperText={confPasswordError}
                 />
               </Grid>
             </Grid>

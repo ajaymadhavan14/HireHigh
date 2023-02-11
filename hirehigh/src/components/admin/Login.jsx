@@ -46,7 +46,7 @@ export default function ASignIn() {
         setEmail(true);
         setEmailErr('Enter a valid email address');
       }
-      if (signinData.password.length <= 5) {
+      if (signinData.password.length >= 6) {
         setPassword(true);
         setPasswordErr('Password must be at least 6 characters');
       }
@@ -60,7 +60,7 @@ export default function ASignIn() {
         }
       });
     } catch (err) {
-      console.log(err);
+      err();
     }
   };
 

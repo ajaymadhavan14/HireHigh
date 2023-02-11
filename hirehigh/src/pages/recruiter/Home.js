@@ -4,7 +4,7 @@ import Dashboard from '../../components/Recruiter/Home/Home';
 function Home() {
   return (
     <div>
-      <Dashboard/>
+      <Dashboard />
     </div>
   );
 }

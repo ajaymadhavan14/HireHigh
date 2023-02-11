@@ -23,7 +23,9 @@ export default function VendorSignUp() {
   const [email, setEmail] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState(false);
+  const [confPassword, setConfPassword] = useState(false);
   const [passwordError, setPasswordError] = useState('');
+  const [confPasswordError, setConfPasswordError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
   const navigate = useNavigate();
 
@@ -34,9 +36,10 @@ export default function VendorSignUp() {
       companyName: data.get('companyName'),
       email: data.get('email'),
       password: data.get('password'),
-    };
+      confPassword: data.get('confPassword'),
 
-    if (data.companyName && data.email && data.password) {
+    };
+    if (data.companyName && data.email && data.password && data.confPassword) {
       const regName = /^[a-zA-Z]+$/;
       const regEmail = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
       setTotalRequired('');
@@ -49,6 +52,24 @@ export default function VendorSignUp() {
           if (data.password.length >= 6) {
             setPassword(false);
             setPasswordError('');
+            if (data.password === data.confPassword) {
+              setPassword(false);
+              setConfPassword(false);
+              setPasswordError('');
+              setConfPasswordError('');
+              axios.post('/recruiter/signup', data).then((response) => {
+                if (response.data.status === 'success') {
+                  navigate('/recruiter/login');
+                } else {
+                  swal('OOPS', response.data.message, 'error');
+                }
+              });
+            } else {
+              setPassword(true);
+              setConfPassword(true);
+              setPasswordError('Password is not match');
+              setConfPasswordError('Password is not match');
+            }
           } else {
             setPassword(true);
             setPasswordError('Minimum 6 character');
@@ -64,13 +85,6 @@ export default function VendorSignUp() {
     } else {
       setTotalRequired('Please enter your Details');
     }
-    axios.post('/recruiter/signup', data).then((response) => {
-      if (response.data.status === 'success') {
-        navigate('/recruiter/login');
-      } else {
-        swal('OOPS', response.data.message, 'error');
-      }
-    });
   };
 
   return (
@@ -160,11 +174,13 @@ export default function VendorSignUp() {
                     <TextField
                       required
                       fullWidth
-                      name="cpassword"
+                      name="confPassword"
                       label="Cofirm Password"
                       type="password"
-                      id="cpassword"
+                      id="confPassword"
                       autoComplete="new-password"
+                      error={confPassword}
+                      helperText={confPasswordError}
                     />
                   </Grid>
 

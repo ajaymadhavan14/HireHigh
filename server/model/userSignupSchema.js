@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
 
 const userSignup = new Schema(
   {
@@ -30,7 +30,7 @@ const userSignup = new Schema(
       trim: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-export default model("users", userSignup);
+export default model('users', userSignup);

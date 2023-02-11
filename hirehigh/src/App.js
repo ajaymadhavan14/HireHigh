@@ -1,3 +1,4 @@
+/* eslint-disable no-sequences */
 import './App.css';
 
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
@@ -13,14 +14,14 @@ import ReSingup from './pages/recruiter/Signup';
 import ReHome from './pages/recruiter/Home';
 import AdLogin from './pages/admin/Login';
 import AdDashboard from './pages/admin/Dashboard';
-import { AppContext } from './context/AppContext';
+import AppContext from './context/AppContext';
 
 function App() {
   const [userDetails, setUserDetails] = useState({});
 
   return (
     <Provider store={store}>
-      <AppContext.Provider value={{ userDetails, setUserDetails }}>
+      <AppContext.Provider value={userDetails, setUserDetails}>
         <BrowserRouter>
           <Routes>
             <Route exact path="/" element={<LandingPage />} />

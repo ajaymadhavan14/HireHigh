@@ -23,6 +23,7 @@ export default function VendorSignIn() {
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState(false);
   const [passwordError, setPasswordError] = useState('');
+  const [totalRequired, setTotalRequired] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -31,15 +32,33 @@ export default function VendorSignIn() {
       email: data.get('email'),
       password: data.get('password'),
     };
-
-    axios.post('/recruiter/login', data).then((response) => {
-      if (!response.data.auth) {
-        swal('sorry', response.data.message, 'error');
+    if (data.email && data.password) {
+      const regEmail = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
+      if (regEmail.test(data.email)) {
+        setEmail(false);
+        setEmailError('');
+        if (data.password.length >= 6) {
+          setPassword(false);
+          setPasswordError('');
+          axios.post('/recruiter/login', data).then((response) => {
+            if (!response.data.auth) {
+              swal('sorry', response.data.message, 'error');
+            } else {
+              localStorage.setItem('token', response.data.token);
+              navigate('/recruiter/home');
+            }
+          });
+        } else {
+          setPassword(true);
+          setPasswordError('Minimum 6 character');
+        }
       } else {
-        localStorage.setItem('token', response.data.token);
-        navigate('/recruiter/home');
+        setEmail(true);
+        setEmailError('Please enter valid Email');
       }
-    });
+    } else {
+      setTotalRequired('All feilds are required');
+    }
   };
 
   return (
@@ -96,12 +115,17 @@ export default function VendorSignIn() {
               </Typography>
 
               <hr />
+              {/* <Box sx={{ backgroundColor: '#ffc5c5', borderRadius: '3px' }}>
+                <p style={{ color: 'red' }}>{totalRequired}</p>
+              </Box> */}
               <Box
                 component="form"
                 onSubmit={handleSubmit}
                 noValidate
-                sx={{ mt: 5 }}
+                sx={{ mt: 3 }}
               >
+                {totalRequired && <Typography mb={0.5} sx={{ color: 'red', fontFamily: 'sans-serif' }} align="center">{totalRequired}</Typography>}
+
                 <TextField
                   margin="normal"
                   required

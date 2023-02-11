@@ -1,4 +1,4 @@
-
+import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,141 +16,134 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import WorkIcon from '@mui/icons-material/Work';
 import { Grid } from '@mui/material';
-import {useSelector} from 'react-redux'
-import { useEffect, useState } from 'react';
-import axios from '../../../axios/axios'
-import { useDispatch } from 'react-redux';
-import {userDetails} from '../../../redux/seeker'
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Swal2 from 'sweetalert2'
+import Swal2 from 'sweetalert2';
+import axios from '../../../axios/axios';
+import { userDetails } from '../../../redux/seeker';
 
-
-
- const drawerWidth = 260;
+const drawerWidth = 260;
 
 export default function PermanentDrawerLeft() {
-    const navigate = useNavigate()
-    const dispatch = useDispatch(userDetails)
+  const navigate = useNavigate();
+  const dispatch = useDispatch(userDetails);
 
-    useEffect(()=>{
-      axios.get('/isUserAuth',{
-       headers:{"x-access-token":localStorage.getItem("token")}
-      }).then((response)=>{
-        console.log(response.data)
-        if(!response.data.auth){
-          
-           navigate('/')
-  
-        } else{
-           dispatch(userDetails(response.data))
-        }
-      })
-    },[])
-     
-    const LogOut = () => {
-        Swal2.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#f04f4f',
-            confirmButtonText: 'Yes, delete it!'
-          }).then((result) => {
-            if (result.isConfirmed) {
-                localStorage.removeItem('token');
-                // Swal.fire(
-                //     'Deleted!',
-                //     'Your file has been deleted.',
-                //     'success'
-                // )
-                navigate('/login')
+  useEffect(() => {
+    axios.get('/isUserAuth', {
+      headers: { 'x-access-token': localStorage.getItem('token') },
+    }).then((response) => {
+      console.log(response.data);
+      if (!response.data.auth) {
+        navigate('/');
+      } else {
+        dispatch(userDetails(response.data));
+      }
+    });
+  }, []);
 
-            }
-          })
-    }
-    const { user } = useSelector((state)=>state.userInfo)
+  const LogOut = () => {
+    Swal2.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#f04f4f',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem('token');
+        // Swal.fire(
+        //     'Deleted!',
+        //     'Your file has been deleted.',
+        //     'success'
+        // )
+        navigate('/login');
+      }
+    });
+  };
+  const { user } = useSelector((state) => state.userInfo);
 
   return (
     <>
-    <AppBar
-                position="fixed"
-                sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-            >
-                <Toolbar sx={{justifyContent:"space-between"}}>
-                <Typography variant="h6" noWrap component="div">
-                    HIREHIGH
-                </Typography>
-                <Typography variant="h6" noWrap component="div" sx={{}}>
-                {user.username}
-                </Typography>
-                </Toolbar>
-                
+      <AppBar
+        position="fixed"
+        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
+      >
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <Typography variant="h6" noWrap component="div">
+            HIREHIGH
+          </Typography>
+          <Typography variant="h6" noWrap component="div" sx={{}}>
+            {user.username}
+          </Typography>
+        </Toolbar>
 
-            </AppBar>
-    <Grid sx={{ display:'flex' }}>
+      </AppBar>
+      <Grid sx={{ display: 'flex' }}>
         <Grid xs={3}>
-        <Drawer
-                sx={{
+          <Drawer
+            sx={{
+              width: drawerWidth,
+              flexShrink: 0,
+              '& .MuiDrawer-paper': {
                 width: drawerWidth,
-                flexShrink: 0,
-                '& .MuiDrawer-paper': {
-                    width: drawerWidth,
-                    boxSizing: 'border-box',
-                },
-                }}
-                variant="permanent"
-                anchor="left"
-            >
-                <Toolbar />
-                <Divider />
-                <List>
-                {['Jobs', 'Notification', 'Applied jobs','messaging'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
-                        {index % 2 === 0 ? <WorkIcon/> : <MailIcon />}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItemButton>
-                    </ListItem>
-                ))}
-                </List>
-                <Divider />
-                <List>
-               
-                    <ListItem  disablePadding>
-                    <ListItemButton  >
-                        <ListItemIcon>
-                       <AccountBoxIcon/> 
-                        </ListItemIcon>
-                        <ListItemText  >Profile</ListItemText>
-                    </ListItemButton >
-                    
-                    </ListItem>
-              
-                    <ListItem  disablePadding>
-                    <ListItemButton  onClick={LogOut}>
-                        <ListItemIcon>
-                       <LogoutIcon/>
-                        </ListItemIcon>
-                        <ListItemText  >Logout</ListItemText>
-                    </ListItemButton >
-                    
-                    </ListItem>
-                </List>
-            </Drawer>
+                boxSizing: 'border-box',
+              },
+            }}
+            variant="permanent"
+            anchor="left"
+          >
+            <Toolbar />
+            <Divider />
+            <List>
+              {['Jobs', 'Notification', 'Applied jobs', 'messaging'].map((text, index) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      {index % 2 === 0 ? <WorkIcon /> : <MailIcon />}
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+            <Divider />
+            <List>
+
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <AccountBoxIcon />
+                  </ListItemIcon>
+                  <ListItemText>Profile</ListItemText>
+                </ListItemButton>
+
+              </ListItem>
+
+              <ListItem disablePadding>
+                <ListItemButton onClick={LogOut}>
+                  <ListItemIcon>
+                    <LogoutIcon />
+                  </ListItemIcon>
+                  <ListItemText>Logout</ListItemText>
+                </ListItemButton>
+
+              </ListItem>
+            </List>
+          </Drawer>
         </Grid>
-        <Grid xs={6} sx={{ width:'75%' }}>
-            <Box sx={{ display: 'flex' }}>
+        <Grid xs={6} sx={{ width: '75%' }}>
+          <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            
+
             <Box
-                component="main"
-                sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3}}
+              component="main"
+              sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
             >
-                <Toolbar />
-                <Typography paragraph>
+              <Toolbar />
+              <Typography paragraph>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                 tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
                 enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
@@ -163,8 +156,8 @@ export default function PermanentDrawerLeft() {
                 feugiat vivamus at augue. At augue eget arcu dictum varius duis at
                 consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
                 sapien faucibus et molestie ac.
-                </Typography>
-                <Typography paragraph>
+              </Typography>
+              <Typography paragraph>
                 Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
                 eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
                 neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
@@ -176,15 +169,15 @@ export default function PermanentDrawerLeft() {
                 tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
                 eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
                 posuere sollicitudin aliquam ultrices sagittis orci a.
-                </Typography>
+              </Typography>
             </Box>
-            </Box>
+          </Box>
         </Grid>
         <Grid xs={3} sx={{ mt: 6 }}>
-            <h1 style={{ lineBreak:'anywhere' }}>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</h1>
+          <h1 style={{ lineBreak: 'anywhere' }}>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</h1>
         </Grid>
-    </Grid>
-    
+      </Grid>
+
     </>
   );
 }

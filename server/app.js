@@ -1,30 +1,29 @@
-import express from 'express'
-import cors from "cors"
-import logger from 'morgan'
-import cookieParser from 'cookie-parser'
-import { config } from "dotenv"
-config()
+import express from 'express';
+import cors from 'cors';
+import logger from 'morgan';
+import cookieParser from 'cookie-parser';
+import { config } from 'dotenv';
 
 // import bcrypt from "bcrypt";
 // import adminDB from './model/adminSchema.js'
 
+import dbconnection from './config/connection.js';
+import seekerRouter from './routes/seekerRouter.js';
+import recruiterRouter from './routes/recruiterRouter.js';
+import adminRouter from './routes/adminRouter.js';
 
+config();
 
-import dbconnection from './config/connection.js'
-import seekerRouter from "./routes/seekerRouter.js"
-import recruiterRouter from './routes/recruiterRouter.js'
-import adminRouter from './routes/adminRouter.js'
+const port = process.env.PORT;
+const app = express();
 
-const port = process.env.PORT
-const app = express()
+app.use(cors());
 
-app.use(cors())
-
-app.use(logger("dev"))
-app.use(express.urlencoded({ extended:false }));
-app.use(express.json({extended: false, limit: '50mb'}));
-app.use(express.static("public"))
-app.use(cookieParser())
+app.use(logger('dev'));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ extended: false, limit: '50mb' }));
+app.use(express.static('public'));
+app.use(cookieParser());
 
 // const addadmin =  async() => {
 // let password = "123456"
@@ -38,15 +37,14 @@ app.use(cookieParser())
 // }
 //  addadmin()
 
+app.use('/', seekerRouter);
+app.use('/recruiter', recruiterRouter);
+app.use('/admin', adminRouter);
 
-app.use('/',seekerRouter)
-app.use('/recruiter',recruiterRouter)
-app.use('/admin',adminRouter)
+app.use(dbconnection);
 
-app.use(dbconnection)
-
-app.listen(port,()=>{
-    console.log(`server listening at http://127.0.0.1:${port}`);
+app.listen(port, () => {
+  console.log(`server listening at http://127.0.0.1:${port}`);
 });
 
-export default app
+export default app;

@@ -3,8 +3,6 @@ import jwt from 'jsonwebtoken';
 import adminModel from '../model/adminSchema.js';
 
 const signInPost = async (req, res) => {
-  console.log(req.body);
-
   const { email, password } = req.body;
   const admin = await adminModel.findOne({ email });
   if (admin) {

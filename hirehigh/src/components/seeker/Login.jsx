@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -20,9 +18,11 @@ import axios from '../../axios/axios';
 const theme = createTheme();
 
 export default function SignIn() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
+  const [email, setEmail] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [password, setPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
+  const [totalRequired, setTotalRequired] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
@@ -33,15 +33,35 @@ export default function SignIn() {
       password: data.get('password'),
     };
 
-    axios.post('/login', data).then((response) => {
-      console.log(response);
-      if (!response.data.auth) {
-        swal('sorry', response.data.message, 'error');
+    if (data.email && data.password) {
+      const regEmail = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
+      if (regEmail.test(data.email)) {
+        setEmail(false);
+        setEmailError('');
+        if (data.password.length >= 6) {
+          setPassword(false);
+          setPasswordError('');
+
+          axios.post('/login', data).then((response) => {
+            console.log(response);
+            if (!response.data.auth) {
+              swal('sorry', response.data.message, 'error');
+            } else {
+              localStorage.setItem('token', response.data.token);
+              navigate('/home');
+            }
+          });
+        } else {
+          setPassword(true);
+          setPasswordError('Minimum 6 character');
+        }
       } else {
-        localStorage.setItem('token', response.data.token);
-        navigate('/home');
+        setEmail(true);
+        setEmailError('Please enter valid Email');
       }
-    });
+    } else {
+      setTotalRequired('All feilds are required');
+    }
   };
 
   return (
@@ -70,6 +90,7 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
@@ -80,6 +101,8 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              error={email}
+              helperText={emailError}
             />
             <TextField
               margin="normal"
@@ -90,11 +113,15 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              error={password}
+              helperText={passwordError}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+
+            {/* <Box sx={{ backgroundColor: '#ffc5c5', borderRadius: '3px' }}>
+              <p style={{ color: 'red' }}>{totalRequired}</p>
+            </Box> */}
+           {totalRequired && <Typography mb={0.5} sx={{ color: 'red', fontFamily: 'sans-serif' }} align="center">{totalRequired}</Typography>}
+
             <Button
               type="submit"
               fullWidth

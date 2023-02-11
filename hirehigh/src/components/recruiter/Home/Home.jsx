@@ -15,7 +15,6 @@ import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -31,20 +30,6 @@ import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import MessageIcon from '@mui/icons-material/Message';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>
-      {' '}
-      {new Date().getFullYear()}
-      .
-    </Typography>
-  );
-}
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -105,12 +90,9 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
   const theme = useTheme();
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
 
   const handleDrawerClose = () => {
-    setOpen(false);
+
   };
 
   const [open, setOpen] = React.useState(true);
@@ -223,7 +205,7 @@ function DashboardContent() {
         <Box
           component="main"
           sx={{
-            backgroundColor: (theme) => (theme.palette.mode === 'light'
+            backgroundColor: () => (theme.palette.mode === 'light'
               ? theme.palette.grey[100]
               : theme.palette.grey[900]),
             flexGrow: 1,
@@ -261,7 +243,6 @@ function DashboardContent() {
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
               </Grid>
             </Grid>
-            <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
       </Box>

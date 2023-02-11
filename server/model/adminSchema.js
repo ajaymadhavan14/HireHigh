@@ -1,9 +1,9 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
 
 const adminschema = new Schema({
-    email: {
+  email: {
     type: String,
-     required: true,
+    required: true,
     // unique: true,
     // lowercase: true,
     // trim:true,
@@ -13,8 +13,7 @@ const adminschema = new Schema({
     required: true,
     // trim:true,
     // minlength: [6],
-  }
-},{ timestamps: true }
-);
+  },
+}, { timestamps: true });
 
-export default model("admin",adminschema )
+export default model('admin', adminschema);

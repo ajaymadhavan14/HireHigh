@@ -4,9 +4,9 @@ import ASignIn from '../../components/Admin/Login';
 function Login() {
   return (
     <div>
-      <ASignIn/>
+      <ASignIn />
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;

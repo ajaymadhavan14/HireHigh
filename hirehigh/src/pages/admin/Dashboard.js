@@ -1,14 +1,14 @@
-import React from 'react'
-import ButtonAppBar from '../../components/admin/Navbar'
-import AdminSideBar from '../../components/admin/SideBar'
+import React from 'react';
+import ButtonAppBar from '../../components/Admin/Navbar';
+import AdminSideBar from '../../components/Admin/SideBar';
 
 function Dashboard() {
   return (
     <div>
-       <ButtonAppBar/> 
-      <AdminSideBar/>
+      <ButtonAppBar />
+      <AdminSideBar />
     </div>
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;

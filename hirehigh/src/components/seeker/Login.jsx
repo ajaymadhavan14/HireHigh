@@ -1,4 +1,4 @@
-
+import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,51 +13,49 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import axios from '../../axios/axios';
-import swal from 'sweetalert'
+import swal from 'sweetalert';
 import { useState } from 'react';
-
-
+import axios from '../../axios/axios';
 
 const theme = createTheme();
 
 export default function SignIn() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-
-  
   const handleSubmit = (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
     data = {
       email: data.get('email'),
       password: data.get('password'),
-    }
-    
-    axios.post('/login',data).then((response)=>{
-      console.log(response)
-      if(!response.data.auth){
-        swal('sorry',response.data.message,'error')
-      }else{
-        localStorage.setItem("token",response.data.token)
-         navigate('/home')
+    };
+
+    axios.post('/login', data).then((response) => {
+      console.log(response);
+      if (!response.data.auth) {
+        swal('sorry', response.data.message, 'error');
+      } else {
+        localStorage.setItem('token', response.data.token);
+        navigate('/home');
       }
-    })
-   
+    });
   };
 
   return (
     <ThemeProvider theme={theme}>
-     <Typography sx={{ color: '#6096B4',cursor: 'pointer', width: 'fit-content',marginLeft:"6%" }}>
-            <h2 onClick={()=>navigate("/")} >HIREHIGH</h2>
-          </Typography>
+      <Typography sx={{
+        color: '#6096B4', cursor: 'pointer', width: 'fit-content', marginLeft: '6%',
+      }}
+      >
+        <h2 onClick={() => navigate('/')}>HIREHIGH</h2>
+      </Typography>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
-        
+
           sx={{
             marginTop: 8,
             display: 'flex',
@@ -65,9 +63,9 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          
-          <Avatar sx={{ m: 1, bgcolor: "#6096B4" }}>
-            <AccountCircleIcon/>
+
+          <Avatar sx={{ m: 1, bgcolor: '#6096B4' }}>
+            <AccountCircleIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
@@ -112,8 +110,8 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link onClick={()=>{navigate("/signup")}} variant="body2" component="button">
-                  {"Don't have an account? Sign Up"}
+                <Link onClick={() => { navigate('/signup'); }} variant="body2" component="button">
+                  Don't have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>

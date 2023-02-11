@@ -1,6 +1,6 @@
 
 import express from 'express'
-import recruiterController from '../controller/recruiterRouter.js'
+import recruiterController from '../controller/recruiterController.js'
 
 const router = express.Router()
 

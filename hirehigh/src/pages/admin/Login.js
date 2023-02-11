@@ -1,5 +1,5 @@
-import React from 'react'
-import ASignIn from '../../components/admin/Login'
+import React from 'react';
+import ASignIn from '../../components/Admin/Login';
 
 function Login() {
   return (

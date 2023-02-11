@@ -1,5 +1,5 @@
-import React from "react";
-import SignIn from "../../components/seeker/Login";
+import React from 'react';
+import SignIn from '../../components/Seeker/Login';
 
 function Login() {
   return (

@@ -1,7 +1,7 @@
-
-
 import * as React from 'react';
-import { styled, createTheme, ThemeProvider,useTheme } from '@mui/material/styles';
+import {
+  styled, createTheme, ThemeProvider, useTheme,
+} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -25,7 +25,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TaskIcon from '@mui/icons-material/Task';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
@@ -33,31 +32,28 @@ import MessageIcon from '@mui/icons-material/Message';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
         Your Website
-      </Link>{' '}
+      </Link>
+      {' '}
       {new Date().getFullYear()}
-      {'.'}
+      .
     </Typography>
   );
 }
 
-
-  
-  
 const DrawerHeader = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-  }));
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+}));
 
 const drawerWidth = 240;
 
@@ -108,15 +104,15 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 function DashboardContent() {
-    const theme = useTheme();
-    const handleDrawerOpen = () => {
-        setOpen(true);
-      };
-    
-      const handleDrawerClose = () => {
-        setOpen(false);
-      };
-    
+  const theme = useTheme();
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -151,7 +147,7 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-             HIREHIGH
+              HIREHIGH
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -161,77 +157,75 @@ function DashboardContent() {
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {['My jobs', 'Messages', 'Hire Candidates', 'Sort List'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            {['My jobs', 'Messages', 'Hire Candidates', 'Sort List'].map((text, index) => (
+              <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
                   }}
                 >
-                    {index   === 0 ?<InboxIcon/> : null }
-                    {index   === 1 ?<MessageIcon/> : null }
-                  {index   === 2 ?<TaskIcon/> : null }
-                  {index   === 3 ?<NoteAddIcon/> : null }
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {index === 0 ? <InboxIcon /> : null }
+                    {index === 1 ? <MessageIcon /> : null }
+                    {index === 2 ? <TaskIcon /> : null }
+                    {index === 3 ? <NoteAddIcon /> : null }
 
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['Name', 'Profile', 'Logout'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+                  </ListItemIcon>
+                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            {['Name', 'Profile', 'Logout'].map((text, index) => (
+              <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
                   }}
                 >
-                  {index   === 0 ?<BusinessIcon/> : null }
-                  {index   === 1 ?<AccountBoxIcon/> : null }
-                  {index   === 2 ?<LogoutIcon/> : null }
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {index === 0 ? <BusinessIcon /> : null }
+                    {index === 1 ? <AccountBoxIcon /> : null }
+                    {index === 2 ? <LogoutIcon /> : null }
 
-
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
+                  </ListItemIcon>
+                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
         <Box
           component="main"
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
+            backgroundColor: (theme) => (theme.palette.mode === 'light'
+              ? theme.palette.grey[100]
+              : theme.palette.grey[900]),
             flexGrow: 1,
             height: '100vh',
             overflow: 'auto',
@@ -249,8 +243,7 @@ function DashboardContent() {
                     flexDirection: 'column',
                     height: 240,
                   }}
-                >
-                </Paper>
+                />
               </Grid>
               {/* Recent Deposits */}
               <Grid item xs={12} md={4} lg={3}>
@@ -261,13 +254,11 @@ function DashboardContent() {
                     flexDirection: 'column',
                     height: 240,
                   }}
-                >
-                </Paper>
+                />
               </Grid>
               {/* Recent Orders */}
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                </Paper>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />

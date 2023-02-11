@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -54,18 +53,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchAppBar() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
-    <Box sx={{ flexGrow: 1, }}>
-      <AppBar position="static" sx={{bgcolor:"#F1F5F9"}}>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static" sx={{ bgcolor: '#F1F5F9' }}>
         <Toolbar>
           <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            sx={{ mr: 2,zIndex:"-1000" }}
-            
+            sx={{ mr: 2, zIndex: '-1000' }}
+
           >
             <MenuIcon />
           </IconButton>
@@ -73,12 +72,12 @@ export default function SearchAppBar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block',color:"black" } }}
-            onClick={()=>navigate("/")}
+            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block', color: 'black' } }}
+            onClick={() => navigate('/')}
           >
-           <h3 style={{cursor: 'pointer',width: 'fit-content',color:"#6096B4"}}> HIREHIGH</h3>
+            <h3 style={{ cursor: 'pointer', width: 'fit-content', color: '#6096B4' }}> HIREHIGH</h3>
           </Typography>
-          <Search sx={{color:"black"}}>
+          <Search sx={{ color: 'black' }}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>

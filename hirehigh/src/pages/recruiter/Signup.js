@@ -1,5 +1,5 @@
-import React from "react";
-import VendorSignUp from "../../components/recruiter/SignUp";
+import React from 'react';
+import VendorSignUp from '../../components/Recruiter/SignUp';
 
 function Signup() {
   return (

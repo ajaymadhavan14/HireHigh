@@ -1,4 +1,4 @@
-
+import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,26 +12,21 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from '../../axios/axios';
 import swal from 'sweetalert';
-
-
-
-
+import axios from '../../axios/axios';
 
 const theme = createTheme();
 
 export default function SeekerSignUp() {
+  const [firstName, setFirstName] = useState('');
+  const [email, setEmail] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
-  const [firstName,setFirstName] = useState('')
-  const [email, setEmail] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [password, setPassword] = useState('')
-  const [phoneNumber,setPhoneNumber] = useState('')
-
-    const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -41,25 +36,28 @@ export default function SeekerSignUp() {
       lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
-      phoneNumber: data.get('phoneNumber')
-    }
-    axios.post('/signup',data).then((response)=>{
-      if(response.data.status === 'success'){
-          navigate('/login')
-       }else{
-        swal("OOPS",response.data.message,'error')
-       }   
-    })
-    
+      phoneNumber: data.get('phoneNumber'),
+    };
+    axios.post('/signup', data).then((response) => {
+      if (response.data.status === 'success') {
+        navigate('/login');
+      } else {
+        swal('OOPS', response.data.message, 'error');
+      }
+    });
   };
-    
-   
+
   return (
     <ThemeProvider theme={theme}>
-      <Typography sx={{marginLeft:"6%", color: '#6096B4', cursor: 'pointer',
-    width: 'fit-content'}}>
-            <h2 onClick={()=>navigate("/")} >HIREHIGH</h2>
-          </Typography>
+      <Typography sx={{
+        marginLeft: '6%',
+        color: '#6096B4',
+        cursor: 'pointer',
+        width: 'fit-content',
+      }}
+      >
+        <h2 onClick={() => navigate('/')}>HIREHIGH</h2>
+      </Typography>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -70,8 +68,8 @@ export default function SeekerSignUp() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "#6096B4" }}>
-            <PersonAddIcon/>
+          <Avatar sx={{ m: 1, bgcolor: '#6096B4' }}>
+            <PersonAddIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
@@ -87,7 +85,7 @@ export default function SeekerSignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
-                 
+
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -149,8 +147,8 @@ export default function SeekerSignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                
-                <Link onClick={()=>{navigate("/login")}} variant="body2" component="button">
+
+                <Link onClick={() => { navigate('/login'); }} variant="body2" component="button">
                   Already have an account? Sign in
                 </Link>
               </Grid>

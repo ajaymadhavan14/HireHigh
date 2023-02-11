@@ -1,5 +1,5 @@
-import React from "react";
-import Dashboard from "../../components/recruiter/Home/Home";
+import React from 'react';
+import Dashboard from '../../components/Recruiter/Home/Home';
 
 function Home() {
   return (

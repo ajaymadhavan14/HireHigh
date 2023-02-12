@@ -4,8 +4,8 @@ import recruiterModel from '../model/recruiterSignupSchema.js';
 
 const recruiterSignUpPost = async (req, res) => {
   const { companyName, email, password } = req.body;
-  const user = await recruiterModel.findOne({ email });
-  if (user) {
+  const recruiter = await recruiterModel.findOne({ email });
+  if (recruiter) {
     res.json({ status: 'failed', message: 'Email already exist login now' });
   } else {
     const salt = await bcrypt.genSalt(10);
@@ -20,20 +20,20 @@ const recruiterSignUpPost = async (req, res) => {
 };
 
 const recruiterSignInPost = async (req, res) => {
+  console.log(req.body);
   const { email, password } = req.body;
-  const user = await recruiterModel.findOne({ email });
-  if (user) {
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (user.email === email && isMatch) {
-      const userId = user.id;
-      const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY, {
+  const recruiter = await recruiterModel.findOne({ email });
+  if (recruiter) {
+    const isMatch = await bcrypt.compare(password, recruiter.password);
+    if (recruiter.email === email && isMatch) {
+      const recruiterId = recruiter.id;
+      const token = jwt.sign({ recruiterId }, process.env.JWT_SECRET_KEY, {
         expiresIn: 300,
       });
-
       res.json({
         auth: true,
         token,
-        result: user,
+        result: recruiter,
         status: 'success',
         message: 'signin success',
       });
@@ -53,4 +53,19 @@ const recruiterSignInPost = async (req, res) => {
   }
 };
 
-export default { recruiterSignUpPost, recruiterSignInPost };
+const isRecruiterAuth = async (req, res, next) => {
+  try {
+    const recruiterDetails = await recruiterModel.findById(req.recruiterId);
+    recruiterDetails.auth = true;
+    res.json({
+      username: recruiterDetails.companyName,
+      email: recruiterDetails.email,
+      auth: true,
+      image: recruiterDetails.image || null,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { recruiterSignUpPost, recruiterSignInPost, isRecruiterAuth };

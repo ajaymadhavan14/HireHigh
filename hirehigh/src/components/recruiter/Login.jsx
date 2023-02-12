@@ -41,10 +41,11 @@ export default function VendorSignIn() {
           setPassword(false);
           setPasswordError('');
           axios.post('/recruiter/login', data).then((response) => {
+            console.log(response.data);
             if (!response.data.auth) {
               swal('sorry', response.data.message, 'error');
             } else {
-              localStorage.setItem('token', response.data.token);
+              localStorage.setItem('recruitertoken', response.data.token);
               navigate('/recruiter/home');
             }
           });

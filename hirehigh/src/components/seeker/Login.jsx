@@ -47,7 +47,7 @@ export default function SignIn() {
             if (!response.data.auth) {
               swal('sorry', response.data.message, 'error');
             } else {
-              localStorage.setItem('token', response.data.token);
+              localStorage.setItem('usertoken', response.data.token);
               navigate('/home');
             }
           });

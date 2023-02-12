@@ -1,10 +1,10 @@
 import React from 'react';
-import Dashboard from '../../components/Recruiter/Home/Home';
+import RecruiterHome from '../../components/Recruiter/Home/Home';
 
 function Home() {
   return (
     <div>
-      <Dashboard />
+      <RecruiterHome />
     </div>
   );
 }

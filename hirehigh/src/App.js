@@ -18,10 +18,13 @@ import AppContext from './context/AppContext';
 
 function App() {
   const [userDetails, setUserDetails] = useState({});
+  const [recruiterDetails, setRecruiterDetails] = useState({});
 
   return (
     <Provider store={store}>
-      <AppContext.Provider value={userDetails, setUserDetails}>
+      <AppContext.Provider value={userDetails, setUserDetails,
+      recruiterDetails, setRecruiterDetails}
+      >
         <BrowserRouter>
           <Routes>
             <Route exact path="/" element={<LandingPage />} />

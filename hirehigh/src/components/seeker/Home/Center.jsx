@@ -28,10 +28,9 @@ const drawerWidth = 260;
 export default function PermanentDrawerLeft() {
   const navigate = useNavigate();
   const dispatch = useDispatch(userDetails);
-
   useEffect(() => {
     axios.get('/isUserAuth', {
-      headers: { 'x-access-token': localStorage.getItem('token') },
+      headers: { 'u-access-token': localStorage.getItem('usertoken') },
     }).then((response) => {
       console.log(response.data);
       if (!response.data.auth) {

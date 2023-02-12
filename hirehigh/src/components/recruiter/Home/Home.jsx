@@ -30,6 +30,11 @@ import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import MessageIcon from '@mui/icons-material/Message';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from '../../../axios/axios';
+import { recruiterDetails } from '../../../redux/recruiter';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -89,16 +94,26 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 function DashboardContent() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch(recruiterDetails);
+  useEffect(() => {
+    axios.get('/recruiter/isRecruiterAuth', {
+      headers: { 'r-access-token': localStorage.getItem('recruitertoken') },
+    }).then((response) => {
+      console.log(response.data);
+      if (!response.data.auth) {
+        navigate('/');
+      } else {
+        dispatch(recruiterDetails(response.data));
+      }
+    });
+  }, []);
   const theme = useTheme();
-
-  const handleDrawerClose = () => {
-
-  };
-
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const { recruiter } = useSelector((state) => state.recruiterInfo);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -140,7 +155,7 @@ function DashboardContent() {
         </AppBar>
         <Drawer variant="permanent" open={open}>
           <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
+            <IconButton onClick={toggleDrawer}>
               {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
             </IconButton>
           </DrawerHeader>
@@ -175,31 +190,65 @@ function DashboardContent() {
           </List>
           <Divider />
           <List>
-            {['Name', 'Profile', 'Logout'].map((text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {index === 0 ? <BusinessIcon /> : null }
-                    {index === 1 ? <AccountBoxIcon /> : null }
-                    {index === 2 ? <LogoutIcon /> : null }
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'last',
+                px: 2.5,
+              }}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
 
-                  </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
-              </ListItem>
-            ))}
+                }}
+                >
+                  <BusinessIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>
+                    {recruiter?.username}
+                  </ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'last',
+                px: 2.5,
+              }}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <AccountBoxIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Profile</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'last',
+                px: 2.5,
+              }}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <LogoutIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Logout</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
           </List>
         </Drawer>
         <Box
@@ -250,6 +299,6 @@ function DashboardContent() {
   );
 }
 
-export default function Dashboard() {
+export default function RecruiterHome() {
   return <DashboardContent />;
 }

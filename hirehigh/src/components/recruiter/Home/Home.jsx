@@ -33,6 +33,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal2 from 'sweetalert2';
 import axios from '../../../axios/axios';
 import { recruiterDetails } from '../../../redux/recruiter';
 
@@ -115,6 +116,28 @@ function DashboardContent() {
   };
   const { recruiter } = useSelector((state) => state.recruiterInfo);
 
+  const LogOut = () => {
+    Swal2.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#f04f4f',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem('recruitertoken');
+        // Swal.fire(
+        //     'Deleted!',
+        //     'Your file has been deleted.',
+        //     'success'
+        // )
+        navigate('/recruiter/login');
+      }
+    });
+  };
+
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -161,32 +184,83 @@ function DashboardContent() {
           </DrawerHeader>
           <Divider />
           <List>
-            {['My jobs', 'Messages', 'Hire Candidates', 'Sort List'].map((text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {index === 0 ? <InboxIcon /> : null }
-                    {index === 1 ? <MessageIcon /> : null }
-                    {index === 2 ? <TaskIcon /> : null }
-                    {index === 3 ? <NoteAddIcon /> : null }
 
-                  </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
-              </ListItem>
-            ))}
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'last',
+                px: 2.5,
+              }}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <InboxIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>My Jobs</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'last',
+                px: 2.5,
+              }}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <TaskIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Hire Candidates</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'last',
+                px: 2.5,
+              }}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <NoteAddIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Short List</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'last',
+                px: 2.5,
+              }}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <MessageIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Masseages</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
           </List>
           <Divider />
           <List>
@@ -231,11 +305,13 @@ function DashboardContent() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={LogOut}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,

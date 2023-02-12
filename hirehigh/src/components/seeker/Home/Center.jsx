@@ -52,7 +52,7 @@ export default function PermanentDrawerLeft() {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem('token');
+        localStorage.removeItem('usertoken');
         // Swal.fire(
         //     'Deleted!',
         //     'Your file has been deleted.',

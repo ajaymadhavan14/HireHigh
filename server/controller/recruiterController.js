@@ -3,7 +3,9 @@ import jwt from 'jsonwebtoken';
 import recruiterModel from '../model/recruiterSignupSchema.js';
 
 const recruiterSignUpPost = async (req, res) => {
-  const { companyName, email, password } = req.body;
+  console.log(req.body);
+  const { userName, phoneNumber, companyName, email, tagLine, discription,
+    website, password } = req.body;
   const recruiter = await recruiterModel.findOne({ email });
   if (recruiter) {
     res.json({ status: 'failed', message: 'Email already exist login now' });
@@ -11,8 +13,13 @@ const recruiterSignUpPost = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password.trim(), salt);
     await recruiterModel.create({
+      userName,
       companyName,
+      phoneNumber,
       email,
+      tagLine,
+      discription,
+      website,
       password: hashPassword,
     });
     res.json({ status: 'success', message: 'signup success' });
@@ -58,10 +65,11 @@ const isRecruiterAuth = async (req, res, next) => {
     const recruiterDetails = await recruiterModel.findById(req.recruiterId);
     recruiterDetails.auth = true;
     res.json({
-      username: recruiterDetails.companyName,
+      username: recruiterDetails.userName,
       email: recruiterDetails.email,
       auth: true,
       image: recruiterDetails.image || null,
+      phoneNumber: recruiterDetails.phoneNumber,
     });
   } catch (error) {
     next(error);

@@ -2,9 +2,19 @@ import { Schema, model } from 'mongoose';
 
 const recruiterSignup = new Schema(
   {
+    userName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     companyName: {
       type: String,
       required: true,
+      trim: true,
+    },
+    phoneNumber: {
+      required: true,
+      type: Number,
       trim: true,
     },
 
@@ -15,14 +25,23 @@ const recruiterSignup = new Schema(
       unique: true,
       trim: true,
     },
+    tagLine: {
+      type: String,
+      required: true,
+    },
+    discription: {
+      type: String,
+      required: true,
+    },
+    website: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     password: {
       type: String,
       required: true,
       minlength: 6,
-      trim: true,
-    },
-    phoneNumber: {
-      type: Number,
       trim: true,
     },
   },

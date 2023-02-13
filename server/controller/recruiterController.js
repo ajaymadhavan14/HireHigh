@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import recruiterModel from '../model/recruiterSignupSchema.js';
+import recruiterModel from '../model/recruiterSchema.js';
 
 const recruiterSignUpPost = async (req, res) => {
   console.log(req.body);

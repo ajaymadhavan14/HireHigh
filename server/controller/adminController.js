@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import adminModel from '../model/adminSchema.js';
+import userModel from '../model/userSchema.js';
 
 const signInPost = async (req, res) => {
   const { email, password } = req.body;
@@ -51,4 +52,13 @@ const isAdminAuth = async (req, res, next) => {
   }
 };
 
-export default { signInPost, isAdminAuth };
+const getUsersList = async (req, res, next) => {
+  try {
+    const data = await userModel.find({});
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { signInPost, isAdminAuth, getUsersList };

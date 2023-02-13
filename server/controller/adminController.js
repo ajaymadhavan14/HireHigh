@@ -36,4 +36,19 @@ const signInPost = async (req, res) => {
   }
 };
 
-export default { signInPost };
+const isAdminAuth = async (req, res, next) => {
+  try {
+    const adminDetails = await adminModel.findById(req.adminId);
+    adminDetails.auth = true;
+
+    res.json({
+      username: adminDetails.name,
+      email: adminDetails.email,
+      auth: true,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { signInPost, isAdminAuth };

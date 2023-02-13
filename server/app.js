@@ -27,12 +27,14 @@ app.use(cookieParser());
 
 // const addadmin =  async() => {
 // let password = "123456"
+// const name = "ADMIN"
 // let salt = await bcrypt.genSalt(10)
 // let pass = await bcrypt.hash(password, salt)
 // let email = "admin@gmail.com"
 //  await adminDB.insertMany({
 //     email:email,
 //     password:pass,
+//     name:name
 //   })
 // }
 //  addadmin()

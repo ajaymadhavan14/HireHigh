@@ -15,6 +15,7 @@ import ReHome from './pages/recruiter/Home';
 import AdLogin from './pages/admin/Login';
 import AdDashboard from './pages/admin/Dashboard';
 import AppContext from './context/AppContext';
+import PageTry from './pages/tryPage';
 
 function App() {
   const [userDetails, setUserDetails] = useState({});
@@ -44,6 +45,8 @@ function App() {
             <Route path="/admin/login" element={<AdLogin />} />
 
             <Route path="/admin/home" element={<AdDashboard />} />
+
+            <Route path="/try" element={<PageTry />} />
 
           </Routes>
         </BrowserRouter>

@@ -1,12 +1,13 @@
-import React from 'react'
-import RetSingnUP from '../components/Recruiter/Home/Signup'
+import React from 'react';
+import RecruiterJobPost from '../components/Recruiter/Job/JobPost';
+import ReProfile from '../components/Recruiter/Profile/Profile';
 
-function tryPage () {
+function tryPage() {
   return (
     <div>
-      <RetSingnUP />
+      <RecruiterJobPost/>
     </div>
-  )
+  );
 }
 
-export default tryPage
+export default tryPage;

@@ -32,4 +32,20 @@ const jwtRecruiter = async (req, res, next) => {
   }
 };
 
-export default { jwtSeeker, jwtRecruiter };
+const jwtAdmin = async (req, res, next) => {
+  const token = req.headers['a-access-token'];
+  if (!token) {
+    res.send({ status: 'failed', message: 'You need token' });
+  } else {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
+      if (err) {
+        res.json({ auth: false, status: 'failed', message: 'failed to authenticate' });
+      } else {
+        req.adminId = decoded.adminId;
+        next();
+      }
+    });
+  }
+};
+
+export default { jwtSeeker, jwtRecruiter, jwtAdmin };

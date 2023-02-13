@@ -1,11 +1,12 @@
 import React from 'react';
-import ButtonAppBar from '../../components/Admin/Navbar';
 import AdminSideBar from '../../components/Admin/SideBar';
+import AdminNavbar from '../../components/Admin/Navbar';
+
 
 function Dashboard() {
   return (
     <div>
-      <ButtonAppBar />
+      <AdminNavbar />
       <AdminSideBar />
     </div>
   );

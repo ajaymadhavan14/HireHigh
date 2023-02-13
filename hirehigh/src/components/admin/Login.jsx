@@ -22,10 +22,10 @@ export default function ASignIn() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState(false);
-  const [emailErr, setEmailErr] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState(false);
-  const [passwordErr, setPasswordErr] = useState('');
-  const [required, setRequired] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [totalRequired, setTotalRequired] = useState('');
 
   const handleSubmit = async (event) => {
     try {
@@ -36,29 +36,33 @@ export default function ASignIn() {
         email: data.get('email'),
         password: data.get('password'),
       };
-      if (!signinData.email || !signinData.password) {
-        setRequired('All feilds are required');
-        return;
-      }
-      const regEmail = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
-      setRequired('');
-      if (!regEmail.test(signinData.email.toString())) {
-        setEmail(true);
-        setEmailErr('Enter a valid email address');
-      }
-      if (signinData.password.length >= 6) {
-        setPassword(true);
-        setPasswordErr('Password must be at least 6 characters');
-      }
-
-      axios.post('/admin/login', signinData).then((response) => {
-        if (!response.data.auth) {
-          swal('sorry', response.data.message, 'error');
+      if (signinData.email && signinData.password) {
+        const regEmail = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
+        if (regEmail.test(signinData.email)) {
+          setEmail(false);
+          setEmailError('');
+          if (signinData.password.length >= 6) {
+            setPassword(false);
+            setPasswordError('');
+            axios.post('/admin/login', signinData).then((response) => {
+              if (!response.data.auth) {
+                swal('sorry', response.data.message, 'error');
+              } else {
+                localStorage.setItem('admintoken', response.data.token);
+                navigate('/admin/home');
+              }
+            });
+          } else {
+            setPassword(true);
+            setPasswordError('Minimum 6 character');
+          }
         } else {
-          localStorage.setItem('token', response.data.token);
-          navigate('/admin/home');
+          setEmail(true);
+          setEmailError('Please enter valid Email');
         }
-      });
+      } else {
+        setTotalRequired('All feilds are required');
+      }
     } catch (err) {
       err();
     }
@@ -94,7 +98,7 @@ export default function ASignIn() {
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                {required && <Typography mb={0.5} sx={{ color: 'red', fontFamily: 'sans-serif' }} align="center">{required}</Typography>}
+                {totalRequired && <Typography mb={0.5} sx={{ color: 'red', fontFamily: 'sans-serif' }} align="center">{totalRequired}</Typography>}
                 <TextField
                   required
                   fullWidth
@@ -103,7 +107,7 @@ export default function ASignIn() {
                   name="email"
                   autoComplete="email"
                   error={email}
-                  helperText={emailErr}
+                  helperText={emailError}
                   sx={{
                     '& .MuiInputLabel-root.Mui-focused': { color: '#4f4e4e' }, // styles the label
                     '& .MuiOutlinedInput-root.Mui-focused': { '& > fieldset': { borderColor: '#f22c50' } },
@@ -122,7 +126,7 @@ export default function ASignIn() {
                   id="password"
                   autoComplete="new-password"
                   error={password}
-                  helperText={passwordErr}
+                  helperText={passwordError}
                   sx={{
                     '& .MuiInputLabel-root.Mui-focused': { color: '#4f4e4e' },
                     '& .MuiOutlinedInput-root.Mui-focused': { '& > fieldset': { borderColor: '#f22c50' } },

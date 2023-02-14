@@ -63,7 +63,7 @@ export default function SeekerSignUp() {
             if (regPhone.test(data.phoneNumber)) {
               setPhoneNumber(false);
               setPhoneNumberError('');
-              if (data.phoneNo.length === 10) {
+              if (data.phoneNumber.length === 10) {
                 setPhoneNumber(false);
                 setPhoneNumberError('');
                 if (data.password.length >= 6) {

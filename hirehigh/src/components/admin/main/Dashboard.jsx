@@ -12,9 +12,7 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
+import CategoryIcon from '@mui/icons-material/Category';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -29,6 +27,7 @@ import TaskIcon from '@mui/icons-material/Task';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import MessageIcon from '@mui/icons-material/Message';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
@@ -36,7 +35,6 @@ import { useNavigate } from 'react-router-dom';
 import Swal2 from 'sweetalert2';
 import axios from '../../../axios/axios';
 import { adminDetails } from '../../../redux/admin';
-import StickyHeadTable from '../Seeker/SeekerList';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -95,7 +93,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function AdminHome() {
+function AdminMain() {
   const navigate = useNavigate();
   const dispatch = useDispatch(adminDetails);
   useEffect(() => {
@@ -171,11 +169,9 @@ function AdminHome() {
             >
               HIREHIGH
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              ADMIN
+            </Typography>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -201,98 +197,19 @@ function AdminHome() {
 
                 }}
                 >
-                  <InboxIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>My Jobs</ListItemText>
+                  <DashboardIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Dashboard</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
                 }}
-                >
-                  <TaskIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Hire Candidates</ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-
-                }}
-                >
-                  <NoteAddIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Short List</ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-
-                }}
-                >
-                  <MessageIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Masseages</ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-          </List>
-          <Divider />
-          <List>
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-
-                }}
-                >
-                  <BusinessIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>
-                  
-                  </ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
+                onClick={() => navigate('/admin/seeker')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -302,7 +219,66 @@ function AdminHome() {
                 }}
                 >
                   <AccountBoxIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Profile</ListItemText>
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Seekers</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/admin/recruiter')}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                <BusinessIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Recruiters</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'last',
+                px: 2.5,
+              }}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                <CategoryIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Categorys</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'last',
+                px: 2.5,
+              }}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <NotificationsIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Notification</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
@@ -328,6 +304,8 @@ function AdminHome() {
               </ListItemButton>
             </ListItem>
           </List>
+          <Divider />
+
         </Drawer>
         <Box
           component="main"
@@ -338,17 +316,17 @@ function AdminHome() {
             flexGrow: 1,
             height: '100vh',
             overflow: 'auto',
-            
+
           }}
         >
           <Toolbar />
-           <StickyHeadTable />
+
         </Box>
       </Box>
     </ThemeProvider>
   );
 }
 
-export default function AdminMain() {
-  return <AdminHome />;
+export default function AdminDashboard() {
+  return <AdminMain />;
 }

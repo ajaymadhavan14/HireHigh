@@ -10,10 +10,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
-import { AdminGetUsers } from '../../../Apis/AdminApi';
-import { isActivated, isBlocked } from '../../../Apis/SeekerApi';
+import { AdminGetRecruiters } from '../../../Apis/AdminApi';
+import { isActivated, isBlocked } from '../../../Apis/RecruiterApi';
 
-export default function SeekerList() {
+export default function RecruiterList() {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.white,
@@ -45,29 +45,30 @@ export default function SeekerList() {
     setPage(0);
   };
 
-  const [users, setUsers] = useState([]);
+  const [recruiter, setRecruiter] = useState([]);
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     async function invoke() {
-      const res = await AdminGetUsers();
+      const res = await AdminGetRecruiters();
       console.log(res);
       if (res) {
-        setUsers(res);
+        setRecruiter(res);
       }
     }
     invoke();
   }, [refresh]);
 
-  const blocked = async (userId) => {
-    const res = await isBlocked(userId);
+  const blocked = async (recruiterId) => {
+    const res = await isBlocked(recruiterId);
     setRefresh(!refresh);
   };
 
-  const actived = async (userId) => {
-    const res = await isActivated(userId);
+  const actived = async (recruiterId) => {
+    const res = await isActivated(recruiterId);
     setRefresh(!refresh);
   };
+
   return (
     <Box>
       <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
@@ -75,29 +76,35 @@ export default function SeekerList() {
           <TableHead>
             <TableRow>
               <StyledTableCell align="center">NO</StyledTableCell>
-              <StyledTableCell align="center">NAME</StyledTableCell>
+              <StyledTableCell align="center">User Name</StyledTableCell>
+              <StyledTableCell align="center">Company Name</StyledTableCell>
               <StyledTableCell align="center">E-MAIL</StyledTableCell>
               <StyledTableCell align="center">PHONE NO</StyledTableCell>
+              <StyledTableCell align="center">Website</StyledTableCell>
               <StyledTableCell align="center">Status</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user, index) => (
-              <StyledTableRow key={user.id}>
+            {recruiter.map((el, index) => (
+              <StyledTableRow key={el.id}>
                 <StyledTableCell align="center" component="th" scope="row">
                   {index + 1}
                 </StyledTableCell>
                 <StyledTableCell align="center" component="th" scope="row">
-                  {`${user.firstName} ${user.lastName}`}
+                  {el.userName}
                 </StyledTableCell>
-                <StyledTableCell align="center">{user.email}</StyledTableCell>
+                <StyledTableCell align="center" component="th" scope="row">
+                  {el.companyName}
+                </StyledTableCell>
+                <StyledTableCell align="center">{el.email}</StyledTableCell>
 
-                <StyledTableCell align="center">{user.phoneNumber}</StyledTableCell>
+                <StyledTableCell align="center">{el.phoneNumber}</StyledTableCell>
+                <StyledTableCell align="center">{el.website}</StyledTableCell>
                 <StyledTableCell align="center">
-                  {user.isActive
+                  {el.isActive
                     ? (
                       <Button
-                        onClick={() => blocked(user._id)}
+                        onClick={() => blocked(el._id)}
                         sx={{
                           backgroundColor: '#03a903', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
                         }}
@@ -107,7 +114,7 @@ export default function SeekerList() {
                     )
                     : (
                       <Button
-                        onClick={() => actived(user._id)}
+                        onClick={() => actived(el._id)}
                         sx={{
                           ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
                         }}

@@ -73,4 +73,28 @@ const isUserAuth = async (req, res, next) => {
   }
 };
 
-export default { signupPost, signinPost, isUserAuth };
+const userBlock = async (req, res, next) => {
+  try {
+    console.log(req.query.userId);
+    await userModel.updateOne({ _id: req.query.userId }, {
+      isActive: false,
+    });
+    res.json({ status: 'success' });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const userActive = async (req, res, next) => {
+  try {
+    await userModel.updateOne({ _id: req.query.userId }, {
+      isActive: true,
+    });
+    res.json({ status: 'success' });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export default {
+  signupPost, signinPost, isUserAuth, userBlock, userActive,
+};

@@ -7,5 +7,7 @@ const router = express.Router();
 router.post('/signup', seekerController.signupPost);
 router.post('/login', seekerController.signinPost);
 router.get('/isUserAuth', jwtAuth.jwtSeeker, seekerController.isUserAuth);
+router.patch('/blocked', seekerController.userBlock);
+router.patch('/actived', seekerController.userActive);
 
 export default router;

@@ -1,13 +1,10 @@
 import React from 'react';
-import AdminSideBar from '../../components/Admin/SideBar';
-import AdminNavbar from '../../components/Admin/Navbar';
-
+import AdminDahsboard from '../../components/Admin/main/Dashboard';
 
 function Dashboard() {
   return (
     <div>
-      <AdminNavbar />
-      <AdminSideBar />
+      <AdminDahsboard />
     </div>
   );
 }

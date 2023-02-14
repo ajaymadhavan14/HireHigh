@@ -44,6 +44,10 @@ const recruiterSignup = new Schema(
       minlength: 6,
       trim: true,
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true },
 );

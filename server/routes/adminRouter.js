@@ -7,5 +7,6 @@ const router = express.Router();
 router.post('/login', adminController.signInPost);
 router.get('/isAdminAuth', jwtAuth.jwtAdmin, adminController.isAdminAuth);
 router.get('/get_users', adminController.getUsersList);
+router.get('/get_recruiters', adminController.getRecruitersList);
 
 export default router;

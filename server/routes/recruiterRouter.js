@@ -7,5 +7,7 @@ const router = express.Router();
 router.post('/signup', recruiterController.recruiterSignUpPost);
 router.post('/login', recruiterController.recruiterSignInPost);
 router.get('/isRecruiterAuth', jwtAuth.jwtRecruiter, recruiterController.isRecruiterAuth);
+router.patch('/blocked', recruiterController.recruiterBlock);
+router.patch('/actived', recruiterController.recruiterActive);
 
 export default router;

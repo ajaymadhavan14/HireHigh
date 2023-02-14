@@ -4,8 +4,10 @@ import recruiterModel from '../model/recruiterSchema.js';
 
 const recruiterSignUpPost = async (req, res) => {
   console.log(req.body);
-  const { userName, phoneNumber, companyName, email, tagLine, discription,
-    website, password } = req.body;
+  const {
+    userName, phoneNumber, companyName, email, tagLine, discription,
+    website, password,
+  } = req.body;
   const recruiter = await recruiterModel.findOne({ email });
   if (recruiter) {
     res.json({ status: 'failed', message: 'Email already exist login now' });
@@ -76,4 +78,29 @@ const isRecruiterAuth = async (req, res, next) => {
   }
 };
 
-export default { recruiterSignUpPost, recruiterSignInPost, isRecruiterAuth };
+const recruiterBlock = async (req, res, next) => {
+  try {
+    console.log(req.query.userId);
+    await recruiterModel.updateOne({ _id: req.query.recruiterId }, {
+      isActive: false,
+    });
+    res.json({ status: 'success' });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const recruiterActive = async (req, res, next) => {
+  try {
+    await recruiterModel.updateOne({ _id: req.query.recruiterId }, {
+      isActive: true,
+    });
+    res.json({ status: 'success' });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export default {
+  recruiterSignUpPost, recruiterSignInPost, isRecruiterAuth, recruiterActive, recruiterBlock,
+};

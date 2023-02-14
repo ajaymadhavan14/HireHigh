@@ -6,7 +6,7 @@ const recruiterSignUpPost = async (req, res) => {
   console.log(req.body);
   const {
     userName, phoneNumber, companyName, email, tagLine, discription,
-    website, password,
+    website, password, image,
   } = req.body;
   const recruiter = await recruiterModel.findOne({ email });
   if (recruiter) {
@@ -22,6 +22,7 @@ const recruiterSignUpPost = async (req, res) => {
       tagLine,
       discription,
       website,
+      image,
       password: hashPassword,
     });
     res.json({ status: 'success', message: 'signup success' });
@@ -78,7 +79,7 @@ const isRecruiterAuth = async (req, res, next) => {
   }
 };
 
-const recruiterBlock = async (req, res, next) => {
+const recruiterBlock = async (req, res) => {
   try {
     console.log(req.query.userId);
     await recruiterModel.updateOne({ _id: req.query.recruiterId }, {
@@ -90,7 +91,7 @@ const recruiterBlock = async (req, res, next) => {
   }
 };
 
-const recruiterActive = async (req, res, next) => {
+const recruiterActive = async (req, res) => {
   try {
     await recruiterModel.updateOne({ _id: req.query.recruiterId }, {
       isActive: true,

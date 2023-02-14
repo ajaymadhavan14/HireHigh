@@ -154,7 +154,7 @@ export default function SeekerSignUp() {
             <p style={{ color: 'red' }}>{totalRequired}</p>
           </Box> */}
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-              {totalRequired && <Typography mb={0.5} sx={{ color: 'red', fontFamily: 'sans-serif' }} align="center">{totalRequired}</Typography>}
+            {totalRequired && <Typography mb={0.5} sx={{ color: 'red', fontFamily: 'sans-serif' }} align="center">{totalRequired}</Typography>}
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField

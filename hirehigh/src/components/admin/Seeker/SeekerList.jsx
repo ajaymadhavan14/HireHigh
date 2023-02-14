@@ -33,17 +33,17 @@ export default function SeekerList() {
       border: 0,
     },
   }));
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  // const [page, setPage] = React.useState(0);
+  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(+event.target.value);
+  //   setPage(0);
+  // };
 
   const [users, setUsers] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -60,12 +60,12 @@ export default function SeekerList() {
   }, [refresh]);
 
   const blocked = async (userId) => {
-    const res = await isBlocked(userId);
+    await isBlocked(userId);
     setRefresh(!refresh);
   };
 
   const actived = async (userId) => {
-    const res = await isActivated(userId);
+    await isActivated(userId);
     setRefresh(!refresh);
   };
   return (
@@ -97,6 +97,7 @@ export default function SeekerList() {
                   {user.isActive
                     ? (
                       <Button
+                        // eslint-disable-next-line no-underscore-dangle
                         onClick={() => blocked(user._id)}
                         sx={{
                           backgroundColor: '#03a903', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
@@ -107,6 +108,7 @@ export default function SeekerList() {
                     )
                     : (
                       <Button
+                        // eslint-disable-next-line no-underscore-dangle
                         onClick={() => actived(user._id)}
                         sx={{
                           ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },

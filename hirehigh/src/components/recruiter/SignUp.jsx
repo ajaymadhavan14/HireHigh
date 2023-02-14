@@ -11,7 +11,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import swal from 'sweetalert';
+import { storage } from '../../firebase/config';
 import axios from '../../axios/axios';
 
 const theme = createTheme();
@@ -30,8 +33,8 @@ export default function RetSingnUP() {
   const [discriptionError, setDiscriptionError] = useState('');
   const [website, setWebsite] = useState(false);
   const [websiteError, setWebsiteError] = useState('');
-  const [logo, setLogo] = useState(false);
-  const [logoError, setLogoError] = useState('');
+  const [image, setImage] = useState(false);
+  const [imageError, setImageError] = useState('');
   const [password, setPassword] = useState(false);
   const [passwordError, setPasswordError] = useState('');
   const [confPassword, setConfPassword] = useState(false);
@@ -39,7 +42,7 @@ export default function RetSingnUP() {
   const [totalRequired, setTotalRequired] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
     data = {
@@ -52,6 +55,7 @@ export default function RetSingnUP() {
       website: data.get('website'),
       discription: data.get('discription'),
       phoneNumber: data.get('phoneNumber'),
+      image: data.get('image'),
 
     };
     if (data.companyName && data.email && data.password && data.confPassword && data.userName
@@ -83,6 +87,29 @@ export default function RetSingnUP() {
                     setConfPassword(false);
                     setPasswordError('');
                     setConfPasswordError('');
+
+                    if (data.image.name) {
+                      const dirs = Date.now();
+                      const rand = Math.random();
+                      const image = data.image;
+                      const imageRef = ref(storage, `/seekerImages/${dirs}${rand}_${image?.name}`);
+                      const toBase64 = (image) =>
+                        new Promise((resolve, reject) => {
+                          const reader = new FileReader();
+                          reader.readAsDataURL(image);
+                          reader.onload = () => resolve(reader.result);
+                          reader.onerror = (error) => reject(error);
+                        }).catch((err) => {
+                          console.log(err);
+                        });
+                      const imgBase = await toBase64(image);
+                      await uploadString(imageRef, imgBase, 'data_url').then(async () => {
+                        const downloadURL = await getDownloadURL(imageRef);
+                        data.image = downloadURL;
+                      });
+                    } else {
+                      data.image = '';
+                    }
                     axios.post('/recruiter/signup', data).then((response) => {
                       if (response.data.status === 'success') {
                         navigate('/recruiter/login');
@@ -262,13 +289,13 @@ export default function RetSingnUP() {
               <TextField
                 required
                 fullWidth
-                id="logo"
+                id="image"
                 type="file"
-                placeholder="Company Logo"
-                name="logo"
-                autoComplete="logo"
-                error={logo}
-                helperText={logoError}
+                placeholder="Company Image"
+                name="image"
+                autoComplete="image"
+                error={image}
+                helperText={imageError}
               />
             </Grid>
           </Grid>

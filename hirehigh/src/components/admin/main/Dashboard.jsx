@@ -11,7 +11,6 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import CategoryIcon from '@mui/icons-material/Category';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -21,11 +20,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import TaskIcon from '@mui/icons-material/Task';
-import NoteAddIcon from '@mui/icons-material/NoteAdd';
-import MessageIcon from '@mui/icons-material/Message';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -170,7 +165,7 @@ function AdminMain() {
               HIREHIGH
             </Typography>
             <Typography variant="h6" noWrap component="div">
-              ADMIN
+              {admin.name}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -239,7 +234,7 @@ function AdminMain() {
 
                 }}
                 >
-                <BusinessIcon />
+                  <BusinessIcon />
                   <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Recruiters</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
@@ -258,7 +253,7 @@ function AdminMain() {
 
                 }}
                 >
-                <CategoryIcon />
+                  <CategoryIcon />
                   <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Categorys</ListItemText>
                 </ListItemIcon>
               </ListItemButton>

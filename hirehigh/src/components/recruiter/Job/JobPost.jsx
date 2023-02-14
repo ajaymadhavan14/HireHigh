@@ -15,26 +15,26 @@ import swal from 'sweetalert';
 
 const theme = createTheme();
 export default function RecruiterJobPost() {
-  const [userName, setUserName] = useState(false);
-  const [userNameError, setUserNameError] = useState('');
+  const [jobTitle, setJobTitle] = useState(false);
+  const [jobTitleError, setJobTitleError] = useState('');
   const [companyName, setCompanyName] = useState(false);
   const [companyNameError, setCompanyNameError] = useState('');
   const [phoneNumber, setPhoneNumber] = useState(false);
   const [phoneNumberError, setPhoneNumberError] = useState('');
-  const [email, setEmail] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  const [tagLine, setTagline] = useState(false);
-  const [tagLineError, setTaglineError] = useState('');
-  const [discription, setDiscription] = useState(false);
-  const [discriptionError, setDiscriptionError] = useState('');
-  const [website, setWebsite] = useState(false);
-  const [websiteError, setWebsiteError] = useState('');
+  const [workPlace, setWorkPlace] = useState(false);
+  const [workPlaceError, setWorkPlaceError] = useState('');
+  const [jobQualification, setJobQualification] = useState(false);
+  const [jobQualificationError, setJobQualificationError] = useState('');
+  const [jobDiscription, setJobDiscription] = useState(false);
+  const [jobDiscriptionError, setJobDiscriptionError] = useState('');
+  const [responsibilities, setResponsibilities] = useState(false);
+  const [responsibilitiesError, setResponsibilitiesError] = useState('');
   const [logo, setLogo] = useState(false);
   const [logoError, setLogoError] = useState('');
-  const [password, setPassword] = useState(false);
-  const [passwordError, setPasswordError] = useState('');
-  const [confPassword, setConfPassword] = useState(false);
-  const [confPasswordError, setConfPasswordError] = useState('');
+  const [salaryRange, setSalaryRange] = useState(false);
+  const [salaryRangeError, setSalaryRangeError] = useState('');
+  const [jobType,setJobType] = useState(false);
+  const [jobTypeError,setJobTypeError] = useState('')
   const [totalRequired, setTotalRequired] = useState('');
   const navigate = useNavigate();
 
@@ -150,14 +150,14 @@ export default function RecruiterJobPost() {
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
-                name="userName"
+                name="jobTitle"
                 type="text"
                 required
                 fullWidth
-                id="userName"
-                label="User Name"
-                error={userName}
-                helperText={userNameError}
+                id="jobTitle"
+                label="Job Title"
+                error={jobTitle}
+                helperText={jobTitleError}
                 autoFocus
               />
             </Grid>
@@ -196,12 +196,12 @@ export default function RecruiterJobPost() {
               <TextField
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                error={email}
-                helperText={emailError}
+                id="workPlace"
+                label="WorkPlace Type"
+                name="workPlace"
+                autoComplete="workPlace"
+                error={workPlace}
+                helperText={workPlaceError}
               />
             </Grid>
           </Grid>
@@ -212,14 +212,14 @@ export default function RecruiterJobPost() {
               minRows={4}
               required
               fullWidth
-              id="discription"
+              id="jobDiscription"
               type="text"
-              label="Discription"
-              placeholder="Discription"
-              name="discription"
-              autoComplete="discription"
-              error={discription}
-              helperText={discriptionError}
+              label="Job Discription"
+              placeholder="Job Discription"
+              name="jobDiscription"
+              autoComplete="jobDiscription"
+              error={jobDiscription}
+              helperText={jobDiscriptionError}
             />
           </Grid>
           <Grid item xs={12} py={2} maxWidth="md">
@@ -229,14 +229,14 @@ export default function RecruiterJobPost() {
               minRows={4}
               required
               fullWidth
-              id="discription"
+              id="jobQualification"
               type="text"
-              label="Discription"
-              placeholder="Discription"
-              name="discription"
-              autoComplete="discription"
-              error={discription}
-              helperText={discriptionError}
+              label="Job Qualification"
+              placeholder="Job Qualification"
+              name="jobQualification"
+              autoComplete="jobQualification"
+              error={jobQualification}
+              helperText={jobQualificationError}
             />
           </Grid>
           <Grid item xs={12} py={2} maxWidth="md">
@@ -246,14 +246,14 @@ export default function RecruiterJobPost() {
               minRows={4}
               required
               fullWidth
-              id="discription"
+              id="responsibilities"
               type="text"
-              label="Discription"
-              placeholder="Discription"
-              name="discription"
-              autoComplete="discription"
-              error={discription}
-              helperText={discriptionError}
+              label="Responsibilities"
+              placeholder="Responsibilities"
+              name="responsibilities"
+              autoComplete="responsibilities"
+              error={responsibilities}
+              helperText={responsibilitiesError}
             />
           </Grid>
           <Grid container spacing={2} py={2}>
@@ -262,15 +262,34 @@ export default function RecruiterJobPost() {
               <TextField
                 required
                 fullWidth
-                id="website"
-                label="website"
-                name="website"
-                autoComplete="website"
-                error={website}
-                helperText={websiteError}
+                id="jobType"
+                label="Job Type"
+                name="jobType"
+                autoComplete="jobType"
+                error={jobType}
+                helperText={jobTypeError}
               />
             </Grid>
+
             <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                name="salaryRange"
+                label="Salary Range"
+                type="salaryRange"
+                id="salaryRange"
+                autoComplete="salaryRange"
+                error={salaryRange}
+                helperText={salaryRangeError}
+              />
+            </Grid>
+           
+          </Grid>
+          <Grid container spacing={2} >
+
+          <Grid item xs={12} sm={6}>
+           <label>Post Logo</label>
               <TextField
                 required
                 fullWidth
@@ -283,33 +302,19 @@ export default function RecruiterJobPost() {
                 helperText={logoError}
               />
             </Grid>
-          </Grid>
-          <Grid container spacing={2} py={2}>
 
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="New Password"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-                error={password}
-                helperText={passwordError}
-              />
-            </Grid>
+            
             <Grid item xs={12} sm={6} />
           </Grid>
           <Box sx={{ backgroundColor: '#ffc5c5', borderRadius: '3px', pl: 2 }}>
             <p style={{ color: 'red' }}>{totalRequired}</p>
           </Box>
           <Grid container spacing={2} py={2} sx={{ justifyContent: 'flex-end' }}>
-            <Grid>
+            {/* <Grid>
               <Link onClick={() => { navigate('/recruiter/login'); }} component="button">
                 Already have an account? Sign in
               </Link>
-            </Grid>
+            </Grid> */}
             <Grid pl={2}>
               <Button
                 type="submit"
@@ -319,7 +324,7 @@ export default function RecruiterJobPost() {
                   fontWeight: '900',
                 }}
               >
-                SIGNUP
+                POST
               </Button>
             </Grid>
           </Grid>

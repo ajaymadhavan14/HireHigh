@@ -82,6 +82,7 @@ const userBlock = async (req, res, next) => {
     res.json({ status: 'success' });
   } catch (error) {
     console.log(error);
+    next(error);
   }
 };
 
@@ -93,6 +94,7 @@ const userActive = async (req, res, next) => {
     res.json({ status: 'success' });
   } catch (error) {
     console.log(error);
+    next(error);
   }
 };
 export default {

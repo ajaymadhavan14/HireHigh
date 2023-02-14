@@ -6,6 +6,7 @@ export const isBlocked = async (recruiterId) => {
     return data;
   } catch (error) {
     console.log(error);
+    return error;
   }
 };
 
@@ -15,5 +16,6 @@ export const isActivated = async (recruiterId) => {
     return data;
   } catch (error) {
     console.log(error);
+    return error;
   }
 };

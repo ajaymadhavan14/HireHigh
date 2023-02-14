@@ -33,17 +33,15 @@ export default function RecruiterList() {
       border: 0,
     },
   }));
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(+event.target.value);
+  //   setPage(0);
+  // };
 
   const [recruiter, setRecruiter] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -60,12 +58,12 @@ export default function RecruiterList() {
   }, [refresh]);
 
   const blocked = async (recruiterId) => {
-    const res = await isBlocked(recruiterId);
+    await isBlocked(recruiterId);
     setRefresh(!refresh);
   };
 
   const actived = async (recruiterId) => {
-    const res = await isActivated(recruiterId);
+    await isActivated(recruiterId);
     setRefresh(!refresh);
   };
 
@@ -104,6 +102,7 @@ export default function RecruiterList() {
                   {el.isActive
                     ? (
                       <Button
+                        // eslint-disable-next-line no-underscore-dangle
                         onClick={() => blocked(el._id)}
                         sx={{
                           backgroundColor: '#03a903', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
@@ -114,6 +113,7 @@ export default function RecruiterList() {
                     )
                     : (
                       <Button
+                        // eslint-disable-next-line no-underscore-dangle
                         onClick={() => actived(el._id)}
                         sx={{
                           ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },

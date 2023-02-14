@@ -6,6 +6,7 @@ export const isBlocked = async (userId) => {
     return data;
   } catch (error) {
     console.log(error);
+    return error;
   }
 };
 
@@ -15,5 +16,6 @@ export const isActivated = async (userId) => {
     return data;
   } catch (error) {
     console.log(error);
+    return error;
   }
 };

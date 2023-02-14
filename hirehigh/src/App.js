@@ -17,6 +17,7 @@ import AdDashboard from './pages/admin/Dashboard';
 import AppContext from './context/AppContext';
 import AdSeeker from './pages/admin/SeekerList';
 import AdRecruiter from './pages/admin/RecruiterList';
+import PagesTry from './pages/tryPage';
 
 function App() {
   const [userDetails, setUserDetails] = useState({});
@@ -50,6 +51,8 @@ function App() {
             <Route path="/admin/seeker" element={<AdSeeker />} />
 
             <Route path="/admin/recruiter" element={<AdRecruiter />} />
+
+            <Route path="/try" element={<PagesTry />} />
 
           </Routes>
         </BrowserRouter>

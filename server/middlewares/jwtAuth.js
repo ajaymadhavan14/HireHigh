@@ -17,7 +17,9 @@ const jwtSeeker = async (req, res, next) => {
 };
 
 const jwtRecruiter = async (req, res, next) => {
+  console.log(req.headers);
   const token = req.headers['r-access-token'];
+  console.log(token);
   if (!token) {
     res.send({ status: 'failed', message: 'You need token' });
   } else {

@@ -102,6 +102,16 @@ const recruiterActive = async (req, res) => {
   }
 };
 
+const jobPost = async (req, res) => {
+  const data = await recruiterModel.findById(req.recruiterId);
+  res.json(data);
+};
+
 export default {
-  recruiterSignUpPost, recruiterSignInPost, isRecruiterAuth, recruiterActive, recruiterBlock,
+  recruiterSignUpPost,
+  recruiterSignInPost,
+  isRecruiterAuth,
+  recruiterActive,
+  recruiterBlock,
+  jobPost,
 };

@@ -8,86 +8,119 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
+import FormLabel from '@mui/material/FormLabel';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useEffect, useState } from 'react';
+import { getProfile } from '../../../Apis/RecruiterApi';
+import axios from '../../../axios/axios';
 
 export default function ReProfile() {
   const theme = createTheme();
+  const [recruiter, setRecruiter] = useState({});
+  useEffect(() => {
+    async function invoke() {
+      const data = await axios.get('/recruiter/job_post', { headers: { 'r-access-token': localStorage.getItem('recruitertoken') } }).then((response) => {
+        console.log(response.data);
+        setRecruiter(response.data);
+      });
+    }
+    invoke();
+  }, []);
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={3}>
           {/* Chart */}
-          <Grid item xs={12} md={4} lg={3} sx={{ bgcolor: 'blueviolet' }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+         
+          <Grid item xs={12} md={4} lg={3} sx={{  }}>
+          <Paper sx={{width:'100%',height:'100%'}}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center',p:'3vh' }}>
 
-              <img style={{ width: '10vh', height: '10vh' }} src="/logo192.png" alt="" />
+              <img style={{ width: '15vh', height: '20vh' }} src={recruiter.image} alt="" />
 
-              <Typography>Brototype</Typography>
-              <Typography>Brototype</Typography>
-              <Typography>Name</Typography>
-            </Box>
+              <Typography sx={{fontSize:'3vh',fontWeight:'500'}}>{recruiter.userName}</Typography>
+              <Box mt={4}>
+              <FormLabel>Discription</FormLabel>
+              <Typography>{recruiter.discription}</Typography>
+              </Box>
+              </Box>
+            
+            </Paper>
           </Grid>
-          <Grid item xs={12} md={8} lg={9} sx={{ bgcolor: 'gray' }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+         
+          <Grid item xs={12} md={8} lg={9}  >
+          <Paper sx={{width:'100%',height:'100%'}}>
+            <Box sx={{ display: 'flex', flexDirection: 'column',p:'3vh' }}>
+             
+              <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                  <label>RECRUITER ID</label>
-                  <Typography pt={2}>
+                  <FormLabel>RECRUITER ID</FormLabel>
+                  <Typography pt={1}>
 
-                    123456789789456123
+                    #{recruiter._id}
 
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                  <label>Email</label>
-                  <Typography pt={2}>
+                  <FormLabel>Company Name</FormLabel>
+                  <Typography pt={1}>
 
-                    123456789789456123
+                    {recruiter.companyName}
 
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                  <label>Phone Number</label>
-                  <Typography pt={2}>
+                  <FormLabel>Phone Number</FormLabel>
+                  <Typography pt={1}>
 
-                    123456789789456123
+                    {recruiter.phoneNumber}
 
                   </Typography>
                 </Box>
               </Box>
+              
               <Box sx={{
                 display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: '10vh',
               }}
               >
-                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                  <label>Website</label>
-                  <Typography pt={2}>
+                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <FormLabel>Email</FormLabel>
+                  <Typography pt={1}>
 
-                    123456789789456123
+                    {recruiter.email}
 
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                  <label>Location</label>
-                  <Typography pt={2}>
+                  
+                  <FormLabel>Website</FormLabel>
+                  <Typography pt={1}>
 
-                    123456789789456123
+                    {recruiter.website}
+
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <FormLabel>Location</FormLabel>
+                  <Typography pt={1}>
+
+                    {recruiter?.Location}
 
                   </Typography>
                 </Box>
 
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: '10vh' }}>
-                <label>TagLine</label>
-                <Typography pt={2}>
-                  vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+                <FormLabel>TagLine</FormLabel>
+                <Typography pt={1}>
+                  {recruiter?.tagLine}
                 </Typography>
               </Box>
               <Button sx={{ bgcolor: 'black', mt: '5vh' }}>
                 Edit
               </Button>
             </Box>
-
+            </Paper>
           </Grid>
           {/* Recent Deposits */}
           {/* Recent Orders */}

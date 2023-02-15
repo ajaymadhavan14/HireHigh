@@ -11,7 +11,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import FormLabel from '@mui/material/FormLabel';
 import swal from 'sweetalert';
+import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { storage } from '../../../firebase/config';
+import axios from '../../../axios/axios';
+
 
 const theme = createTheme();
 export default function RecruiterJobPost() {
@@ -19,8 +24,8 @@ export default function RecruiterJobPost() {
   const [jobTitleError, setJobTitleError] = useState('');
   const [companyName, setCompanyName] = useState(false);
   const [companyNameError, setCompanyNameError] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState(false);
-  const [phoneNumberError, setPhoneNumberError] = useState('');
+  const [jobCategory, setJobCategory] = useState(false);
+  const [jobCategoryError, setJobCategoryError] = useState('');
   const [workPlace, setWorkPlace] = useState(false);
   const [workPlaceError, setWorkPlaceError] = useState('');
   const [jobQualification, setJobQualification] = useState(false);
@@ -29,95 +34,82 @@ export default function RecruiterJobPost() {
   const [jobDiscriptionError, setJobDiscriptionError] = useState('');
   const [responsibilities, setResponsibilities] = useState(false);
   const [responsibilitiesError, setResponsibilitiesError] = useState('');
-  const [logo, setLogo] = useState(false);
-  const [logoError, setLogoError] = useState('');
+  const [image, setImage] = useState(false);
+  const [imageError, setImageError] = useState('');
   const [salaryRange, setSalaryRange] = useState(false);
   const [salaryRangeError, setSalaryRangeError] = useState('');
-  const [jobType,setJobType] = useState(false);
-  const [jobTypeError,setJobTypeError] = useState('')
+  const [jobType, setJobType] = useState(false);
+  const [jobTypeError, setJobTypeError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
     data = {
+      jobTitle: data.get('jobTitle'),
       companyName: data.get('companyName'),
-      email: data.get('email'),
-      password: data.get('password'),
-      confPassword: data.get('confPassword'),
-      userName: data.get('userName'),
-      tagLine: data.get('tagLine'),
-      website: data.get('website'),
-      discription: data.get('discription'),
+      workPlace: data.get('workPlace'),
+      jobQualification: data.get('jobQualification'),
+      jobDiscription: data.get('jobDiscription'),
+      responsibilities: data.get('responsibilities'),
+      salaryRange: data.get('salaryRange'),
+      jobType: data.get('jobType'),
       phoneNumber: data.get('phoneNumber'),
 
     };
-    if (data.companyName && data.email && data.password && data.confPassword && data.userName
-         && data.phoneNumber && data.tagLine && data.website && data.discription) {
+    if (data.companyName && data.jobTitle && data.workPlace && data.jobQualification
+      && data.jobDiscription
+         && data.phoneNumber && data.responsibilities && data.salaryRange && data.jobType) {
       const regName = /^[a-zA-Z]+$/;
-      const regEmail = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
       const regPhone = /^[0-9]+$/;
       setTotalRequired('');
-      if (regName.test(data.userName)) {
-        setUserName(false);
-        setUserNameError('');
+      if (regName.test(data.jobTitle)) {
+        setJobTitle(false);
+        setJobTitleError('');
         if (regName.test(data.companyName)) {
           setCompanyName(false);
           setCompanyNameError('');
-          if (regEmail.test(data.email)) {
-            setEmail(false);
-            setEmailError('');
-            if (regPhone.test(data.phoneNumber)) {
-              setPhoneNumber(false);
-              setPhoneNumberError('');
-              if (data.phoneNumber.length === 10) {
-                setPhoneNumber(false);
-                setPhoneNumberError('');
-                if (data.password.length >= 6) {
-                  setPassword(false);
-                  setPasswordError('');
-                  if (data.password === data.confPassword) {
-                    setPassword(false);
-                    setConfPassword(false);
-                    setPasswordError('');
-                    setConfPasswordError('');
-                    axios.post('/recruiter/signup', data).then((response) => {
-                      if (response.data.status === 'success') {
-                        navigate('/recruiter/login');
-                      } else {
-                        swal('OOPS', response.data.message, 'error');
-                      }
-                    });
-                  } else {
-                    setPassword(true);
-                    setConfPassword(true);
-                    setPasswordError('Password is not match');
-                    setConfPasswordError('Password is not match');
-                  }
-                } else {
-                  setPassword(true);
-                  setPasswordError('Minimum 6 character');
-                }
+
+
+              if (data.image.name) {
+                const dirs = Date.now();
+                const rand = Math.random();
+                const image = data.image;
+                const imageRef = ref(storage, `/jobPost/${dirs}${rand}_${image?.name}`);
+                const toBase64 = (image) =>
+                  new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(image);
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = (error) => reject(error);
+                  }).catch((err) => {
+                    console.log(err);
+                  });
+                const imgBase = await toBase64(image);
+                await uploadString(imageRef, imgBase, 'data_url').then(async () => {
+                  const downloadURL = await getDownloadURL(imageRef);
+                  data.image = downloadURL;
+                });
               } else {
-                setPhoneNumber(true);
-                setPhoneNumberError('Please enter 10 digit');
+                data.image = '';
               }
-            } else {
-              setPhoneNumber(true);
-              setPhoneNumberError('Please Enter valid Phone no');
-            }
-          } else {
-            setEmail(true);
-            setEmailError('Please enter valid Email');
-          }
+
+              axios.post('/recruiter/job_post', data).then((response) => {
+                if (response.data.status === 'success') {
+                  navigate('/recruiter/home');
+                } else {
+                  swal('OOPS', response.data.message, 'error');
+                }
+              });
+           
         } else {
           setCompanyName(true);
           setCompanyNameError('Please enter valid Name');
         }
       } else {
-        setCompanyName(true);
-        setCompanyNameError('Please enter valid Name');
+        setJobTitle(true);
+        setJobTitleError('Please enter valid Name');
       }
     } else {
       setTotalRequired('Please enter your Details');
@@ -183,13 +175,13 @@ export default function RecruiterJobPost() {
               <TextField
                 required
                 fullWidth
-                id="phoneNumber"
+                id="jobCategory"
                 type="number"
-                label="Phone Number"
-                name="phoneNumber"
-                autoComplete="phoneNumber"
-                error={phoneNumber}
-                helperText={phoneNumberError}
+                label="Job Category"
+                name="jobCategory"
+                autoComplete="jobCategory"
+                error={jobCategory}
+                helperText={jobCategoryError}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -284,26 +276,25 @@ export default function RecruiterJobPost() {
                 helperText={salaryRangeError}
               />
             </Grid>
-           
-          </Grid>
-          <Grid container spacing={2} >
 
-          <Grid item xs={12} sm={6}>
-           <label>Post Logo</label>
+          </Grid>
+          <Grid container spacing={2}>
+
+            <Grid item xs={12} sm={6}>
+              <FormLabel>Post Logo</FormLabel>
               <TextField
                 required
                 fullWidth
-                id="logo"
+                id="image"
                 type="file"
-                placeholder="Company Logo"
-                name="logo"
-                autoComplete="logo"
-                error={logo}
-                helperText={logoError}
+                placeholder="Company Image"
+                name="image"
+                autoComplete="image"
+                error={image}
+                helperText={imageError}
               />
             </Grid>
 
-            
             <Grid item xs={12} sm={6} />
           </Grid>
           <Box sx={{ backgroundColor: '#ffc5c5', borderRadius: '3px', pl: 2 }}>

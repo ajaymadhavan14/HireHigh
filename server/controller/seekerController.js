@@ -31,7 +31,7 @@ const signinPost = async (req, res) => {
     if (user.email === email && isMatch) {
       const userId = user.id;
       const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY, {
-        expiresIn: 300,
+        expiresIn: 60 * 60 * 24,
       });
 
       res.json({

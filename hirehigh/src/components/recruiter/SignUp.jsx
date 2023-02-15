@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import swal from 'sweetalert';
-import { storage } from '../../firebase/config';
+import { storage } from '../../firebase/Config';
 import axios from '../../axios/axios';
 
 const theme = createTheme();

@@ -24,6 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json({ extended: false, limit: '50mb' }));
 app.use(express.static('public'));
 app.use(cookieParser());
+app.use(logger('dev'));
 
 // const addadmin =  async() => {
 // let password = "123456"

@@ -12,9 +12,6 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -31,11 +28,13 @@ import MessageIcon from '@mui/icons-material/Message';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import Swal2 from 'sweetalert2';
 import axios from '../../../axios/axios';
 import { recruiterDetails } from '../../../redux/recruiter';
+import RecruiterProfile from '../Profile/Profile';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -94,9 +93,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
+export default function DashboardContent() {
   const navigate = useNavigate();
+  const [recruiterId, setRecruiterId] = useState('');
   const dispatch = useDispatch(recruiterDetails);
+  const  recruiter  = useSelector((state) => state.recruiterInfo);
+
   useEffect(() => {
     axios.get('/recruiter/isRecruiterAuth', {
       headers: { 'r-access-token': localStorage.getItem('recruitertoken') },
@@ -105,16 +107,20 @@ function DashboardContent() {
       if (!response.data.auth) {
         navigate('/');
       } else {
-        dispatch(recruiterDetails(response.data));
+      
+        dispatch(recruiterDetails(response?.data));
+        setRecruiterId(response?.data?._id);
+        console.log(recruiterId)
       }
-    });
+    }).catch((err)=>console.log(err))
   }, []);
+
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const { recruiter } = useSelector((state) => state.recruiterInfo);
 
   const LogOut = () => {
     Swal2.fire({
@@ -220,6 +226,8 @@ function DashboardContent() {
 
                 }}
                 >
+                                        <button onClick={()=>console.log(recruiterId)}>something</button>
+
                   <TaskIcon />
                   <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Hire Candidates</ListItemText>
                 </ListItemIcon>
@@ -267,11 +275,13 @@ function DashboardContent() {
           <Divider />
           <List>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/home')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -288,13 +298,11 @@ function DashboardContent() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'last',
-                  px: 2.5,
-                }}
-                onClick={() => navigate('/recruiter/profile')}
+              <ListItemButton sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'last',
+                px: 2.5,
+              }}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -343,42 +351,13 @@ function DashboardContent() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                />
-              </Grid>
-              {/* Recent Deposits */}
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
-              </Grid>
-            </Grid>
-          </Container>
+          <Box>
+            <RecruiterProfile id={recruiterId} />
+          </Box>
         </Box>
       </Box>
     </ThemeProvider>
   );
 }
 
-export default function RecruiterHome() {
-  return <DashboardContent />;
-}
+

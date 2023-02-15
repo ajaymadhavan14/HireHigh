@@ -12,7 +12,7 @@ const signInPost = async (req, res) => {
     if (admin.email === email && isMatch) {
       const adminId = admin.id;
       const token = jwt.sign({ adminId }, process.env.JWT_SECRET_KEY, {
-        expiresIn: 600,
+        expiresIn: 60 * 60 * 24,
       });
 
       res.json({

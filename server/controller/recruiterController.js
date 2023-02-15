@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import recruiterModel from '../model/recruiterSchema.js';
+import jobPostModel from '../model/jobPostSchema.js';
 
 const recruiterSignUpPost = async (req, res) => {
   console.log(req.body);
@@ -38,7 +39,7 @@ const recruiterSignInPost = async (req, res) => {
     if (recruiter.email === email && isMatch) {
       const recruiterId = recruiter.id;
       const token = jwt.sign({ recruiterId }, process.env.JWT_SECRET_KEY, {
-        expiresIn: 300,
+        expiresIn: 60 * 60 * 24,
       });
       res.json({
         auth: true,
@@ -68,6 +69,8 @@ const isRecruiterAuth = async (req, res, next) => {
     const recruiterDetails = await recruiterModel.findById(req.recruiterId);
     recruiterDetails.auth = true;
     res.json({
+      // eslint-disable-next-line no-underscore-dangle
+      _id: recruiterDetails._id,
       username: recruiterDetails.userName,
       email: recruiterDetails.email,
       auth: true,
@@ -103,8 +106,39 @@ const recruiterActive = async (req, res) => {
 };
 
 const jobPost = async (req, res) => {
-  const data = await recruiterModel.findById(req.recruiterId);
-  res.json(data);
+  const {
+    jobTitle, companyName, jobCategory, jobQualification, jobDiscription,
+    responsibilities, workPlace, salaryRange, jobType, image,
+  } = req.body;
+  const Id = req.query.id;
+  await jobPostModel.create({
+    jobTitle,
+    jobCategory,
+    jobDiscription,
+    jobQualification,
+    jobType,
+    companyName,
+    responsibilities,
+    workPlace,
+    salaryRange,
+    image,
+    recruiterId: Id,
+  });
+  res.json({ status: 'success' });
+};
+
+
+
+const getProfile = async (req, res) => {
+  try {
+    console.log(req.query.recruiterId);
+  const data = await recruiterModel.findById(req.query.recruiterId);
+  console.log(data);
+  res.json({ data });
+  } catch (error) {
+    console.log(error.message)
+  }
+  
 };
 
 export default {
@@ -114,4 +148,5 @@ export default {
   recruiterActive,
   recruiterBlock,
   jobPost,
+  getProfile,
 };

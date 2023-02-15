@@ -1,5 +1,5 @@
 import React from 'react';
-import AdminSeekerList from '../../components/Admin/main/Seeker';
+import AdminSeekerList from '../../components/Admin/Main/Seeker';
 
 function SeekerList() {
   return (

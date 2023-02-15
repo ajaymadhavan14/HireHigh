@@ -12,9 +12,6 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -36,6 +33,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal2 from 'sweetalert2';
 import axios from '../../../axios/axios';
 import { recruiterDetails } from '../../../redux/recruiter';
+import RecruiterJobPost from '../Job/JobPost';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -186,13 +184,11 @@ function DashboardContent() {
           <List>
 
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'last',
-                  px: 2.5,
-                }}
-                onClick={() => navigate('/recruiter/add_job')}
+              <ListItemButton sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'last',
+                px: 2.5,
+              }}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -267,11 +263,13 @@ function DashboardContent() {
           <Divider />
           <List>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/home')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -343,42 +341,15 @@ function DashboardContent() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                />
-              </Grid>
-              {/* Recent Deposits */}
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
-              </Grid>
-            </Grid>
-          </Container>
+          <Box>
+            <RecruiterJobPost id={recruiter._id}/>
+          </Box>
         </Box>
       </Box>
     </ThemeProvider>
   );
 }
 
-export default function RecruiterHome() {
+export default function RecruiterAddJobs() {
   return <DashboardContent />;
 }

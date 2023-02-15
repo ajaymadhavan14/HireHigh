@@ -9,6 +9,7 @@ router.post('/login', recruiterController.recruiterSignInPost);
 router.get('/isRecruiterAuth', jwtAuth.jwtRecruiter, recruiterController.isRecruiterAuth);
 router.patch('/blocked', recruiterController.recruiterBlock);
 router.patch('/actived', recruiterController.recruiterActive);
-router.get('/job_post', jwtAuth.jwtRecruiter, recruiterController.jobPost);
+router.post('/add_job', recruiterController.jobPost);
+router.get('/get_profile', recruiterController.getProfile);
 
 export default router;

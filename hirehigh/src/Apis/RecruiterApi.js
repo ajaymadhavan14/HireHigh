@@ -20,6 +20,12 @@ export const isActivated = async (recruiterId) => {
   }
 };
 
-export const getProfile = async (data) => {
-  const { all } = await axios.get(`/recruiter/job_post?data=${data}`);
+export const getProfile = async (id) => {
+  try {
+    const { data } = await axios.get(`/recruiter/get_profile?recruiterId=${id}`);
+    return data;
+  } catch (error) {
+  
+  }
+
 };

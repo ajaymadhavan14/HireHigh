@@ -120,7 +120,7 @@ export default function SignIn() {
             {/* <Box sx={{ backgroundColor: '#ffc5c5', borderRadius: '3px' }}>
               <p style={{ color: 'red' }}>{totalRequired}</p>
             </Box> */}
-           {totalRequired && <Typography mb={0.5} sx={{ color: 'red', fontFamily: 'sans-serif' }} align="center">{totalRequired}</Typography>}
+            {totalRequired && <Typography mb={0.5} sx={{ color: 'red', fontFamily: 'sans-serif' }} align="center">{totalRequired}</Typography>}
 
             <Button
               type="submit"

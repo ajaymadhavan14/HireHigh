@@ -1,5 +1,5 @@
 import React from 'react';
-import AdminRecruiterList from '../../components/Admin/main/Recruiter';
+import AdminRecruiterList from '../../components/Admin/Main/Recruiter';
 
 function RecruiterList() {
   return (

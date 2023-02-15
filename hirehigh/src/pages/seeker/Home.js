@@ -1,5 +1,5 @@
 import React from 'react';
-import PermanentDrawerLeft from '../../components/Seeker/Home/Center';
+import PermanentDrawerLeft from '../../components/Seeker/Home/Home';
 
 function Home() {
   return (

@@ -14,12 +14,11 @@ import { useNavigate } from 'react-router-dom';
 import FormLabel from '@mui/material/FormLabel';
 import swal from 'sweetalert';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
-import { storage } from '../../../firebase/config';
+import { storage } from '../../../firebase/Config';
 import axios from '../../../axios/axios';
 
-
 const theme = createTheme();
-export default function RecruiterJobPost() {
+export default function RecruiterJobPost({id}) {
   const [jobTitle, setJobTitle] = useState(false);
   const [jobTitleError, setJobTitleError] = useState('');
   const [companyName, setCompanyName] = useState(false);
@@ -55,14 +54,14 @@ export default function RecruiterJobPost() {
       responsibilities: data.get('responsibilities'),
       salaryRange: data.get('salaryRange'),
       jobType: data.get('jobType'),
-      phoneNumber: data.get('phoneNumber'),
+      jobCategory: data.get('jobCategory'),
+      image: data.get('image'),
 
     };
     if (data.companyName && data.jobTitle && data.workPlace && data.jobQualification
-      && data.jobDiscription
-         && data.phoneNumber && data.responsibilities && data.salaryRange && data.jobType) {
+      && data.jobDiscription && data.jobCategory
+         && data.responsibilities && data.salaryRange && data.jobType) {
       const regName = /^[a-zA-Z]+$/;
-      const regPhone = /^[0-9]+$/;
       setTotalRequired('');
       if (regName.test(data.jobTitle)) {
         setJobTitle(false);
@@ -70,7 +69,6 @@ export default function RecruiterJobPost() {
         if (regName.test(data.companyName)) {
           setCompanyName(false);
           setCompanyNameError('');
-
 
               if (data.image.name) {
                 const dirs = Date.now();
@@ -94,8 +92,8 @@ export default function RecruiterJobPost() {
               } else {
                 data.image = '';
               }
-
-              axios.post('/recruiter/job_post', data).then((response) => {
+              console.log(data);
+              axios.post(`/recruiter/add_job?id=${id}`, data).then((response) => {
                 if (response.data.status === 'success') {
                   navigate('/recruiter/home');
                 } else {
@@ -176,7 +174,7 @@ export default function RecruiterJobPost() {
                 required
                 fullWidth
                 id="jobCategory"
-                type="number"
+                type="text"
                 label="Job Category"
                 name="jobCategory"
                 autoComplete="jobCategory"

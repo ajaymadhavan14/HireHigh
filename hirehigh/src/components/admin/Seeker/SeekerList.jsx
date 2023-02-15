@@ -10,8 +10,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
-import { AdminGetUsers } from '../../../Apis/AdminApi';
-import { isActivated, isBlocked } from '../../../Apis/SeekerApi';
+import { AdminGetUsers } from '../../../apis/AdminApi';
+import { isActivated, isBlocked } from '../../../apis/SeekerApi';
 
 export default function SeekerList() {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({

@@ -10,8 +10,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
-import { AdminGetRecruiters } from '../../../Apis/AdminApi';
-import { isActivated, isBlocked } from '../../../Apis/RecruiterApi';
+import { AdminGetRecruiters } from '../../../apis/AdminApi';
+import { isActivated, isBlocked } from '../../../apis/RecruiterApi';
 
 export default function RecruiterList() {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({

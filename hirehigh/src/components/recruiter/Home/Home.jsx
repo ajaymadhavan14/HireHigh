@@ -192,7 +192,7 @@ function DashboardContent() {
                   justifyContent: open ? 'initial' : 'last',
                   px: 2.5,
                 }}
-                onClick={() => navigate('/recruiter/add_job')}
+                onClick={() => navigate('/recruiter/jobs')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,

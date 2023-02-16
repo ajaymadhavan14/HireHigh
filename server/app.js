@@ -19,7 +19,6 @@ const app = express();
 
 app.use(cors());
 
-app.use(logger('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json({ extended: false, limit: '50mb' }));
 app.use(express.static('public'));

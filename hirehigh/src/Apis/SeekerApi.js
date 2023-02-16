@@ -5,7 +5,6 @@ export const isBlocked = async (userId) => {
     const { data } = await axios.patch(`/blocked?userId=${userId}`);
     return data;
   } catch (error) {
-    console.log(error);
     return error;
   }
 };
@@ -15,7 +14,6 @@ export const isActivated = async (userId) => {
     const { data } = await axios.patch(`/actived?userId=${userId}`);
     return data;
   } catch (error) {
-    console.log(error);
     return error;
   }
 };

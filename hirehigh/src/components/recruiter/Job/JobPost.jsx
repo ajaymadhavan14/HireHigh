@@ -2,7 +2,6 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -18,7 +17,7 @@ import { storage } from '../../../firebase/Config';
 import axios from '../../../axios/axios';
 
 const theme = createTheme();
-export default function RecruiterJobPost({id}) {
+export default function RecruiterJobPost({ id }) {
   const [jobTitle, setJobTitle] = useState(false);
   const [jobTitleError, setJobTitleError] = useState('');
   const [companyName, setCompanyName] = useState(false);
@@ -70,37 +69,35 @@ export default function RecruiterJobPost({id}) {
           setCompanyName(false);
           setCompanyNameError('');
 
-              if (data.image.name) {
-                const dirs = Date.now();
-                const rand = Math.random();
-                const image = data.image;
-                const imageRef = ref(storage, `/jobPost/${dirs}${rand}_${image?.name}`);
-                const toBase64 = (image) =>
-                  new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(image);
-                    reader.onload = () => resolve(reader.result);
-                    reader.onerror = (error) => reject(error);
-                  }).catch((err) => {
-                    console.log(err);
-                  });
-                const imgBase = await toBase64(image);
-                await uploadString(imageRef, imgBase, 'data_url').then(async () => {
-                  const downloadURL = await getDownloadURL(imageRef);
-                  data.image = downloadURL;
-                });
-              } else {
-                data.image = '';
-              }
-              console.log(data);
-              axios.post(`/recruiter/add_job?id=${id}`, data).then((response) => {
-                if (response.data.status === 'success') {
-                  navigate('/recruiter/home');
-                } else {
-                  swal('OOPS', response.data.message, 'error');
-                }
-              });
-           
+          if (data.image.name) {
+            const dirs = Date.now();
+            const rand = Math.random();
+            const { image } = data;
+            const imageRef = ref(storage, `/jobPost/${dirs}${rand}_${image?.name}`);
+            const toBase64 = (image) => new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.readAsDataURL(image);
+              reader.onload = () => resolve(reader.result);
+              reader.onerror = (error) => reject(error);
+            }).catch((err) => {
+              console.log(err);
+            });
+            const imgBase = await toBase64(image);
+            await uploadString(imageRef, imgBase, 'data_url').then(async () => {
+              const downloadURL = await getDownloadURL(imageRef);
+              data.image = downloadURL;
+            });
+          } else {
+            data.image = '';
+          }
+          console.log(data);
+          axios.post(`/recruiter/add_job?id=${id}`, data).then((response) => {
+            if (response.data.status === 'success') {
+              navigate('/recruiter/home');
+            } else {
+              swal('OOPS', response.data.message, 'error');
+            }
+          });
         } else {
           setCompanyName(true);
           setCompanyNameError('Please enter valid Name');

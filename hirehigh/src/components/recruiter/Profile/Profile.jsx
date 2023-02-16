@@ -1,8 +1,5 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -18,14 +15,13 @@ export default function RecruiterProfile(props) {
   const [recruiter, setRecruiter] = useState([]);
 
   useEffect(() => {
-   
     async function invoke() {
-      console.log(props);
-      const res = await getProfile('fdsf');
+      console.log(props, 'hello');
+      // eslint-disable-next-line max-len
+      // eslint-disable-next-line no-underscore-dangle, react/destructuring-assignment, react/prop-types
+      const id = props.id._id;
+      const res = await getProfile(id);
       setRecruiter(res);
-      if (res) {
-        setRecruiter(res);
-      }
     }
     invoke();
   }, []);
@@ -43,12 +39,12 @@ export default function RecruiterProfile(props) {
               }}
               >
 
-                <img style={{ width: '15vh', height: '20vh' }} src={recruiter.image} alt="" />
+                <img style={{ width: '15vh', height: '20vh' }} src={recruiter?.image} alt="" />
 
-                <Typography sx={{ fontSize: '3vh', fontWeight: '500' }}>{recruiter.userName}</Typography>
+                <Typography sx={{ fontSize: '3vh', fontWeight: '500' }}>{recruiter?.userName}</Typography>
                 <Box mt={4}>
                   <FormLabel>Discription</FormLabel>
-                  <Typography>{recruiter.discription}</Typography>
+                  <Typography>{recruiter?.discription}</Typography>
                 </Box>
               </Box>
 
@@ -65,7 +61,7 @@ export default function RecruiterProfile(props) {
                     <Typography pt={1}>
 
                       #
-                      {recruiter._id}
+                      {recruiter?._id}
 
                     </Typography>
                   </Box>
@@ -73,7 +69,7 @@ export default function RecruiterProfile(props) {
                     <FormLabel>Company Name</FormLabel>
                     <Typography pt={1}>
 
-                      {recruiter.companyName}
+                      {recruiter?.companyName}
 
                     </Typography>
                   </Box>
@@ -81,7 +77,7 @@ export default function RecruiterProfile(props) {
                     <FormLabel>Phone Number</FormLabel>
                     <Typography pt={1}>
 
-                      {recruiter.phoneNumber}
+                      {recruiter?.phoneNumber}
 
                     </Typography>
                   </Box>
@@ -95,7 +91,7 @@ export default function RecruiterProfile(props) {
                     <FormLabel>Email</FormLabel>
                     <Typography pt={1}>
 
-                      {recruiter.email}
+                      {recruiter?.email}
 
                     </Typography>
                   </Box>
@@ -104,7 +100,7 @@ export default function RecruiterProfile(props) {
                     <FormLabel>Website</FormLabel>
                     <Typography pt={1}>
 
-                      {recruiter.website}
+                      {recruiter?.website}
 
                     </Typography>
                   </Box>

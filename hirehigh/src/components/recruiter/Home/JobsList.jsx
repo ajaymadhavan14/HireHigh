@@ -18,6 +18,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import BusinessIcon from '@mui/icons-material/Business';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
+import Button from '@mui/material/Button';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
@@ -34,7 +35,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal2 from 'sweetalert2';
 import axios from '../../../axios/axios';
 import { recruiterDetails } from '../../../redux/recruiter';
-import RecruiterProfile from '../Profile/Profile';
+import RecruiterJobList from '../Job/JobList';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -93,7 +94,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-export default function DashboardContent() {
+export default function RecruiterSideJobsList() {
   const navigate = useNavigate();
   const dispatch = useDispatch(recruiterDetails);
   const { recruiter } = useSelector((state) => state.recruiterInfo);
@@ -193,7 +194,6 @@ export default function DashboardContent() {
                   justifyContent: open ? 'initial' : 'last',
                   px: 2.5,
                 }}
-                onClick={() => navigate('/recruiter/jobs')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -292,11 +292,13 @@ export default function DashboardContent() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/profile')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -346,7 +348,10 @@ export default function DashboardContent() {
         >
           <Toolbar />
           <Box>
-            <RecruiterProfile id={recruiter} />
+            <Box sx={{ display: 'flex', justifyContent: 'end', padding: '4vh' }}>
+              <Button onClick={() => navigate('/recruiter/add_job')} variant="contained" size="large">Post a Job</Button>
+            </Box>
+            <RecruiterJobList id={recruiter} />
           </Box>
         </Box>
       </Box>

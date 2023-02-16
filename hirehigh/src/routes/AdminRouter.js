@@ -4,6 +4,8 @@ import AdLogin from '../pages/admin/Login';
 import AdDashboard from '../pages/admin/Dashboard';
 import AdSeeker from '../pages/admin/SeekerList';
 import AdRecruiter from '../pages/admin/RecruiterList';
+import AllJobPost from '../pages/admin/AllJobPost';
+import Category from '../pages/admin/Category';
 
 function AdminRouter() {
   return (
@@ -17,6 +19,10 @@ function AdminRouter() {
       <Route path="/seeker" element={<AdSeeker />} />
 
       <Route path="/recruiter" element={<AdRecruiter />} />
+
+      <Route path="/jobs" element={<AllJobPost />} />
+
+      <Route path="/category" element={<Category />} />
 
     </Routes>
 

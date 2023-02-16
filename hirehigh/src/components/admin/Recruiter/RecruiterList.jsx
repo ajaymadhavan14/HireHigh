@@ -84,26 +84,26 @@ export default function RecruiterList() {
           </TableHead>
           <TableBody>
             {recruiter.map((el, index) => (
-              <StyledTableRow key={el.id}>
+              <StyledTableRow key={el?.id}>
                 <StyledTableCell align="center" component="th" scope="row">
                   {index + 1}
                 </StyledTableCell>
                 <StyledTableCell align="center" component="th" scope="row">
-                  {el.userName}
+                  {el?.userName}
                 </StyledTableCell>
                 <StyledTableCell align="center" component="th" scope="row">
-                  {el.companyName}
+                  {el?.companyName}
                 </StyledTableCell>
-                <StyledTableCell align="center">{el.email}</StyledTableCell>
+                <StyledTableCell align="center">{el?.email}</StyledTableCell>
 
-                <StyledTableCell align="center">{el.phoneNumber}</StyledTableCell>
-                <StyledTableCell align="center">{el.website}</StyledTableCell>
+                <StyledTableCell align="center">{el?.phoneNumber}</StyledTableCell>
+                <StyledTableCell align="center">{el?.website}</StyledTableCell>
                 <StyledTableCell align="center">
-                  {el.isActive
+                  {el?.isActive
                     ? (
                       <Button
                         // eslint-disable-next-line no-underscore-dangle
-                        onClick={() => blocked(el._id)}
+                        onClick={() => blocked(el?._id)}
                         sx={{
                           backgroundColor: '#03a903', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
                         }}
@@ -114,7 +114,7 @@ export default function RecruiterList() {
                     : (
                       <Button
                         // eslint-disable-next-line no-underscore-dangle
-                        onClick={() => actived(el._id)}
+                        onClick={() => actived(el?._id)}
                         sx={{
                           ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
                         }}

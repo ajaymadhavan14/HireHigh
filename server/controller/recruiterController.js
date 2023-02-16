@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import recruiterModel from '../model/recruiterSchema.js';
 import jobPostModel from '../model/jobPostSchema.js';
+import categoryModel from '../model/jobCategorySchema.js';
 
 const recruiterSignUpPost = async (req, res, next) => {
   try {
@@ -139,20 +140,25 @@ const jobPost = async (req, res, next) => {
 
 const getProfile = async (req, res, next) => {
   try {
-    console.log(req.query.recruiterId);
     const data = await recruiterModel.findById(req.query.recruiterId);
     res.json(data);
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
 
 const jobsList = async (req, res, next) => {
   try {
-    console.log(req.query.recruiterId);
     const data = await jobPostModel.find({ recruiterId: req.query.recruiterId });
-    console.log(data);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getCategoryRec = async (req, res, next) => {
+  try {
+    const data = await categoryModel.find({});
     res.json(data);
   } catch (error) {
     next(error);
@@ -168,4 +174,5 @@ export default {
   jobPost,
   getProfile,
   jobsList,
+  getCategoryRec,
 };

@@ -23,6 +23,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CategoryIcon from '@mui/icons-material/Category';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import FolderIcon from '@mui/icons-material/Folder';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
@@ -142,6 +143,7 @@ function AdminHome() {
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
+              bgcolor: '#6096B4',
             }}
           >
             <IconButton
@@ -166,7 +168,7 @@ function AdminHome() {
               HIREHIGH
             </Typography>
             <Typography variant="h6" noWrap component="div">
-              {admin.name}
+              {admin?.name}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -261,6 +263,27 @@ function AdminHome() {
                 >
                   <CategoryIcon />
                   <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Categorys</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/admin/jobs')}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <FolderIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>All Jobs</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>

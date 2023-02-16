@@ -83,22 +83,22 @@ export default function SeekerList() {
           </TableHead>
           <TableBody>
             {users.map((user, index) => (
-              <StyledTableRow key={user.id}>
+              <StyledTableRow key={user?.id}>
                 <StyledTableCell align="center" component="th" scope="row">
                   {index + 1}
                 </StyledTableCell>
                 <StyledTableCell align="center" component="th" scope="row">
-                  {`${user.firstName} ${user.lastName}`}
+                  {`${user?.firstName} ${user?.lastName}`}
                 </StyledTableCell>
-                <StyledTableCell align="center">{user.email}</StyledTableCell>
+                <StyledTableCell align="center">{user?.email}</StyledTableCell>
 
-                <StyledTableCell align="center">{user.phoneNumber}</StyledTableCell>
+                <StyledTableCell align="center">{user?.phoneNumber}</StyledTableCell>
                 <StyledTableCell align="center">
-                  {user.isActive
+                  {user?.isActive
                     ? (
                       <Button
                         // eslint-disable-next-line no-underscore-dangle
-                        onClick={() => blocked(user._id)}
+                        onClick={() => blocked(user?._id)}
                         sx={{
                           backgroundColor: '#03a903', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
                         }}
@@ -109,7 +109,7 @@ export default function SeekerList() {
                     : (
                       <Button
                         // eslint-disable-next-line no-underscore-dangle
-                        onClick={() => actived(user._id)}
+                        onClick={() => actived(user?._id)}
                         sx={{
                           ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
                         }}

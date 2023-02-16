@@ -120,7 +120,7 @@ export default function RecruiterProfile(props) {
                     {recruiter?.tagLine}
                   </Typography>
                 </Box>
-                <Button sx={{ bgcolor: 'black', mt: '5vh' }}>
+                <Button variant="contained" sx={{ mt: '5vh', width: '10vh', alignSelf: 'end' }}>
                   Edit
                 </Button>
               </Box>

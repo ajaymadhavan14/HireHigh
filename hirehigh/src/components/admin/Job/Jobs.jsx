@@ -11,9 +11,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Moment from 'react-moment';
 import { useEffect, useState } from 'react';
-import { RecruiterSideJobList } from '../../../apis/RecruiterApi';
+import { AdminSideJobList, JobActivated, JobBlocked } from '../../../apis/AdminApi';
 
-export default function RecruiterJobList(props) {
+export default function AdminJobList() {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.white,
@@ -48,14 +48,22 @@ export default function RecruiterJobList(props) {
 
   useEffect(() => {
     async function invoke() {
-      console.log(props.id._id, '1111111111111111111111');
-      const id = props.id._id;
-      const res = await RecruiterSideJobList(id);
-      console.log(res, '222222222222222222222');
+      const res = await AdminSideJobList();
+      console.log(res, '11111111111');
       setJob(res);
     }
     invoke();
   }, [refresh]);
+
+  const blocked = async (Id) => {
+    await JobBlocked(Id);
+    setRefresh(!refresh);
+  };
+
+  const actived = async (Id) => {
+    await JobActivated(Id);
+    setRefresh(!refresh);
+  };
 
   return (
     <Box>
@@ -64,11 +72,12 @@ export default function RecruiterJobList(props) {
           <TableHead>
             <TableRow>
               <StyledTableCell align="center">NO</StyledTableCell>
+              <StyledTableCell align="center">Company Name</StyledTableCell>
               <StyledTableCell align="center">Job Title</StyledTableCell>
               <StyledTableCell align="center">Posted On</StyledTableCell>
               <StyledTableCell align="center">Category</StyledTableCell>
-              <StyledTableCell align="center">Salary</StyledTableCell>
-              <StyledTableCell align="center">Delete</StyledTableCell>
+              <StyledTableCell align="center">Salary Range</StyledTableCell>
+              <StyledTableCell align="center">Status</StyledTableCell>
               {/* <StyledTableCell align="center">PHONE NO</StyledTableCell>
               <StyledTableCell align="center">Website</StyledTableCell>
               <StyledTableCell align="center">Status</StyledTableCell> */}
@@ -81,6 +90,9 @@ export default function RecruiterJobList(props) {
                   {index + 1}
                 </StyledTableCell>
                 <StyledTableCell align="center" component="th" scope="row">
+                  {el?.recruiterId.companyName}
+                </StyledTableCell>
+                <StyledTableCell align="center" component="th" scope="row">
                   {el?.jobTitle}
                 </StyledTableCell>
                 <StyledTableCell align="center" component="th" scope="row">
@@ -90,18 +102,15 @@ export default function RecruiterJobList(props) {
                 </StyledTableCell>
                 <StyledTableCell align="center">{el?.jobCategory}</StyledTableCell>
                 <StyledTableCell align="center">{el?.salaryRange}</StyledTableCell>
-                <StyledTableCell align="center">
-                  <Button variant="contained" sx={{ bgcolor: 'red' }}>
-                    Dele
-                  </Button>
 
-                </StyledTableCell>
-                {/* <StyledTableCell align="center">
+                {/* <StyledTableCell align="center">{el?.phoneNumber}</StyledTableCell>
+                <StyledTableCell align="center">{el?.website}</StyledTableCell> */}
+                <StyledTableCell align="center">
                   {el.isActive
                     ? (
                       <Button
                         // eslint-disable-next-line no-underscore-dangle
-                        onClick={() => blocked(el._id)}
+                        onClick={() => blocked(el?._id)}
                         sx={{
                           backgroundColor: '#03a903', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
                         }}
@@ -112,7 +121,7 @@ export default function RecruiterJobList(props) {
                     : (
                       <Button
                         // eslint-disable-next-line no-underscore-dangle
-                        onClick={() => actived(el._id)}
+                        onClick={() => actived(el?._id)}
                         sx={{
                           ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
                         }}
@@ -120,7 +129,7 @@ export default function RecruiterJobList(props) {
                         Block
                       </Button>
                     )}
-                </StyledTableCell> */}
+                </StyledTableCell>
 
               </StyledTableRow>
             ))}

@@ -35,3 +35,12 @@ export const RecruiterSideJobList = async (id) => {
     return error;
   }
 };
+
+export const getCategory = async () => {
+  try {
+    const { data } = await axios.get('/recruiter/get_cat');
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

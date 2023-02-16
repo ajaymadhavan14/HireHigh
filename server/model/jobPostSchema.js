@@ -18,7 +18,8 @@ const jobPosts = new Schema(
 
     },
     jobCategory: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'jobCatogory',
       required: true,
     },
 

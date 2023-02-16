@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 import adminModel from '../model/adminSchema.js';
 import userModel from '../model/userSchema.js';
 import recruiterModel from '../model/recruiterSchema.js';
+import jobPostModel from '../model/jobPostSchema.js';
+import categoryModel from '../model/jobCategorySchema.js';
 
 const signInPost = async (req, res, next) => {
   try {
@@ -75,6 +77,76 @@ const getRecruitersList = async (req, res, next) => {
   }
 };
 
+const getAllJobs = async (req, res, next) => {
+  try {
+    const data = await jobPostModel.find().populate('recruiterId');
+    console.log(data, '11111111111111111111');
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const jobPostBlock = async (req, res, next) => {
+  try {
+    console.log(req.query.Id);
+    await jobPostModel.updateOne({ _id: req.query.Id }, {
+      isActive: false,
+    });
+    res.json({ status: 'success' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const jobPostActive = async (req, res, next) => {
+  try {
+    await jobPostModel.updateOne({ _id: req.query.Id }, {
+      isActive: true,
+    });
+    res.json({ status: 'success' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const AddCategory = async (req, res, next) => {
+  try {
+    const { category } = req.body;
+    await categoryModel.create({ name: category });
+    res.json({ status: 'success' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const ShowCategory = async (req, res, next) => {
+  try {
+    const data = await categoryModel.find({});
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const DeleteCategory = async (req, res, next) => {
+  try {
+    await categoryModel.findByIdAndRemove(req.query.Id);
+    res.json({ status: 'success' });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
-  signInPost, isAdminAuth, getUsersList, getRecruitersList,
+  signInPost,
+  isAdminAuth,
+  getUsersList,
+  getRecruitersList,
+  getAllJobs,
+  jobPostActive,
+  jobPostBlock,
+  AddCategory,
+  ShowCategory,
+  DeleteCategory,
 };

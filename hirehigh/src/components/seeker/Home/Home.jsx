@@ -75,7 +75,7 @@ export default function PermanentDrawerLeft() {
             HIREHIGH
           </Typography>
           <Typography variant="h6" noWrap component="div" sx={{}}>
-            {user.username}
+            {user?.username}
           </Typography>
         </Toolbar>
 

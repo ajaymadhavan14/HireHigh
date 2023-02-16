@@ -8,13 +8,18 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
-import { useState } from 'react';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormLabel from '@mui/material/FormLabel';
+import Select from '@mui/material/Select';
 import swal from 'sweetalert';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../../firebase/Config';
 import axios from '../../../axios/axios';
+import { getCategory } from '../../../apis/RecruiterApi';
 
 const theme = createTheme();
 export default function RecruiterJobPost({ id }) {
@@ -93,7 +98,7 @@ export default function RecruiterJobPost({ id }) {
           console.log(data);
           axios.post(`/recruiter/add_job?id=${id}`, data).then((response) => {
             if (response.data.status === 'success') {
-              navigate('/recruiter/home');
+              navigate('/recruiter/jobs');
             } else {
               swal('OOPS', response.data.message, 'error');
             }
@@ -110,6 +115,16 @@ export default function RecruiterJobPost({ id }) {
       setTotalRequired('Please enter your Details');
     }
   };
+  const [cat, setCat] = useState([]);
+  useEffect(() => {
+    async function invoke() {
+      const res = await getCategory();
+      setCat(res);
+
+      console.log(res);
+    }
+    invoke();
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -167,17 +182,24 @@ export default function RecruiterJobPost({ id }) {
           <Grid container spacing={2} py={2}>
 
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                id="jobCategory"
-                type="text"
-                label="Job Category"
-                name="jobCategory"
-                autoComplete="jobCategory"
-                error={jobCategory}
-                helperText={jobCategoryError}
-              />
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Category</InputLabel>
+
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="jobCategory"
+                  label="Category"
+                  error={jobCategory}
+                  helperText={jobCategoryError}
+                >
+                  {cat.map((el) => (
+                    <MenuItem value={el?._id}>{el?.name}</MenuItem>
+                  ))}
+
+                </Select>
+
+              </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField

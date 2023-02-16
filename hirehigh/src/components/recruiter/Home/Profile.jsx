@@ -286,7 +286,7 @@ export default function DashboardContent() {
                 >
                   <BusinessIcon />
                   <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>
-                    {recruiter.username}
+                    {recruiter?.username}
                   </ListItemText>
                 </ListItemIcon>
               </ListItemButton>

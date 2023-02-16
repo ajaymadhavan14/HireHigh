@@ -12,5 +12,6 @@ router.patch('/actived', recruiterController.recruiterActive);
 router.post('/add_job', recruiterController.jobPost);
 router.get('/get_profile', recruiterController.getProfile);
 router.get('/jobs', recruiterController.jobsList);
+router.get('/get_cat', recruiterController.getCategoryRec);
 
 export default router;

@@ -10,9 +10,11 @@ export default function SeekerContainer() {
   return (
     <>
       <CssBaseline />
-      <Box sx={{
-        bgcolor: '#F1F5F9', height: '70vh', display: 'flex', flexDirection: 'row',
-      }}
+      <Box
+        sx={{
+          bgcolor: '#F1F5F9', height: '70vh', display: 'flex', flexDirection: 'row',
+        }}
+        xs={12}
       >
         <Box sx={{ width: '50%', alignSelf: 'center', textAlign: 'center' }}>
           <Typography sx={{ fontSize: '10vh' }}>

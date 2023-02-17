@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import {
   styled, createTheme, ThemeProvider, useTheme,
@@ -342,7 +343,7 @@ function DashboardContent() {
         >
           <Toolbar />
           <Box>
-            <RecruiterJobPost id={recruiter?._id}/>
+            <RecruiterJobPost id={recruiter?._id} />
           </Box>
         </Box>
       </Box>

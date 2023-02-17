@@ -39,24 +39,32 @@ const recruiterSignInPost = async (req, res, next) => {
     const { email, password } = req.body;
     const recruiter = await recruiterModel.findOne({ email });
     if (recruiter) {
-      const isMatch = await bcrypt.compare(password, recruiter.password);
-      if (recruiter.email === email && isMatch) {
-        const recruiterId = recruiter.id;
-        const token = jwt.sign({ recruiterId }, process.env.JWT_SECRET_KEY, {
-          expiresIn: 60 * 60 * 24,
-        });
-        res.json({
-          auth: true,
-          token,
-          result: recruiter,
-          status: 'success',
-          message: 'signin success',
-        });
+      if (recruiter.isActive === true) {
+        const isMatch = await bcrypt.compare(password, recruiter.password);
+        if (recruiter.email === email && isMatch) {
+          const recruiterId = recruiter.id;
+          const token = jwt.sign({ recruiterId }, process.env.JWT_SECRET_KEY, {
+            expiresIn: 60 * 60 * 24,
+          });
+          res.json({
+            auth: true,
+            token,
+            result: recruiter,
+            status: 'success',
+            message: 'signin success',
+          });
+        } else {
+          res.json({
+            auth: false,
+            status: 'failed',
+            message: 'User password is incorrect',
+          });
+        }
       } else {
         res.json({
           auth: false,
           status: 'failed',
-          message: 'User password is incorrect',
+          message: 'Profile is Blocked',
         });
       }
     } else {
@@ -150,7 +158,12 @@ const getProfile = async (req, res, next) => {
 const jobsList = async (req, res, next) => {
   try {
     const data = await jobPostModel.find({ recruiterId: req.query.recruiterId }).populate('jobCategory');
-    res.json(data);
+    console.log(data);
+    if (data.length > 0) {
+      res.json({ data });
+    } else {
+      res.json({ status: 'failed' });
+    }
   } catch (error) {
     next(error);
   }

@@ -17,6 +17,7 @@ import Moment from 'react-moment';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { RecruiterSideJobList, RecruiterJobDele } from '../../../apis/RecruiterApi';
 
@@ -49,16 +50,20 @@ export default function RecruiterJobList(props) {
   //   setRowsPerPage(+event.target.value);
   //   setPage(0);
   // };
-
+  const navigate = useNavigate();
   const [job, setJob] = useState([]);
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     async function invoke() {
       const id = props.id._id;
-      const res = await RecruiterSideJobList(id);
-      console.log(res);
-      setJob(res);
+      await RecruiterSideJobList(id).then((response) => {
+        if (response.status === 'failed') {
+          navigate('/recruiter/add_job');
+        } else {
+          setJob(response.data);
+        }
+      });
     }
     invoke();
   }, [refresh]);

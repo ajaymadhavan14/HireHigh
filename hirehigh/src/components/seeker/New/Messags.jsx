@@ -10,7 +10,7 @@ function Messages() {
   return (
     <Grid
       sx={{
-        position: 'fixed', boxShadow: 3, border: '1px solid lightgray', borderRadius: '15px', height: '39.1vw', backgroundColor: '#fff', display: { xs: 'none', sm: 'none', md: 'block' },
+        position: 'fixed', width: '-webkit-fill-available', boxShadow: 3, border: '1px solid lightgray', borderRadius: '15px', height: '39.1vw', backgroundColor: '#fff', display: { xs: 'none', sm: 'none', md: 'block' },
       }}
       md={3}
     >

@@ -32,25 +32,33 @@ const signinPost = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await userModel.findOne({ email });
     if (user) {
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (user.email === email && isMatch) {
-        const userId = user.id;
-        const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY, {
-          expiresIn: 60 * 60 * 24,
-        });
+      if (user.isActive === true) {
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (user.email === email && isMatch) {
+          const userId = user.id;
+          const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY, {
+            expiresIn: 60 * 60 * 24,
+          });
 
-        res.json({
-          auth: true,
-          token,
-          result: user,
-          status: 'success',
-          message: 'signin success',
-        });
+          res.json({
+            auth: true,
+            token,
+            result: user,
+            status: 'success',
+            message: 'signin success',
+          });
+        } else {
+          res.json({
+            auth: false,
+            status: 'failed',
+            message: 'User password is incorrect',
+          });
+        }
       } else {
         res.json({
           auth: false,
           status: 'failed',
-          message: 'User password is incorrect',
+          message: 'Profile is Blocked',
         });
       }
     } else {

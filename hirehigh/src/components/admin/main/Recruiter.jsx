@@ -168,7 +168,7 @@ function AdminHome() {
               HIREHIGH
             </Typography>
             <Typography variant="h6" noWrap component="div">
-              {admin?.name}
+              {admin?.username}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -254,7 +254,7 @@ function AdminHome() {
                   justifyContent: open ? 'initial' : 'last',
                   px: 2.5,
                 }}
-
+                onClick={() => navigate('/admin/category')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,

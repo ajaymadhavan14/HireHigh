@@ -44,3 +44,12 @@ export const getCategory = async () => {
     return error;
   }
 };
+
+export const RecruiterJobDele = async (id) => {
+  try {
+    const data = await axios.patch(`/recruiter/job_dele?recruiterId=${id}`);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

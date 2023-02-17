@@ -1,3 +1,7 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-shadow */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -65,7 +69,7 @@ export default function RecruiterJobPost({ id }) {
     if (data.companyName && data.jobTitle && data.workPlace && data.jobQualification
       && data.jobDiscription && data.jobCategory
          && data.responsibilities && data.salaryRange && data.jobType) {
-      const regName = /^[a-zA-Z]+$/;
+      const regName = /^[a-zA-Z ]*$/;
       setTotalRequired('');
       if (regName.test(data.jobTitle)) {
         setJobTitle(false);

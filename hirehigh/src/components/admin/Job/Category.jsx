@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -14,6 +16,8 @@ import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import FormLabel from '@mui/material/FormLabel';
 import swal from 'sweetalert';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from 'react';
 import {
   AdminSideCategoryShow,
@@ -67,7 +71,16 @@ export default function AdminJobCategory() {
     if (data.category) {
       axios.post('/admin/add_category', data).then((response) => {
         if (response.data.status === 'success') {
-          swal('success');
+          toast.success('🦄 Wow so easy!', {
+            position: 'top-center',
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          });
           setRefresh(!refresh);
         } else {
           swal('OOPS', response.data.message, 'error');
@@ -116,10 +129,10 @@ export default function AdminJobCategory() {
       <Box>
         <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
           <Grid container spacing={2} py={2}>
+            <ToastContainer />
 
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="given-name"
                 name="category"
                 type="text"
                 required
@@ -189,7 +202,8 @@ export default function AdminJobCategory() {
                         <Button
                           onClick={() => blocked(el._id)}
                           sx={{
-                            backgroundColor: '#03a903', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
+                            backgroundColor: '#03a903', color: '#fff',
+                            fontWeight: '800', ':hover': { backgroundColor: 'blue' },
                           }}
                         >
                           Active
@@ -199,7 +213,8 @@ export default function AdminJobCategory() {
                         <Button
                           onClick={() => actived(el._id)}
                           sx={{
-                            ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
+                            ml: 1, backgroundColor: 'red', color: '#fff',
+                            fontWeight: '800', ':hover': { backgroundColor: 'blue' },
                           }}
                         >
                           Block

@@ -9,6 +9,7 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Container from '@mui/material/Container';
 import { useEffect, useState } from 'react';
 import { AdminGetUsers } from '../../../apis/AdminApi';
 import { isActivated, isBlocked } from '../../../apis/SeekerApi';
@@ -69,62 +70,63 @@ export default function SeekerList() {
     setRefresh(!refresh);
   };
   return (
-    <Box>
-      <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell align="center">NO</StyledTableCell>
-              <StyledTableCell align="center">NAME</StyledTableCell>
-              <StyledTableCell align="center">E-MAIL</StyledTableCell>
-              <StyledTableCell align="center">PHONE NO</StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users.map((user, index) => (
-              <StyledTableRow key={user?.id}>
-                <StyledTableCell align="center" component="th" scope="row">
-                  {index + 1}
-                </StyledTableCell>
-                <StyledTableCell align="center" component="th" scope="row">
-                  {`${user?.firstName} ${user?.lastName}`}
-                </StyledTableCell>
-                <StyledTableCell align="center">{user?.email}</StyledTableCell>
+    <Container component="main" maxWidth="xl" sx={{ marginTop: '3vh' }}>
+      <Box>
+        <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell align="center">NO</StyledTableCell>
+                <StyledTableCell align="center">NAME</StyledTableCell>
+                <StyledTableCell align="center">E-MAIL</StyledTableCell>
+                <StyledTableCell align="center">PHONE NO</StyledTableCell>
+                <StyledTableCell align="center">Status</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {users.map((user, index) => (
+                <StyledTableRow key={user?.id}>
+                  <StyledTableCell align="center" component="th" scope="row">
+                    {index + 1}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" component="th" scope="row">
+                    {`${user?.firstName} ${user?.lastName}`}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{user?.email}</StyledTableCell>
 
-                <StyledTableCell align="center">{user?.phoneNumber}</StyledTableCell>
-                <StyledTableCell align="center">
-                  {user?.isActive
-                    ? (
-                      <Button
+                  <StyledTableCell align="center">{user?.phoneNumber}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {user?.isActive
+                      ? (
+                        <Button
                         // eslint-disable-next-line no-underscore-dangle
-                        onClick={() => blocked(user?._id)}
-                        sx={{
-                          backgroundColor: '#03a903', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
-                        }}
-                      >
-                        Active
-                      </Button>
-                    )
-                    : (
-                      <Button
+                          onClick={() => blocked(user?._id)}
+                          sx={{
+                            backgroundColor: '#03a903', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
+                          }}
+                        >
+                          Active
+                        </Button>
+                      )
+                      : (
+                        <Button
                         // eslint-disable-next-line no-underscore-dangle
-                        onClick={() => actived(user?._id)}
-                        sx={{
-                          ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
-                        }}
-                      >
-                        Block
-                      </Button>
-                    )}
-                </StyledTableCell>
+                          onClick={() => actived(user?._id)}
+                          sx={{
+                            ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
+                          }}
+                        >
+                          Block
+                        </Button>
+                      )}
+                  </StyledTableCell>
 
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {/* <TablePagination
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {/* <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={rows.length}
@@ -133,6 +135,7 @@ export default function SeekerList() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       /> */}
-    </Box>
+      </Box>
+    </Container>
   );
 }

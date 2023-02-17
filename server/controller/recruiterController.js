@@ -149,7 +149,7 @@ const getProfile = async (req, res, next) => {
 
 const jobsList = async (req, res, next) => {
   try {
-    const data = await jobPostModel.find({ recruiterId: req.query.recruiterId });
+    const data = await jobPostModel.find({ recruiterId: req.query.recruiterId }).populate('jobCategory');
     res.json(data);
   } catch (error) {
     next(error);
@@ -165,6 +165,15 @@ const getCategoryRec = async (req, res, next) => {
   }
 };
 
+const DeleteJob = async (req, res, next) => {
+  try {
+    await jobPostModel.findByIdAndRemove(req.query.recruiterId);
+    res.json({ status: 'success' });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   recruiterSignUpPost,
   recruiterSignInPost,
@@ -175,4 +184,5 @@ export default {
   getProfile,
   jobsList,
   getCategoryRec,
+  DeleteJob,
 };

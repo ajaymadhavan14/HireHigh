@@ -1,3 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -10,8 +14,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Moment from 'react-moment';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import swal from 'sweetalert';
 import { useEffect, useState } from 'react';
-import { RecruiterSideJobList } from '../../../apis/RecruiterApi';
+import { RecruiterSideJobList, RecruiterJobDele } from '../../../apis/RecruiterApi';
 
 export default function RecruiterJobList(props) {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -48,17 +55,37 @@ export default function RecruiterJobList(props) {
 
   useEffect(() => {
     async function invoke() {
-      console.log(props.id._id, '1111111111111111111111');
       const id = props.id._id;
       const res = await RecruiterSideJobList(id);
-      console.log(res, '222222222222222222222');
+      console.log(res);
       setJob(res);
     }
     invoke();
   }, [refresh]);
 
+  const deleteJob = async (id) => {
+    await RecruiterJobDele(id).then((response) => {
+      if (response.data.status === 'success') {
+        toast.success('🦄 Wow so easy!', {
+          position: 'top-center',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        });
+        setRefresh(!refresh);
+      } else {
+        swal('OOPS', response.data.message, 'error');
+      }
+    });
+  };
+
   return (
     <Box>
+      <ToastContainer />
       <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -88,10 +115,10 @@ export default function RecruiterJobList(props) {
                   <Moment format="DD/MM/YYYY" date={el?.createdAt} />
 
                 </StyledTableCell>
-                <StyledTableCell align="center">{el?.jobCategory}</StyledTableCell>
+                <StyledTableCell align="center">{el?.jobCategory?.name}</StyledTableCell>
                 <StyledTableCell align="center">{el?.salaryRange}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Button variant="contained" sx={{ bgcolor: 'red' }}>
+                  <Button variant="contained" sx={{ bgcolor: 'red' }} onClick={() => deleteJob(el?._id)}>
                     Dele
                   </Button>
 
@@ -103,7 +130,8 @@ export default function RecruiterJobList(props) {
                         // eslint-disable-next-line no-underscore-dangle
                         onClick={() => blocked(el._id)}
                         sx={{
-                          backgroundColor: '#03a903', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
+                          backgroundColor: '#03a903', color: '#fff', fontWeight: '800',
+                           ':hover': { backgroundColor: 'blue' },
                         }}
                       >
                         Active
@@ -114,7 +142,8 @@ export default function RecruiterJobList(props) {
                         // eslint-disable-next-line no-underscore-dangle
                         onClick={() => actived(el._id)}
                         sx={{
-                          ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
+                          ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800',
+                           ':hover': { backgroundColor: 'blue' },
                         }}
                       >
                         Block

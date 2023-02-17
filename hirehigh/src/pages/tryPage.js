@@ -1,10 +1,10 @@
 import React from 'react';
-import ReProfile from '../components/Recruiter/Profile/Profile';
+import VendorHome from '../components/Seeker/New/Main';
 
 function tryPage() {
   return (
     <div>
-      <ReProfile />
+      <VendorHome />
     </div>
   );
 }

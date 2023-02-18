@@ -17,3 +17,30 @@ export const isActivated = async (userId) => {
     return error;
   }
 };
+
+export const jobListSeekerSide = async () => {
+  try {
+    const { data } = await axios.get('/jobs');
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const jobApply = async (id, user) => {
+  try {
+    const data = await axios.post(`/job_apply?id=${id}`, user);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getSingleJobData = async (id) => {
+  try {
+    const { data } = await axios.get(`/single_view?id=${id}`);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

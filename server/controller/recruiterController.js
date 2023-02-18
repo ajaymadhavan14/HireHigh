@@ -124,7 +124,7 @@ const jobPost = async (req, res, next) => {
   try {
     const {
       jobTitle, companyName, jobCategory, jobQualification, jobDiscription,
-      responsibilities, workPlace, salaryRange, jobType, image,
+      responsibilities, workPlace, salaryRange, jobType, image, location, vaccancy,
     } = req.body;
     const Id = req.query.id;
     await jobPostModel.create({
@@ -138,6 +138,8 @@ const jobPost = async (req, res, next) => {
       workPlace,
       salaryRange,
       image,
+      location,
+      vaccancy,
       recruiterId: Id,
     });
     res.json({ status: 'success' });

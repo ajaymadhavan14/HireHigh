@@ -1,6 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import userModel from '../model/userSchema.js';
+import jobModel from '../model/jobPostSchema.js';
 
 const signupPost = async (req, res, next) => {
   try {
@@ -79,6 +81,7 @@ const isUserAuth = async (req, res, next) => {
     userDetails.auth = true;
 
     res.json({
+      id: userDetails._id,
       username: userDetails.firstName,
       email: userDetails.email,
       auth: true,
@@ -109,10 +112,48 @@ const userActive = async (req, res, next) => {
     });
     res.json({ status: 'success' });
   } catch (error) {
-    console.log(error);
+    next(error);
+  }
+};
+
+const JobListShow = async (req, res, next) => {
+  try {
+    const data = await jobModel.find({ isActive: true });
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const jobApply = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    console.log(req.query.id);
+    const data = await jobModel.findByIdAndUpdate(req.query.id, {
+      applied: true,
+      users: { userId: req.body.id },
+    });
+    console.log(data);
+    res.json({ status: 'success' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getSingleView = async (req, res, next) => {
+  try {
+    console.log(req.query.id);
+    const singleData = await jobModel.findById(req.query.id);
+    const catId = singleData.jobCategory;
+    const fullData = await jobModel.find({
+      $and: [{ jobCategory: catId },
+        { _id: { $ne: req.query.id } }],
+    });
+    res.json({ data: singleData, category: fullData });
+  } catch (error) {
     next(error);
   }
 };
 export default {
-  signupPost, signinPost, isUserAuth, userBlock, userActive,
+  signupPost, signinPost, isUserAuth, userBlock, userActive, JobListShow, jobApply, getSingleView,
 };

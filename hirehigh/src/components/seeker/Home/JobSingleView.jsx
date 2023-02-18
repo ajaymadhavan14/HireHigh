@@ -44,7 +44,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal2 from 'sweetalert2';
 import axios from '../../../axios/axios';
 import { userDetails } from '../../../redux/seeker';
-import JobCard from '../Job/JobList';
+import SingleJobView from '../Job/SingleJobView';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -103,7 +103,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-export default function SeekerJobView() {
+export default function SeekerSingleJobView() {
   const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -272,7 +272,7 @@ export default function SeekerJobView() {
                   justifyContent: open ? 'initial' : 'last',
                   px: 2.5,
                 }}
-                onClick={() => navigate('/recruiter/jobs')}
+                onClick={() => navigate('/jobs')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -424,30 +424,7 @@ export default function SeekerJobView() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-
-              <Grid item xs={12} md={8} lg={9}>
-
-                <JobCard data={user} />
-
-              </Grid>
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                />
-              </Grid>
-              {/* Recent Deposits */}
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
-              </Grid>
-            </Grid>
+            <SingleJobView user={user} />
           </Container>
         </Box>
       </Box>

@@ -5,6 +5,7 @@ import SeSignup from '../pages/seeker/Signup';
 import SeHome from '../pages/seeker/Home';
 import LandingPage from '../pages/seeker/LandingPage';
 import JobViews from '../pages/seeker/JobViews';
+import SingleJobView from '../pages/seeker/SingleJobView';
 
 function SeekerRouter() {
   return (
@@ -21,6 +22,8 @@ function SeekerRouter() {
         <Route path="/home" element={<SeHome />} />
 
         <Route path="/jobs" element={<JobViews />} />
+
+        <Route path="/job_view" element={<SingleJobView />} />
 
       </Routes>
 

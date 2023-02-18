@@ -243,7 +243,27 @@ export default function SeekerHome() {
           </DrawerHeader>
           <Divider />
           <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/home')}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
 
+                }}
+                >
+                  <WorkIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Home</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{

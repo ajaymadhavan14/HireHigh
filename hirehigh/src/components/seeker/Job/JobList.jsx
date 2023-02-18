@@ -1,3 +1,7 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/prop-types */
+/* eslint-disable array-callback-return */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 import * as React from 'react';
 import Box from '@mui/material/Box';
@@ -6,6 +10,10 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
+import swal from 'sweetalert';
+import { useNavigate } from 'react-router-dom';
+import { jobListSeekerSide, jobApply } from '../../../apis/SeekerApi';
 
 const bull = (
   <Box
@@ -16,40 +24,83 @@ const bull = (
   </Box>
 );
 
-export default function JobCard() {
+export default function JobCard(props) {
+  const [jobs, setJobs] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    async function invoke() {
+      const res = await jobListSeekerSide();
+      console.log(res);
+      if (res) {
+        setJobs(res);
+      }
+    }
+    invoke();
+  }, [refresh]);
+  console.log(props);
+  const apply = async (id) => {
+    const user = props?.data;
+    await jobApply(id, user).then((response) => {
+      console.log(response);
+      if (response.data.status === 'success') {
+        swal('success');
+        setRefresh(!refresh);
+      }
+    });
+  };
+
   return (
-    <Card sx={{ minWidth: 275 }}>
-      <CardContent sx={{ display: 'flex', flexDirection: 'row' }}>
-        <img src="/logo192.png" alt="" />
-        <Box sx={{ width: '40vh', marginLeft: '5vh', alignSelf: 'center' }}>
-          <Typography variant="h5" component="div">
-            Word of the Day
-          </Typography>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            be
-            {bull}
-            nev
-            {bull}
-            o
-            {bull}
-            lent
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            adjective
-          </Typography>
-          <Typography variant="body2">
-            well meaning and kindly.
-            <br />
-            "a benevolent smile"
-          </Typography>
-        </Box>
-        <Box sx={{ alignSelf: 'center', ml: 'auto' }}>
-          <Button variant="contained">Apply</Button>
-        </Box>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions>
-    </Card>
+    <Box>
+      {jobs.map((el) => (
+        <Card sx={{ minWidth: 275 }} key={el?.id}>
+          <CardContent sx={{ display: 'flex', flexDirection: 'row' }} key={el?.id}>
+            <img src={el?.image} alt="" style={{ width: '20vh' }} />
+            <Box sx={{ marginLeft: '8vh', alignSelf: 'center' }}>
+              <Box sx={{ justifyContent: 'space-between' }}>
+                <Typography variant="h5" component="div">
+                  {el?.jobTitle}
+                </Typography>
+                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                  {el?.companyName}
+                </Typography>
+                <Typography variant="body2">
+                  {el?.jobType}
+                </Typography>
+              </Box>
+            </Box>
+            <Box sx={{ alignSelf: 'center', ml: 'auto' }}>
+              {el?.applied
+                ? (
+                  <Button
+                        // eslint-disable-next-line no-underscore-dangle
+                    // onClick={() => apply(el?._id)}
+                    variant="contained"
+                    sx={{
+                      backgroundColor: 'green', color: '#fff', fontWeight: '800', pointerEvents: 'none',
+                    }}
+                  >
+                    Applied
+                  </Button>
+                )
+                : (
+                  <Button
+                        // eslint-disable-next-line no-underscore-dangle
+                    onClick={() => apply(el?._id)}
+                    sx={{
+                      ml: 1, backgroundColor: 'blue', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'green' },
+                    }}
+                  >
+                    Apply
+                  </Button>
+                )}
+            </Box>
+          </CardContent>
+          <CardActions>
+            <Button size="small" onClick={() => navigate('/job_view', { state: el?._id })}>full details</Button>
+          </CardActions>
+        </Card>
+      ))}
+    </Box>
   );
 }

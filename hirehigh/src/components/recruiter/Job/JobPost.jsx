@@ -47,6 +47,10 @@ export default function RecruiterJobPost({ id }) {
   const [salaryRangeError, setSalaryRangeError] = useState('');
   const [jobType, setJobType] = useState(false);
   const [jobTypeError, setJobTypeError] = useState('');
+  const [location, setLocation] = useState(false);
+  const [locationError, setLocationError] = useState('');
+  const [vaccancy, setVaccancy] = useState(false);
+  const [vaccancyError, setVaccancyError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
   const navigate = useNavigate();
 
@@ -64,10 +68,12 @@ export default function RecruiterJobPost({ id }) {
       jobType: data.get('jobType'),
       jobCategory: data.get('jobCategory'),
       image: data.get('image'),
+      location: data.get('location'),
+      vaccancy: data.get('vaccancy'),
 
     };
     if (data.companyName && data.jobTitle && data.workPlace && data.jobQualification
-      && data.jobDiscription && data.jobCategory
+      && data.jobDiscription && data.jobCategory && data.location && data.vaccancy
          && data.responsibilities && data.salaryRange && data.jobType) {
       const regName = /^[a-zA-Z ]*$/;
       setTotalRequired('');
@@ -315,7 +321,35 @@ export default function RecruiterJobPost({ id }) {
                 helperText={imageError}
               />
             </Grid>
+            <Grid item xs={12} sm={6} sx={{ marginTop: 'auto' }}>
+              <TextField
+                required
+                fullWidth
+                id="location"
+                type="text"
+                placeholder="Company location"
+                name="location"
+                autoComplete="location"
+                error={location}
+                helperText={locationError}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
 
+            <Grid item xs={12} sm={6} sx={{ marginTop: 'auto' }}>
+              <TextField
+                required
+                fullWidth
+                id="vaccancy"
+                type="number"
+                placeholder="Company vaccancy"
+                name="vaccancy"
+                autoComplete="vaccancy"
+                error={vaccancy}
+                helperText={vaccancyError}
+              />
+            </Grid>
             <Grid item xs={12} sm={6} />
           </Grid>
           <Box sx={{ backgroundColor: '#ffc5c5', borderRadius: '3px', pl: 2 }}>

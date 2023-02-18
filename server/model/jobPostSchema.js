@@ -28,6 +28,10 @@ const jobPosts = new Schema(
       required: true,
 
     },
+    vaccancy: {
+      type: Number,
+      required: true,
+    },
     jobDiscription: {
       type: String,
       required: true,
@@ -52,9 +56,25 @@ const jobPosts = new Schema(
       type: Boolean,
       default: true,
     },
+    applied: {
+      type: Boolean,
+      default: false,
+    },
     image: {
       type: String,
     },
+    location: {
+      type: String,
+      required: true,
+    },
+    users: [
+      {
+        userId: {
+          type: Schema.Types.ObjectId,
+          ref: 'users',
+        },
+      },
+    ],
   },
   { timestamps: true },
 );

@@ -9,6 +9,7 @@ import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -77,6 +78,9 @@ export default function SearchAppBar() {
           >
             <h3 style={{ cursor: 'pointer', width: 'fit-content', color: '#6096B4' }}> HIREHIGH</h3>
           </Typography>
+          <Button variant="contained" onClick={() => navigate('/login')} sx={{ ':hover': { backgroundColor: '#6096B4' }, marginRight: '2vh' }}>
+            Login
+          </Button>
           <Search sx={{ color: 'black' }}>
             <SearchIconWrapper>
               <SearchIcon />

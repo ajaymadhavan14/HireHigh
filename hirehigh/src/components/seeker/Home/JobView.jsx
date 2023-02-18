@@ -44,6 +44,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal2 from 'sweetalert2';
 import axios from '../../../axios/axios';
 import { userDetails } from '../../../redux/seeker';
+import JobCard from '../Job/JobList';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -102,7 +103,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-export default function SeekerHome() {
+export default function SeekerJobView() {
   const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -251,7 +252,7 @@ export default function SeekerHome() {
                   justifyContent: open ? 'initial' : 'last',
                   px: 2.5,
                 }}
-                onClick={() => navigate('/jobs')}
+                onClick={() => navigate('/recruiter/jobs')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -407,14 +408,9 @@ export default function SeekerHome() {
               {/* Chart */}
 
               <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                />
+
+                <JobCard />
+
               </Grid>
               <Grid item xs={12} md={4} lg={3}>
                 <Paper

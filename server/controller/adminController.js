@@ -80,7 +80,6 @@ const getRecruitersList = async (req, res, next) => {
 const getAllJobs = async (req, res, next) => {
   try {
     const data = await jobPostModel.find().populate('recruiterId');
-    console.log(data, '11111111111111111111');
     res.json(data);
   } catch (error) {
     next(error);

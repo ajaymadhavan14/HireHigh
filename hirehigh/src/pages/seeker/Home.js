@@ -1,10 +1,10 @@
 import React from 'react';
-import PermanentDrawerLeft from '../../components/Seeker/Home/Home';
+import SeekerHome from '../../components/Seeker/Home/Home';
 
 function Home() {
   return (
     <div>
-      <PermanentDrawerLeft />
+      <SeekerHome />
     </div>
   );
 }

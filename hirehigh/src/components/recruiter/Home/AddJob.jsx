@@ -32,6 +32,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal2 from 'sweetalert2';
+import swal from 'sweetalert';
 import axios from '../../../axios/axios';
 import { recruiterDetails } from '../../../redux/recruiter';
 import RecruiterJobPost from '../Job/JobPost';
@@ -102,7 +103,12 @@ function DashboardContent() {
     }).then((response) => {
       console.log(response.data);
       if (!response.data.auth) {
-        navigate('/');
+        if (response.data.status === 'failed') {
+          swal('Your profile blocked');
+          navigate('/');
+        } else {
+          navigate('/');
+        }
       } else {
         dispatch(recruiterDetails(response.data));
       }

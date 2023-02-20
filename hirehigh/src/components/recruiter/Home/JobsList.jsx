@@ -29,6 +29,7 @@ import MessageIcon from '@mui/icons-material/Message';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useSelector, useDispatch } from 'react-redux';
+import swal from 'sweetalert';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -105,7 +106,12 @@ export default function RecruiterSideJobsList() {
     }).then((response) => {
       console.log(response.data, 'data');
       if (!response.data.auth) {
-        navigate('/');
+        if (response.data.status === 'failed') {
+          swal('Your profile blocked');
+          navigate('/');
+        } else {
+          navigate('/');
+        }
       } else {
         dispatch(recruiterDetails(response?.data));
       }

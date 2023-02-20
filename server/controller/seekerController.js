@@ -79,14 +79,17 @@ const isUserAuth = async (req, res, next) => {
   try {
     const userDetails = await userModel.findById(req.userId);
     userDetails.auth = true;
-
-    res.json({
-      id: userDetails._id,
-      username: userDetails.firstName,
-      email: userDetails.email,
-      auth: true,
-      image: userDetails.image || null,
-    });
+    if (userDetails.isActive === true) {
+      res.json({
+        id: userDetails._id,
+        username: userDetails.firstName,
+        email: userDetails.email,
+        auth: true,
+        image: userDetails.image || null,
+      });
+    } else {
+      res.json({ status: 'failed' });
+    }
   } catch (error) {
     next(error);
   }

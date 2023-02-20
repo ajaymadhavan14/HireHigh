@@ -82,16 +82,20 @@ const recruiterSignInPost = async (req, res, next) => {
 const isRecruiterAuth = async (req, res, next) => {
   try {
     const recruiterDetails = await recruiterModel.findById(req.recruiterId);
-    recruiterDetails.auth = true;
-    res.json({
+    if (recruiterDetails.isActive === true) {
+      recruiterDetails.auth = true;
+      res.json({
       // eslint-disable-next-line no-underscore-dangle
-      _id: recruiterDetails._id,
-      username: recruiterDetails.userName,
-      email: recruiterDetails.email,
-      auth: true,
-      image: recruiterDetails.image || null,
-      phoneNumber: recruiterDetails.phoneNumber,
-    });
+        _id: recruiterDetails._id,
+        username: recruiterDetails.userName,
+        email: recruiterDetails.email,
+        auth: true,
+        image: recruiterDetails.image || null,
+        phoneNumber: recruiterDetails.phoneNumber,
+      });
+    } else {
+      res.json({ status: 'failed' });
+    }
   } catch (error) {
     next(error);
   }

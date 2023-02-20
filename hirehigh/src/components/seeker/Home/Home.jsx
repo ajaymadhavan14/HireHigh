@@ -41,6 +41,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import swal from 'sweetalert';
 import Swal2 from 'sweetalert2';
 import axios from '../../../axios/axios';
 import { userDetails } from '../../../redux/seeker';
@@ -122,7 +123,12 @@ export default function SeekerHome() {
     }).then((response) => {
       console.log(response.data);
       if (!response.data.auth) {
-        navigate('/');
+        if (response.data.status === 'failed') {
+          swal('Your profile blocked');
+          navigate('/');
+        } else {
+          navigate('/');
+        }
       } else {
         dispatch(userDetails(response.data));
       }

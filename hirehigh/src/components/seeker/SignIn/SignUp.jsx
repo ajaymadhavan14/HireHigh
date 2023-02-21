@@ -13,14 +13,22 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
-import axios from '../../axios/axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
+import { auth } from '../../../firebase/Config';
+import AuthContext from '../../../context/AppContext';
+import axios from '../../../axios/axios';
 
 const theme = createTheme();
 
 export default function SeekerSignUp() {
+  const { userDetails, setUserDetails } = useContext(AuthContext);
+  const { userOtpConf, setUserOtpConf } = useContext(AuthContext);
+
   const [firstName, setFirstName] = useState(false);
   const [firstNameError, setFirstNameError] = useState('');
   const [lastName, setLastName] = useState(false);
@@ -34,6 +42,7 @@ export default function SeekerSignUp() {
   const [confPassword, setConfPassword] = useState(false);
   const [confPasswordError, setConfPasswordError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
+  const [flag, setFlag] = useState(false);
 
   const navigate = useNavigate();
 
@@ -77,13 +86,33 @@ export default function SeekerSignUp() {
                     setConfPassword(false);
                     setPasswordError('');
                     setConfPasswordError('');
-                    axios.post('/signup', data).then((response) => {
-                      if (response.data.status === 'success') {
-                        navigate('/login');
-                      } else {
-                        swal('OOPS', response.data.message, 'error');
-                      }
-                    });
+                    // axios.post('/signup', data).then((response) => {
+                    //   if (response.data.status === 'success') {
+                    //     navigate('/login');
+                    //   } else {
+                    //     swal('OOPS', response.data.message, 'error');
+                    //   }
+                    // });
+                    setUserDetails(data);
+                    try {
+                      setUpRecaptcha(`+91${data.phoneNumber}`).then((res) => {
+                        setFlag(true);
+                        setUserOtpConf(res);
+                        navigate('/otp');
+                      });
+                    } catch (error) {
+                      console.log(error);
+                      toast.warning(`${error.message}`, {
+                        position: 'top-right',
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'colored',
+                      });
+                    }
                   } else {
                     setPassword(true);
                     setConfPassword(true);
@@ -117,17 +146,19 @@ export default function SeekerSignUp() {
     } else {
       setTotalRequired('Please enter your Details');
     }
-  //   axios.post('/signup', data).then((response) => {
-  //     if (response.data.status === 'success') {
-  //       navigate('/login');
-  //     } else {
-  //       swal('OOPS', response.data.message, 'error');
-  //     }
-  //   });
-  // };
   };
+  function setUpRecaptcha(number) {
+    const recaptchaVerifier = new RecaptchaVerifier(
+      'recaptcha-seeker-container',
+      {},
+      auth,
+    );
+    recaptchaVerifier.render();
+    return signInWithPhoneNumber(auth, number, recaptchaVerifier);
+  }
   return (
     <ThemeProvider theme={theme}>
+      <ToastContainer />
       <Typography sx={{
         marginLeft: '6%',
         color: '#6096B4',

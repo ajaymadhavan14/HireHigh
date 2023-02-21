@@ -6,6 +6,7 @@ import SeHome from '../pages/seeker/Home';
 import LandingPage from '../pages/seeker/LandingPage';
 import JobViews from '../pages/seeker/JobViews';
 import SingleJobView from '../pages/seeker/SingleJobView';
+import OtpSignUp from '../pages/seeker/OtpSignUp';
 
 function SeekerRouter() {
   return (
@@ -18,6 +19,8 @@ function SeekerRouter() {
         <Route path="/login" element={<SeLogin />} />
 
         <Route path="/signup" element={<SeSignup />} />
+
+        <Route path="/otp" element={<OtpSignUp />} />
 
         <Route path="/home" element={<SeHome />} />
 

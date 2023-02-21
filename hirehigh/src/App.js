@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable no-sequences */
 import './App.css';
 
@@ -14,11 +15,20 @@ import AllBest from './pages/tryPage';
 function App() {
   const [userDetails, setUserDetails] = useState({});
   const [recruiterDetails, setRecruiterDetails] = useState({});
+  const [userOtpConf, setUserOtpConf] = useState({});
+  // const { seekerDetails, setSeekerDetails } = useContext(AuthContext);
+  // const { seekerOtpConf, setSeekerOtpConf } = useContext(AuthContext);
 
   return (
     <Provider store={store}>
-      <AppContext.Provider value={userDetails, setUserDetails,
-      recruiterDetails, setRecruiterDetails}
+      <AppContext.Provider value={{
+        userDetails,
+        setUserDetails,
+        recruiterDetails,
+        setRecruiterDetails,
+        userOtpConf,
+        setUserOtpConf,
+      }}
       >
         <BrowserRouter>
           <Routes>

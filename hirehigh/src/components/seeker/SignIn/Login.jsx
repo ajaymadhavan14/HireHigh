@@ -18,7 +18,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 import { useState } from 'react';
-import axios from '../../axios/axios';
+import axios from '../../../axios/axios';
 
 const theme = createTheme();
 

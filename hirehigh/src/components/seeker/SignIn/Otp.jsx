@@ -23,8 +23,8 @@ export default function SeekerOTP() {
   const [minutes, setMinutes] = useState(1);
   const [seconds, setSeconds] = useState(30);
   const [captchaDiv, setCaptchaDiv] = useState(false);
-  const { seekerDetails, setSeekerDetails } = useContext(AuthContext);
-  const { seekerOtpConf, setSeekerOtpConf } = useContext(AuthContext);
+  const { userDetails, setUserDetails } = useContext(AuthContext);
+  const { userOtpConf, setUserOtpConf } = useContext(AuthContext);
 
   //   useEffect(() => {
   //     if (Object.keys(seekerDetails) === 0) {
@@ -54,8 +54,8 @@ export default function SeekerOTP() {
 
   const resendOTP = () => {
     setCaptchaDiv(false);
-    setUpRecaptcha(`+91${seekerDetails.phoneNo}`).then((res) => {
-      setSeekerOtpConf(res);
+    setUpRecaptcha(`+91${userDetails.phoneNumber}`).then((res) => {
+      setUserOtpConf(res);
       setMinutes(1);
       setSeconds(30);
       setCaptchaDiv(true);
@@ -118,7 +118,7 @@ export default function SeekerOTP() {
 
   function setUpRecaptcha(number) {
     const recaptchaVerifier = new RecaptchaVerifier(
-      'recaptcha-Seeker-container',
+      'recaptcha-seeker-container',
       {},
       auth,
     );
@@ -189,7 +189,7 @@ export default function SeekerOTP() {
                 {captchaDiv ? ''
                   : (
                     <Grid item xs={12} sx={{ px: 2 }}>
-                      <div style={{ marginTop: '5px' }} id="recaptcha-Seeker-container" />
+                      <div style={{ marginTop: '5px' }} id="recaptcha-seeker-container" />
                     </Grid>
                   )}
                 <div className="countdown-text" style={{ display: 'flex', marginTop: '20px', justifyContent: 'center' }}>

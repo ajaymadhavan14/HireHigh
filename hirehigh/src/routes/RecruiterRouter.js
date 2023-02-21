@@ -6,6 +6,7 @@ import ReHome from '../pages/recruiter/Home';
 import ProfileShow from '../pages/recruiter/ProfileShow';
 import AddJobForm from '../pages/recruiter/AddJobForm';
 import MyJobs from '../pages/recruiter/MyJobs';
+import JobEdit from '../pages/recruiter/JobEdit';
 
 function RecruiterRouter() {
   return (
@@ -22,6 +23,8 @@ function RecruiterRouter() {
         <Route path="/profile" element={<ProfileShow />} />
 
         <Route path="/add_job" element={<AddJobForm />} />
+
+        <Route path="/edit_jobs" element={<JobEdit />} />
 
         <Route path="/jobs" element={<MyJobs />} />
 

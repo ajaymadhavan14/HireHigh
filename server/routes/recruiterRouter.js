@@ -14,5 +14,7 @@ router.get('/get_profile', recruiterController.getProfile);
 router.get('/jobs', recruiterController.jobsList);
 router.get('/get_cat', recruiterController.getCategoryRec);
 router.patch('/job_dele', recruiterController.DeleteJob);
+router.get('/job_edit', recruiterController.getDataForEdit);
+router.post('/edit_job', recruiterController.EditJobPostData);
 
 export default router;

@@ -19,7 +19,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { RecruiterSideJobList, RecruiterJobDele } from '../../../apis/RecruiterApi';
+import { RecruiterSideJobList, RecruiterJobDele, RecruiterJobEdit } from '../../../apis/RecruiterApi';
 
 export default function RecruiterJobList(props) {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -88,6 +88,13 @@ export default function RecruiterJobList(props) {
     });
   };
 
+  const editJob = async (id) => {
+    await RecruiterJobEdit(id).then((response) => {
+      console.log(response, '11111111111111111111111');
+      navigate('/recruiter/edit_jobs', { state: response });
+    });
+  };
+
   return (
     <Box>
       <ToastContainer />
@@ -122,6 +129,12 @@ export default function RecruiterJobList(props) {
                 </StyledTableCell>
                 <StyledTableCell align="center">{el?.jobCategory?.name}</StyledTableCell>
                 <StyledTableCell align="center">{el?.salaryRange}</StyledTableCell>
+                <StyledTableCell align="center">
+                  <Button variant="contained" sx={{ bgcolor: 'blue' }} onClick={() => editJob(el?._id)}>
+                    Edit
+                  </Button>
+
+                </StyledTableCell>
                 <StyledTableCell align="center">
                   <Button variant="contained" sx={{ bgcolor: 'red' }} onClick={() => deleteJob(el?._id)}>
                     Dele

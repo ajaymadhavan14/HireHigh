@@ -53,3 +53,12 @@ export const RecruiterJobDele = async (id) => {
     return error;
   }
 };
+
+export const RecruiterJobEdit = async (id) => {
+  try {
+    const { data } = await axios.get(`/recruiter/job_edit?id=${id}`);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

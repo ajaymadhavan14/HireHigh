@@ -45,8 +45,16 @@ export default function SeekerSignUp() {
   const [flag, setFlag] = useState(false);
 
   const navigate = useNavigate();
-
-  const handleSubmit = (event) => {
+  function setUpRecaptcha(number) {
+    const recaptchaVerifier = new RecaptchaVerifier(
+      'recaptcha-seeker-container',
+      {},
+      auth,
+    );
+    recaptchaVerifier.render();
+    return signInWithPhoneNumber(auth, number, recaptchaVerifier);
+  }
+  const handleSubmit = async (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
     data = {
@@ -95,7 +103,8 @@ export default function SeekerSignUp() {
                     // });
                     setUserDetails(data);
                     try {
-                      setUpRecaptcha(`+91${data.phoneNumber}`).then((res) => {
+                      console.log(data.phoneNumber);
+                      await setUpRecaptcha(`+91${data.phoneNumber}`).then((res) => {
                         setFlag(true);
                         setUserOtpConf(res);
                         navigate('/otp');
@@ -147,15 +156,6 @@ export default function SeekerSignUp() {
       setTotalRequired('Please enter your Details');
     }
   };
-  function setUpRecaptcha(number) {
-    const recaptchaVerifier = new RecaptchaVerifier(
-      'recaptcha-seeker-container',
-      {},
-      auth,
-    );
-    recaptchaVerifier.render();
-    return signInWithPhoneNumber(auth, number, recaptchaVerifier);
-  }
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer />

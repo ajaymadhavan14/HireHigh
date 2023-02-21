@@ -164,7 +164,7 @@ const getProfile = async (req, res, next) => {
 const jobsList = async (req, res, next) => {
   try {
     const data = await jobPostModel.find({ recruiterId: req.query.recruiterId }).populate('jobCategory');
-    console.log(data);
+    // console.log(data);
     if (data.length > 0) {
       res.json({ data });
     } else {
@@ -193,6 +193,46 @@ const DeleteJob = async (req, res, next) => {
   }
 };
 
+const getDataForEdit = async (req, res, next) => {
+  try {
+    const data = await jobPostModel.findById(req.query.id);
+    console.log(data);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const EditJobPostData = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    const {
+      jobTitle, companyName, jobCategory, jobQualification, jobDiscription,
+      responsibilities, workPlace, salaryRange, jobType, image, location, vaccancy,
+    } = req.body;
+    await jobPostModel.findByIdAndUpdate(req.query.jobid, {
+      $set: {
+        jobTitle,
+        companyName,
+        jobCategory,
+        jobQualification,
+        jobDiscription,
+        responsibilities,
+        workPlace,
+        salaryRange,
+        jobType,
+        image,
+        location,
+        vaccancy,
+
+      },
+    });
+    res.json({ status: 'success' });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   recruiterSignUpPost,
   recruiterSignInPost,
@@ -204,4 +244,6 @@ export default {
   jobsList,
   getCategoryRec,
   DeleteJob,
+  getDataForEdit,
+  EditJobPostData,
 };

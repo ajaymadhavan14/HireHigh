@@ -1,7 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-shadow */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,17 +12,18 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import FormLabel from '@mui/material/FormLabel';
 import Select from '@mui/material/Select';
 import swal from 'sweetalert';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { color } from '@mui/system';
 import { storage } from '../../../firebase/Config';
 import axios from '../../../axios/axios';
 import { getCategory } from '../../../apis/RecruiterApi';
 
 const theme = createTheme();
-export default function RecruiterJobPost({ id }) {
+export default function RecruiterJobEdit() {
   const [jobTitle, setJobTitle] = useState(false);
   const [jobTitleError, setJobTitleError] = useState('');
   const [companyName, setCompanyName] = useState(false);
@@ -53,6 +50,10 @@ export default function RecruiterJobPost({ id }) {
   const [vaccancyError, setVaccancyError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const id = state?._id;
+  console.log('hello');
+  console.log(state, '333333333333333333333333333');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -106,7 +107,7 @@ export default function RecruiterJobPost({ id }) {
             data.image = '';
           }
           console.log(data);
-          axios.post(`/recruiter/add_job?id=${id}`, data).then((response) => {
+          axios.post(`/recruiter/edit_job?jobid=${id}`, data).then((response) => {
             if (response.data.status === 'success') {
               navigate('/recruiter/jobs');
             } else {
@@ -171,6 +172,7 @@ export default function RecruiterJobPost({ id }) {
                 error={jobTitle}
                 helperText={jobTitleError}
                 autoFocus
+                defaultValue={state.jobTitle}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -185,6 +187,8 @@ export default function RecruiterJobPost({ id }) {
                 error={companyName}
                 helperText={companyNameError}
                 autoFocus
+                defaultValue={state.companyName}
+
               />
             </Grid>
           </Grid>
@@ -202,6 +206,7 @@ export default function RecruiterJobPost({ id }) {
                   label="Category"
                   error={jobCategory}
                   helperText={jobCategoryError}
+                  defaultValue={state.jobCategory}
                 >
                   {cat.map((el) => (
                     <MenuItem value={el?._id}>{el?.name}</MenuItem>
@@ -221,6 +226,8 @@ export default function RecruiterJobPost({ id }) {
                 autoComplete="workPlace"
                 error={workPlace}
                 helperText={workPlaceError}
+                defaultValue={state.workPlace}
+
               />
             </Grid>
           </Grid>
@@ -239,6 +246,8 @@ export default function RecruiterJobPost({ id }) {
               autoComplete="jobDiscription"
               error={jobDiscription}
               helperText={jobDiscriptionError}
+              defaultValue={state.jobDiscription}
+
             />
           </Grid>
           <Grid item xs={12} py={2} maxWidth="md">
@@ -256,6 +265,8 @@ export default function RecruiterJobPost({ id }) {
               autoComplete="jobQualification"
               error={jobQualification}
               helperText={jobQualificationError}
+              defaultValue={state.jobQualification}
+
             />
           </Grid>
           <Grid item xs={12} py={2} maxWidth="md">
@@ -273,6 +284,8 @@ export default function RecruiterJobPost({ id }) {
               autoComplete="responsibilities"
               error={responsibilities}
               helperText={responsibilitiesError}
+              defaultValue={state.responsibilities}
+
             />
           </Grid>
           <Grid container spacing={2} py={2}>
@@ -287,6 +300,7 @@ export default function RecruiterJobPost({ id }) {
                 autoComplete="jobType"
                 error={jobType}
                 helperText={jobTypeError}
+                defaultValue={state.jobType}
               />
             </Grid>
 
@@ -301,11 +315,14 @@ export default function RecruiterJobPost({ id }) {
                 autoComplete="salaryRange"
                 error={salaryRange}
                 helperText={salaryRangeError}
+                defaultValue={state.salaryRange}
+
               />
             </Grid>
 
           </Grid>
           <Grid container spacing={2}>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 required
@@ -317,20 +334,22 @@ export default function RecruiterJobPost({ id }) {
                 autoComplete="vaccancy"
                 error={vaccancy}
                 helperText={vaccancyError}
+                defaultValue={state.vaccancy}
               />
             </Grid>
-
             <Grid item xs={12} sm={6}>
               <TextField
                 required
                 fullWidth
                 id="location"
                 type="text"
-                label="Location"
+                label="Company Location"
                 name="location"
                 autoComplete="location"
                 error={location}
                 helperText={locationError}
+                defaultValue={state.location}
+
               />
             </Grid>
           </Grid>
@@ -350,17 +369,16 @@ export default function RecruiterJobPost({ id }) {
                 helperText={imageError}
               />
             </Grid>
-            <Grid item xs={12} sm={6} />
+            <Grid item xs={12} sm={6} sx={{ marginTop: 'auto' }}>
+              { state.image
+                ? <img style={{ width: '30vh', height: '20vh' }} src={state.image} alt="loading" />
+                : <FormLabel sx={{ marginTop: '50px', color: 'red' }}>No Photo</FormLabel> }
+            </Grid>
           </Grid>
           <Box sx={{ backgroundColor: '#ffc5c5', borderRadius: '3px', pl: 2 }}>
             <p style={{ color: 'red' }}>{totalRequired}</p>
           </Box>
           <Grid container spacing={2} py={2} sx={{ justifyContent: 'flex-end' }}>
-            {/* <Grid>
-              <Link onClick={() => { navigate('/recruiter/login'); }} component="button">
-                Already have an account? Sign in
-              </Link>
-            </Grid> */}
             <Grid pl={2}>
               <Button
                 type="submit"

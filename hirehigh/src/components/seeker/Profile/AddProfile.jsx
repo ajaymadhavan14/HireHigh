@@ -43,6 +43,8 @@ export default function SeekerAddprofile() {
   const [salaryRangeError, setSalaryRangeError] = useState('');
   const [location, setLocation] = useState(false);
   const [locationError, setLocationError] = useState('');
+  const [experiance, setExperiance] = useState(false);
+  const [experianceError, setExperianceError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
   const navigate = useNavigate();
 
@@ -58,9 +60,9 @@ export default function SeekerAddprofile() {
       salaryRange: data.get('salaryRange'),
       age: data.get('age'),
       image: data.get('image'),
-
+      experiance: data.get('experiance'),
     };
-    if (data.position && data.headline && data.qualification
+    if (data.position && data.headline && data.qualification && data.experiance
       && data.discription && data.age && data.location
          && data.salaryRange) {
       const regName = /^[a-zA-Z ]*$/;
@@ -238,6 +240,19 @@ export default function SeekerAddprofile() {
               autoComplete="qualification"
               error={qualification}
               helperText={qualificationError}
+            />
+          </Grid>
+          <Grid item xs={12} py={2}>
+            <TextField
+              required
+              fullWidth
+              id="experiance"
+              type="text"
+              label="Experiance"
+              name="experiance"
+              autoComplete="experiance"
+              error={experiance}
+              helperText={experianceError}
             />
           </Grid>
           <Grid item xs={12} py={2} maxWidth="md">

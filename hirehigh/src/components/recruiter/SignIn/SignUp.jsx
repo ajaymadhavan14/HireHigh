@@ -16,16 +16,23 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import swal from 'sweetalert';
-import { storage } from '../../firebase/Config';
-import axios from '../../axios/axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
+import { auth, storage } from '../../../firebase/Config';
+import AuthContext from '../../../context/AppContext';
+import axios from '../../../axios/axios';
 
 const theme = createTheme();
 export default function RetSingnUP() {
+  const { recruiterDetails, setRecruiterDetails } = useContext(AuthContext);
+  const { recruiterOtpConf, setRecruiterOtpConf } = useContext(AuthContext);
+
   const [userName, setUserName] = useState(false);
   const [userNameError, setUserNameError] = useState('');
   const [companyName, setCompanyName] = useState(false);
@@ -47,8 +54,19 @@ export default function RetSingnUP() {
   const [confPassword, setConfPassword] = useState(false);
   const [confPasswordError, setConfPasswordError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
+  const [flag, setFlag] = useState(false);
+
   const navigate = useNavigate();
 
+  function setUpRecaptcha(number) {
+    const recaptchaVerifier = new RecaptchaVerifier(
+      'recaptcha-recruiter-container',
+      {},
+      auth,
+    );
+    recaptchaVerifier.render();
+    return signInWithPhoneNumber(auth, number, recaptchaVerifier);
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
@@ -117,13 +135,34 @@ export default function RetSingnUP() {
                     } else {
                       data.image = '';
                     }
-                    axios.post('/recruiter/signup', data).then((response) => {
-                      if (response.data.status === 'success') {
-                        navigate('/recruiter/login');
-                      } else {
-                        swal('OOPS', response.data.message, 'error');
-                      }
-                    });
+                    // axios.post('/recruiter/signup', data).then((response) => {
+                    //   if (response.data.status === 'success') {
+                    //     navigate('/recruiter/login');
+                    //   } else {
+                    //     swal('OOPS', response.data.message, 'error');
+                    //   }
+                    // });
+                    setRecruiterDetails(data);
+                    try {
+                      console.log(data.phoneNumber);
+                      await setUpRecaptcha(`+91${data.phoneNumber}`).then((res) => {
+                        setFlag(true);
+                        setRecruiterOtpConf(res);
+                        navigate('/recruiter/otp');
+                      });
+                    } catch (error) {
+                      console.log(error);
+                      toast.warning(`${error.message}`, {
+                        position: 'top-right',
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'colored',
+                      });
+                    }
                   } else {
                     setPassword(true);
                     setConfPassword(true);
@@ -339,6 +378,7 @@ export default function RetSingnUP() {
             <p style={{ color: 'red' }}>{totalRequired}</p>
           </Box>
           <Grid container spacing={2} py={2} sx={{ justifyContent: 'flex-end' }}>
+            <div id="recaptcha-recruiter-container" />
             <Grid>
               <Link onClick={() => { navigate('/recruiter/login'); }} component="button">
                 Already have an account? Sign in

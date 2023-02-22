@@ -17,7 +17,7 @@ import BusinessIcon from '@mui/icons-material/Business';
 import swal from 'sweetalert';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from '../../axios/axios';
+import axios from '../../../axios/axios';
 
 const theme = createTheme();
 

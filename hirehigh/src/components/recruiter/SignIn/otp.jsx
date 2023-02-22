@@ -19,17 +19,17 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../../context/AppContext';
 import { auth } from '../../../firebase/Config';
-import { seekerSignupApi } from '../../../apis/SeekerApi';
+import { recruiterSignupApi } from '../../../apis/RecruiterApi';
 
 const theme = createTheme();
 
-export default function SeekerOTP() {
+export default function RecruiterOTP() {
   const navigate = useNavigate();
   const [minutes, setMinutes] = useState(1);
   const [seconds, setSeconds] = useState(30);
   const [captchaDiv, setCaptchaDiv] = useState(false);
-  const { userDetails, setUserDetails } = useContext(AuthContext);
-  const { userOtpConf, setUserOtpConf } = useContext(AuthContext);
+  const { recruiterDetails, setRecruiterDetails } = useContext(AuthContext);
+  const { recruiterOtpConf, setRecruiterOtpConf } = useContext(AuthContext);
 
   //   useEffect(() => {
   //     if (Object.keys(seekerDetails) === 0) {
@@ -59,8 +59,8 @@ export default function SeekerOTP() {
 
   const resendOTP = () => {
     setCaptchaDiv(false);
-    setUpRecaptcha(`+91${userDetails.phoneNumber}`).then((res) => {
-      setUserOtpConf(res);
+    setUpRecaptcha(`+91${recruiterDetails.phoneNumber}`).then((res) => {
+      setRecruiterOtpConf(res);
       setMinutes(1);
       setSeconds(30);
       setCaptchaDiv(true);
@@ -81,8 +81,8 @@ export default function SeekerOTP() {
       setOtpErr('Please Enter The Otp number');
     } else {
       try {
-        await userOtpConf.confirm(data.otp);
-        const response = await seekerSignupApi(userDetails);
+        await recruiterOtpConf.confirm(data.otp);
+        const response = await recruiterSignupApi(recruiterDetails);
         if (response.status === 'success') {
           toast.success('Registered', {
             position: 'top-right',
@@ -94,10 +94,7 @@ export default function SeekerOTP() {
             progress: undefined,
             theme: 'colored',
           });
-          navigate('/login');
-          setTimeout(() => {
-            localStorage.setItem('Seekertoken', response.token);
-          }, 2000);
+          navigate('/recruiter/login');
         } else {
           toast.error('This email is already registered!', {
             position: 'top-right',
@@ -124,7 +121,7 @@ export default function SeekerOTP() {
 
   function setUpRecaptcha(number) {
     const recaptchaVerifier = new RecaptchaVerifier(
-      'recaptcha-seeker-container',
+      'recaptcha-recruiter-container',
       {},
       auth,
     );
@@ -176,8 +173,8 @@ export default function SeekerOTP() {
                 onSubmit={handleSubmit}
                 sx={{ mt: 1 }}
               >
-                <FormLabel>Please Enter Your OTP</FormLabel>
-                <Grid container spacing={2}>
+                <FormLabel component="h1" variant="h6">Please Enter Your OTP</FormLabel>
+                <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                   <Grid item xs={12}>
                     <TextField
                       required
@@ -195,7 +192,7 @@ export default function SeekerOTP() {
                 {captchaDiv ? ''
                   : (
                     <Grid item xs={12} sx={{ px: 2 }}>
-                      <div style={{ marginTop: '5px' }} id="recaptcha-seeker-container" />
+                      <div style={{ marginTop: '5px' }} id="recaptcha-recruiter-container" />
                     </Grid>
                   )}
                 <div className="countdown-text" style={{ display: 'flex', marginTop: '20px', justifyContent: 'center' }}>

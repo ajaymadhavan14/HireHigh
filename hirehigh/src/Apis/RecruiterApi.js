@@ -1,5 +1,13 @@
 import axios from '../axios/axios';
 
+export const recruiterSignupApi = async (recruiterData) => {
+  try {
+    const { data } = await axios.post('/recruiter/signup', recruiterData);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
 export const isBlocked = async (recruiterId) => {
   try {
     const { data } = await axios.patch(`/recruiter/blocked?recruiterId=${recruiterId}`);

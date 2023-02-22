@@ -36,6 +36,41 @@ const userSignup = new Schema(
     image: {
       type: String,
     },
+    headline: {
+      type: String,
+    },
+    position: {
+      type: String,
+    },
+    location: {
+      type: String,
+    },
+    qualification: {
+      type: String,
+    },
+    discription: {
+      type: String,
+    },
+    salaryRange: {
+      type: String,
+    },
+    age: {
+      type: String,
+    },
+    experiance: {
+      type: String,
+    },
+    job: [
+      {
+        jobId: {
+          type: Schema.Types.ObjectId,
+          ref: 'jobPost',
+        },
+        applied: {
+          type: Boolean,
+        },
+      },
+    ],
   },
   { timestamps: true },
 );

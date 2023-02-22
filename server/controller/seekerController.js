@@ -86,6 +86,7 @@ const isUserAuth = async (req, res, next) => {
         email: userDetails.email,
         auth: true,
         image: userDetails.image || null,
+        job: userDetails.job,
       });
     } else {
       res.json({ status: 'failed' });
@@ -132,10 +133,13 @@ const jobApply = async (req, res, next) => {
   try {
     console.log(req.body);
     console.log(req.query.id);
-    const data = await jobModel.findByIdAndUpdate(req.query.id, {
-      applied: true,
-      users: { userId: req.body.id },
+    const userData = await userModel.findOneAndUpdate({ _id: req.body.id }, {
+      $push: { job: { jobId: req.query.id, applied: true } },
     });
+    const data = await jobModel.findOneAndUpdate({ _id: req.query.id }, {
+      $push: { users: { userId: req.body.id } },
+    });
+    console.log(userData);
     console.log(data);
     res.json({ status: 'success' });
   } catch (error) {

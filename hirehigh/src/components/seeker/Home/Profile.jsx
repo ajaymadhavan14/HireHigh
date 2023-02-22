@@ -159,7 +159,7 @@ export default function SeekerHome() {
         //     'Your file has been deleted.',
         //     'success'
         // )
-        navigate('/recruiter/login');
+        navigate('/');
       }
     });
   };

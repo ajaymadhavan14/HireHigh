@@ -39,7 +39,7 @@ import MenuItem from '@mui/material/MenuItem';
 import WorkIcon from '@mui/icons-material/Work';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal2 from 'sweetalert2';
 import swal from 'sweetalert';
@@ -118,6 +118,7 @@ export default function SeekerSingleJobView() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch(userDetails);
+  const [refresh, setRefresh] = useState(false);
   useEffect(() => {
     axios.get('/isUserAuth', {
       headers: { 'u-access-token': localStorage.getItem('usertoken') },
@@ -134,7 +135,7 @@ export default function SeekerSingleJobView() {
         dispatch(userDetails(response.data));
       }
     });
-  }, []);
+  }, [refresh]);
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -159,7 +160,7 @@ export default function SeekerSingleJobView() {
         //     'Your file has been deleted.',
         //     'success'
         // )
-        navigate('/recruiter/login');
+        navigate('/');
       }
     });
   };

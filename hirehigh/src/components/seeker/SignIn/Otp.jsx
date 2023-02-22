@@ -95,9 +95,6 @@ export default function SeekerOTP() {
             theme: 'colored',
           });
           navigate('/login');
-          setTimeout(() => {
-            localStorage.setItem('Seekertoken', response.token);
-          }, 2000);
         } else {
           toast.error('This email is already registered!', {
             position: 'top-right',
@@ -177,7 +174,7 @@ export default function SeekerOTP() {
                 sx={{ mt: 1 }}
               >
                 <FormLabel>Please Enter Your OTP</FormLabel>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                   <Grid item xs={12}>
                     <TextField
                       required

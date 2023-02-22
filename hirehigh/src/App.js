@@ -16,8 +16,7 @@ function App() {
   const [userDetails, setUserDetails] = useState({});
   const [recruiterDetails, setRecruiterDetails] = useState({});
   const [userOtpConf, setUserOtpConf] = useState({});
-  // const { seekerDetails, setSeekerDetails } = useContext(AuthContext);
-  // const { seekerOtpConf, setSeekerOtpConf } = useContext(AuthContext);
+  const [recruiterOtpConf, setRecruiterOtpConf] = useState([]);
 
   return (
     <Provider store={store}>
@@ -28,6 +27,8 @@ function App() {
         setRecruiterDetails,
         userOtpConf,
         setUserOtpConf,
+        recruiterOtpConf,
+        setRecruiterOtpConf,
       }}
       >
         <BrowserRouter>

@@ -7,6 +7,7 @@ import ProfileShow from '../pages/recruiter/ProfileShow';
 import AddJobForm from '../pages/recruiter/AddJobForm';
 import MyJobs from '../pages/recruiter/MyJobs';
 import JobEdit from '../pages/recruiter/JobEdit';
+import OtpSignUp from '../pages/recruiter/OtpSignUp';
 
 function RecruiterRouter() {
   return (
@@ -17,6 +18,8 @@ function RecruiterRouter() {
         <Route path="/login" element={<ReLogin />} />
 
         <Route path="/signup" element={<ReSingup />} />
+
+        <Route path="/otp" element={<OtpSignUp />} />
 
         <Route path="/home" element={<ReHome />} />
 

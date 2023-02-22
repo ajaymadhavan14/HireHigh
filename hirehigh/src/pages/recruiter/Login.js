@@ -1,5 +1,5 @@
 import React from 'react';
-import VendorSignIn from '../../components/Recruiter/Login';
+import VendorSignIn from '../../components/Recruiter/SignIn/Login';
 
 function Login() {
   return (

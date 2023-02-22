@@ -159,7 +159,7 @@ export default function SeekerJobView() {
         //     'Your file has been deleted.',
         //     'success'
         // )
-        navigate('/recruiter/login');
+        navigate('/');
       }
     });
   };
@@ -278,7 +278,7 @@ export default function SeekerJobView() {
                   justifyContent: open ? 'initial' : 'last',
                   px: 2.5,
                 }}
-                onClick={() => navigate('/recruiter/jobs')}
+                onClick={() => navigate('/jobs')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,

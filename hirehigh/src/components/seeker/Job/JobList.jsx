@@ -38,9 +38,9 @@ export default function JobCard(props) {
     }
     invoke();
   }, [refresh]);
-  console.log(props);
+  const user = props?.data;
+  console.log(user, '111111111111111111111111');
   const apply = async (id) => {
-    const user = props?.data;
     await jobApply(id, user).then((response) => {
       console.log(response);
       if (response.data.status === 'success') {
@@ -55,7 +55,7 @@ export default function JobCard(props) {
       {jobs.map((el) => (
         <Card sx={{ minWidth: 275 }} key={el?.id}>
           <CardContent sx={{ display: 'flex', flexDirection: 'row' }} key={el?.id}>
-            <img src={el?.image} alt="" style={{ width: '20vh' }} />
+            <img src={el?.image} alt="...loading" style={{ width: '20vh' }} />
             <Box sx={{ marginLeft: '8vh', alignSelf: 'center' }}>
               <Box sx={{ justifyContent: 'space-between' }}>
                 <Typography variant="h5" component="div">
@@ -70,11 +70,11 @@ export default function JobCard(props) {
               </Box>
             </Box>
             <Box sx={{ alignSelf: 'center', ml: 'auto' }}>
-              {el?.applied
+              {user.job.some((element) => element.jobId === el._id)
                 ? (
                   <Button
                         // eslint-disable-next-line no-underscore-dangle
-                    // onClick={() => apply(el?._id)}
+                    onClick={() => apply(el?._id)}
                     variant="contained"
                     sx={{
                       backgroundColor: 'green', color: '#fff', fontWeight: '800', pointerEvents: 'none',
@@ -83,6 +83,7 @@ export default function JobCard(props) {
                     Applied
                   </Button>
                 )
+
                 : (
                   <Button
                         // eslint-disable-next-line no-underscore-dangle

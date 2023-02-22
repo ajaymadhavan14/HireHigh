@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
+/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,7 +20,6 @@ import FormLabel from '@mui/material/FormLabel';
 import Select from '@mui/material/Select';
 import swal from 'sweetalert';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
-import { color } from '@mui/system';
 import { storage } from '../../../firebase/Config';
 import axios from '../../../axios/axios';
 import { getCategory } from '../../../apis/RecruiterApi';
@@ -52,8 +54,6 @@ export default function RecruiterJobEdit() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const id = state?._id;
-  console.log('hello');
-  console.log(state, '333333333333333333333333333');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -104,7 +104,7 @@ export default function RecruiterJobEdit() {
               data.image = downloadURL;
             });
           } else {
-            data.image = '';
+            data.image = state.image;
           }
           console.log(data);
           axios.post(`/recruiter/edit_job?jobid=${id}`, data).then((response) => {
@@ -131,8 +131,6 @@ export default function RecruiterJobEdit() {
     async function invoke() {
       const res = await getCategory();
       setCat(res);
-
-      console.log(res);
     }
     invoke();
   }, []);
@@ -154,7 +152,7 @@ export default function RecruiterJobEdit() {
             }}
           >
             <Typography component="h1" variant="h5">
-              Post a Job
+              Edit a Job Post
             </Typography>
           </Grid>
 

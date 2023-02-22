@@ -45,6 +45,7 @@ import swal from 'sweetalert';
 import Swal2 from 'sweetalert2';
 import axios from '../../../axios/axios';
 import { userDetails } from '../../../redux/seeker';
+import SeekerAddprofile from '../Profile/AddProfile';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -231,7 +232,7 @@ export default function SeekerHome() {
               >
 
                 <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={() => navigate('/profile')}>Profile</Typography>
+                  <Typography textAlign="center">Profile</Typography>
                 </MenuItem>
                 <MenuItem onClick={LogOut}>
                   <Typography textAlign="center">Logout</Typography>
@@ -429,35 +430,7 @@ export default function SeekerHome() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                />
-              </Grid>
-              {/* Recent Deposits */}
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
-              </Grid>
-            </Grid>
+            <SeekerAddprofile />
           </Container>
         </Box>
       </Box>

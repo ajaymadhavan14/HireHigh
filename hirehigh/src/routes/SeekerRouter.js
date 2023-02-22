@@ -7,6 +7,7 @@ import LandingPage from '../pages/seeker/LandingPage';
 import JobViews from '../pages/seeker/JobViews';
 import SingleJobView from '../pages/seeker/SingleJobView';
 import OtpSignUp from '../pages/seeker/OtpSignUp';
+import ProfileShow from '../pages/seeker/ProfileShow';
 
 function SeekerRouter() {
   return (
@@ -27,6 +28,8 @@ function SeekerRouter() {
         <Route path="/jobs" element={<JobViews />} />
 
         <Route path="/job_view" element={<SingleJobView />} />
+
+        <Route path="/profile" element={<ProfileShow />} />
 
       </Routes>
 

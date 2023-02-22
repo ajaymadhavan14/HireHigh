@@ -207,7 +207,7 @@ export default function SeekerJobView() {
                   endIcon={<KeyboardArrowDownIcon />}
                   onClick={handleOpenUserMenu}
                 >
-                  Ajay
+                  {user?.username}
                 </Button>
 
                 {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -232,7 +232,7 @@ export default function SeekerJobView() {
               >
 
                 <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">Profile</Typography>
+                  <Typography textAlign="center" onClick={() => navigate('/profile')}>Profile</Typography>
                 </MenuItem>
                 <MenuItem onClick={LogOut}>
                   <Typography textAlign="center">Logout</Typography>

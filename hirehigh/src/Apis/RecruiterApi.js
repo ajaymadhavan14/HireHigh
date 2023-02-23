@@ -70,3 +70,12 @@ export const RecruiterJobEdit = async (id) => {
     return error;
   }
 };
+
+export const getProfileData = async (id) => {
+  try {
+    const { data } = await axios.get(`/recruiter/get_profile_data?recruiterId=${id}`);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

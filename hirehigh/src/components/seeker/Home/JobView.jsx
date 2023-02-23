@@ -46,6 +46,7 @@ import swal from 'sweetalert';
 import axios from '../../../axios/axios';
 import { userDetails } from '../../../redux/seeker';
 import JobCard from '../Job/JobList';
+import { searchProfileData } from '../../../apis/SeekerApi';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -124,7 +125,7 @@ export default function SeekerJobView() {
     }).then((response) => {
       console.log(response.data);
       if (!response.data.auth) {
-        if (response.data.status === 'failed') {
+        if (response.data.status === 'blocked') {
           swal('Your profile blocked');
           navigate('/');
         } else {
@@ -160,6 +161,16 @@ export default function SeekerJobView() {
         //     'success'
         // )
         navigate('/');
+      }
+    });
+  };
+
+  const getSearchProfile = async () => {
+    await searchProfileData(user.id).then((response) => {
+      if (response.status === 'success') {
+        navigate('/profile');
+      } else {
+        navigate('/add_profile');
       }
     });
   };
@@ -232,10 +243,10 @@ export default function SeekerJobView() {
               >
 
                 <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={() => navigate('/profile')}>Profile</Typography>
+                  <Typography textAlign="center" onClick={getSearchProfile}>Profile</Typography>
                 </MenuItem>
-                <MenuItem onClick={LogOut}>
-                  <Typography textAlign="center">Logout</Typography>
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" onClick={LogOut}>Logout</Typography>
                 </MenuItem>
 
               </Menu>

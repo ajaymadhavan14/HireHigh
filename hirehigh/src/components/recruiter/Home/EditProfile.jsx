@@ -31,22 +31,14 @@ import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import MessageIcon from '@mui/icons-material/Message';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
-import Menu from '@mui/material/Menu';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import WorkIcon from '@mui/icons-material/Work';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import swal from 'sweetalert';
 import Swal2 from 'sweetalert2';
+import swal from 'sweetalert';
 import axios from '../../../axios/axios';
-import { userDetails } from '../../../redux/seeker';
-import SeekerAddprofile from '../Profile/AddProfile';
-import { searchProfileData } from '../../../apis/SeekerApi';
+import { recruiterDetails } from '../../../redux/recruiter';
+import RecruiterPrfileData from '../Profile/EditProfile';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -105,23 +97,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-export default function SeekerAddProfileData() {
-  const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
+export default function RecruiterProfileEdit() {
   const navigate = useNavigate();
-  const dispatch = useDispatch(userDetails);
+  const dispatch = useDispatch(recruiterDetails);
   useEffect(() => {
-    axios.get('/isUserAuth', {
-      headers: { 'u-access-token': localStorage.getItem('usertoken') },
+    axios.get('/recruiter/isRecruiterAuth', {
+      headers: { 'r-access-token': localStorage.getItem('recruitertoken') },
     }).then((response) => {
       console.log(response.data);
       if (!response.data.auth) {
@@ -132,7 +113,7 @@ export default function SeekerAddProfileData() {
           navigate('/');
         }
       } else {
-        dispatch(userDetails(response.data));
+        dispatch(recruiterDetails(response.data));
       }
     });
   }, []);
@@ -141,7 +122,7 @@ export default function SeekerAddProfileData() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const { user } = useSelector((state) => state.userInfo);
+  const { recruiter } = useSelector((state) => state.recruiterInfo);
 
   const LogOut = () => {
     Swal2.fire({
@@ -160,17 +141,7 @@ export default function SeekerAddProfileData() {
         //     'Your file has been deleted.',
         //     'success'
         // )
-        navigate('/');
-      }
-    });
-  };
-
-  const getSearchProfile = async () => {
-    await searchProfileData(user.id).then((response) => {
-      if (response.status === 'success') {
-        navigate('/profile');
-      } else {
-        navigate('/add_profile');
+        navigate('/recruiter/login');
       }
     });
   };
@@ -206,51 +177,11 @@ export default function SeekerAddProfileData() {
             >
               HIREHIGH
             </Typography>
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip>
-                <Button
-                  id="demo-customized-button"
-                  aria-controls={open ? 'demo-customized-menu' : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={open ? 'true' : undefined}
-                  variant="contained"
-                  disableElevation
-                  endIcon={<KeyboardArrowDownIcon />}
-                  onClick={handleOpenUserMenu}
-                >
-                  {user?.username}
-                </Button>
-
-                {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton> */}
-              </Tooltip>
-              <Menu
-                sx={{ mt: '45px' }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={getSearchProfile}>Profile</Typography>
-                </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={LogOut}>Logout</Typography>
-                </MenuItem>
-
-              </Menu>
-            </Box>
+            <IconButton color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -261,6 +192,7 @@ export default function SeekerAddProfileData() {
           </DrawerHeader>
           <Divider />
           <List>
+
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -268,7 +200,7 @@ export default function SeekerAddProfileData() {
                   justifyContent: open ? 'initial' : 'last',
                   px: 2.5,
                 }}
-                onClick={() => navigate('/home')}
+                onClick={() => navigate('/recruiter/jobs')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -277,29 +209,8 @@ export default function SeekerAddProfileData() {
 
                 }}
                 >
-                  <WorkIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Home</ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'last',
-                  px: 2.5,
-                }}
-                onClick={() => navigate('/jobs')}
-              >
-                <ListItemIcon sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-
-                }}
-                >
-                  <WorkIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Browse Jobs</ListItemText>
+                  <InboxIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>My Jobs</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
@@ -318,7 +229,7 @@ export default function SeekerAddProfileData() {
                 }}
                 >
                   <TaskIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Applied Jobs</ListItemText>
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Hire Candidates</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
@@ -336,8 +247,8 @@ export default function SeekerAddProfileData() {
 
                 }}
                 >
-                  <NotificationsIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Notification</ListItemText>
+                  <NoteAddIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Short List</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
@@ -361,14 +272,16 @@ export default function SeekerAddProfileData() {
               </ListItemButton>
             </ListItem>
           </List>
-          {/* <Divider />
+          <Divider />
           <List>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/home')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -426,7 +339,7 @@ export default function SeekerAddProfileData() {
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
-          </List> */}
+          </List>
         </Drawer>
         <Box
           component="main"
@@ -441,7 +354,7 @@ export default function SeekerAddProfileData() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <SeekerAddprofile user={user} />
+            <RecruiterPrfileData data={recruiter} />
           </Container>
         </Box>
       </Box>

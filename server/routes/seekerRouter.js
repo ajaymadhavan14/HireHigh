@@ -14,5 +14,7 @@ router.post('/job_apply', seekerController.jobApply);
 router.get('/single_view', seekerController.getSingleView);
 router.post('/add_profile', seekerController.AddProfile);
 router.get('/get_data', seekerController.getProfileData);
+router.get('/profile_search', seekerController.searchProfilData);
+router.get('/get_profiledata', seekerController.userDataEditGet);
 
 export default router;

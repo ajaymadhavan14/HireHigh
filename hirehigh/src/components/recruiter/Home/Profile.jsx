@@ -105,7 +105,7 @@ export default function DashboardContent() {
     }).then((response) => {
       console.log(response.data, 'data');
       if (!response.data.auth) {
-        if (response.data.status === 'failed') {
+        if (response.data.status === 'blocked') {
           swal('Your profile blocked');
           navigate('/');
         } else {

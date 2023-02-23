@@ -47,6 +47,7 @@ import axios from '../../../axios/axios';
 import { userDetails } from '../../../redux/seeker';
 import SeekerAddprofile from '../Profile/AddProfile';
 import { searchProfileData } from '../../../apis/SeekerApi';
+import SeekerEditprofile from '../Profile/EditProfile';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -105,7 +106,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-export default function SeekerAddProfileData() {
+export default function SeekerEditProfileData() {
   const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -123,7 +124,7 @@ export default function SeekerAddProfileData() {
     axios.get('/isUserAuth', {
       headers: { 'u-access-token': localStorage.getItem('usertoken') },
     }).then((response) => {
-      console.log(response.data);
+      console.log('userdata', response.data);
       if (!response.data.auth) {
         if (response.data.status === 'blocked') {
           swal('Your profile blocked');
@@ -441,7 +442,7 @@ export default function SeekerAddProfileData() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <SeekerAddprofile user={user} />
+            <SeekerEditprofile user={user} />
           </Container>
         </Box>
       </Box>

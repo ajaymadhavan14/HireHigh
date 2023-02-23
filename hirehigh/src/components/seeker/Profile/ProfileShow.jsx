@@ -1,7 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import Button from '@mui/material/Button';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
 import Grid from '@mui/material/Grid';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
@@ -9,10 +13,12 @@ import Container from '@mui/material/Container';
 import FormLabel from '@mui/material/FormLabel';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getProfile } from '../../../apis/SeekerApi';
 
 export default function SeekerProfile(props) {
   const theme = createTheme();
+  const navigate = useNavigate();
   const [user, setUser] = useState([]);
 
   useEffect(() => {
@@ -32,7 +38,7 @@ export default function SeekerProfile(props) {
         <Grid container spacing={3}>
           {/* Chart */}
 
-          <Grid item xs={12} md={4} lg={3} sx={{ }}>
+          <Grid item xs={12} md={4} lg={3}>
             <Paper sx={{ width: '100%', height: '100%' }}>
               <Box sx={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', p: '3vh',
@@ -120,7 +126,7 @@ export default function SeekerProfile(props) {
                     {user?.headline}
                   </Typography>
                 </Box>
-                <Button variant="contained" sx={{ mt: '5vh', width: '10vh', alignSelf: 'end' }}>
+                <Button variant="contained" sx={{ mt: '5vh', width: '10vh', alignSelf: 'end' }} onClick={() => navigate('/edit_profile')}>
                   Edit
                 </Button>
               </Box>
@@ -128,8 +134,45 @@ export default function SeekerProfile(props) {
           </Grid>
           {/* Recent Deposits */}
           {/* Recent Orders */}
-          <Grid item xs={12}>
-            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
+          <Grid item xs={12} md={4} lg={3}>
+            <Paper
+              sx={{
+                p: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                height: 240,
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} md={8} lg={9}>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Qualification</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  {user?.qualification}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion sx={{ marginTop: '5vh' }}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Experiance</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  {user?.experiance}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
           </Grid>
         </Grid>
       </Container>

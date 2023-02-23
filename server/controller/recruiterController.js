@@ -93,6 +93,8 @@ const isRecruiterAuth = async (req, res, next) => {
         image: recruiterDetails.image || null,
         phoneNumber: recruiterDetails.phoneNumber,
       });
+    } else if (recruiterDetails.isActive === false) {
+      res.json({ status: 'blocked' });
     } else {
       res.json({ status: 'failed' });
     }
@@ -233,6 +235,32 @@ const EditJobPostData = async (req, res, next) => {
   }
 };
 
+const getProfileData = async (req, res, next) => {
+  try {
+    const data = await recruiterModel.findById(req.query.recruiterId);
+    console.log(data);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const editProfilePost = async (req, res, next) => {
+  try {
+    const {
+      userName, companyName, phoneNumber, email, tagLine, discription, website, image,
+    } = req.body;
+    await recruiterModel.findByIdAndUpdate(req.query.recruiterId, {
+      $set: {
+        tagLine, userName, companyName, phoneNumber, email, discription, website, image,
+      },
+    });
+    res.json({ status: 'success' });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   recruiterSignUpPost,
   recruiterSignInPost,
@@ -246,4 +274,6 @@ export default {
   DeleteJob,
   getDataForEdit,
   EditJobPostData,
+  getProfileData,
+  editProfilePost,
 };

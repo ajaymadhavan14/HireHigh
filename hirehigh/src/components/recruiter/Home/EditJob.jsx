@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import {
@@ -37,7 +38,6 @@ import axios from '../../../axios/axios';
 import { recruiterDetails } from '../../../redux/recruiter';
 import RecruiterJobPost from '../Job/JobPost';
 import RecruiterJobEdit from '../Job/EditJobPost';
-import { Button } from '@mui/material';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -105,7 +105,7 @@ export default function RecruiterJobPostEdit() {
     }).then((response) => {
       console.log(response.data);
       if (!response.data.auth) {
-        if (response.data.status === 'failed') {
+        if (response.data.status === 'blocked') {
           swal('Your profile blocked');
           navigate('/');
         } else {

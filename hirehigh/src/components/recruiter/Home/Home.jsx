@@ -104,7 +104,7 @@ function DashboardContent() {
     }).then((response) => {
       console.log(response.data);
       if (!response.data.auth) {
-        if (response.data.status === 'failed') {
+        if (response.data.status === 'blocked') {
           swal('Your profile blocked');
           navigate('/');
         } else {
@@ -273,11 +273,14 @@ function DashboardContent() {
           <Divider />
           <List>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/home')}
+
               >
                 <ListItemIcon sx={{
                   minWidth: 0,

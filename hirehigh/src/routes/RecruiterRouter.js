@@ -8,6 +8,7 @@ import AddJobForm from '../pages/recruiter/AddJobForm';
 import MyJobs from '../pages/recruiter/MyJobs';
 import JobEdit from '../pages/recruiter/JobEdit';
 import OtpSignUp from '../pages/recruiter/OtpSignUp';
+import EditProfile from '../pages/recruiter/EditProfile';
 
 function RecruiterRouter() {
   return (
@@ -30,6 +31,8 @@ function RecruiterRouter() {
         <Route path="/edit_jobs" element={<JobEdit />} />
 
         <Route path="/jobs" element={<MyJobs />} />
+
+        <Route path="/edit_profile" element={<EditProfile />} />
 
       </Routes>
 

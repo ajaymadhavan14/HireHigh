@@ -88,6 +88,8 @@ const isUserAuth = async (req, res, next) => {
         image: userDetails.image || null,
         job: userDetails.job,
       });
+    } else if (userDetails.isActive === false) {
+      res.json({ status: 'blocked' });
     } else {
       res.json({ status: 'failed' });
     }
@@ -195,6 +197,29 @@ const getProfileData = async (req, res, next) => {
     next(error);
   }
 };
+
+const searchProfilData = async (req, res, next) => {
+  try {
+    const data = await userModel.findById(req.query.userId);
+    if (data.headline) {
+      res.json({ status: 'success' });
+    } else {
+      res.json({ status: 'failed' });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const userDataEditGet = async (req, res, next) => {
+  try {
+    const data = await userModel.findById(req.query.userId);
+    console.log(data);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
 export default {
   signupPost,
   signinPost,
@@ -206,4 +231,6 @@ export default {
   getSingleView,
   AddProfile,
   getProfileData,
+  searchProfilData,
+  userDataEditGet,
 };

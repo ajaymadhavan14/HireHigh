@@ -9,11 +9,13 @@ import Container from '@mui/material/Container';
 import FormLabel from '@mui/material/FormLabel';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getProfile } from '../../../apis/RecruiterApi';
 
 export default function RecruiterProfile(props) {
   const theme = createTheme();
   const [recruiter, setRecruiter] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function invoke() {
@@ -121,7 +123,7 @@ export default function RecruiterProfile(props) {
                     {recruiter?.tagLine}
                   </Typography>
                 </Box>
-                <Button variant="contained" sx={{ mt: '5vh', width: '10vh', alignSelf: 'end' }}>
+                <Button variant="contained" sx={{ mt: '5vh', width: '10vh', alignSelf: 'end' }} onClick={() => navigate('/recruiter/edit_profile')}>
                   Edit
                 </Button>
               </Box>

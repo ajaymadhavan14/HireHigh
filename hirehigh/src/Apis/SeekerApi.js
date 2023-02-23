@@ -61,3 +61,21 @@ export const getProfile = async (id) => {
     return error;
   }
 };
+
+export const searchProfileData = async (id) => {
+  try {
+    const { data } = await axios.get(`/profile_search?userId=${id}`);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getProfileData = async (id) => {
+  try {
+    const { data } = await axios.get(`/get_profiledata?userId=${id}`);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

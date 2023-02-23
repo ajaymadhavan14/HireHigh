@@ -161,6 +161,49 @@ const getSingleView = async (req, res, next) => {
     next(error);
   }
 };
+
+const AddProfile = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    const {
+      headline, position, location, qualification, discription, salaryRange, age, image, experiance,
+    } = req.body;
+    await userModel.findByIdAndUpdate(req.query.userId, {
+      $set: {
+        headline,
+        position,
+        image,
+        experiance,
+        location,
+        qualification,
+        discription,
+        salaryRange,
+        age,
+      },
+    });
+    res.json({ status: 'success' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getProfileData = async (req, res, next) => {
+  try {
+    const data = await userModel.findById(req.query.userId);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
 export default {
-  signupPost, signinPost, isUserAuth, userBlock, userActive, JobListShow, jobApply, getSingleView,
+  signupPost,
+  signinPost,
+  isUserAuth,
+  userBlock,
+  userActive,
+  JobListShow,
+  jobApply,
+  getSingleView,
+  AddProfile,
+  getProfileData,
 };

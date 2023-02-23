@@ -26,7 +26,7 @@ import axios from '../../../axios/axios';
 import { getCategory } from '../../../apis/RecruiterApi';
 
 const theme = createTheme();
-export default function SeekerAddprofile() {
+export default function SeekerAddprofile(props) {
   const [headline, setHeadline] = useState(false);
   const [headlineError, setHeadlineError] = useState('');
   const [position, setPosition] = useState(false);
@@ -47,6 +47,7 @@ export default function SeekerAddprofile() {
   const [experianceError, setExperianceError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
   const navigate = useNavigate();
+  const userData = props?.user;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -67,7 +68,7 @@ export default function SeekerAddprofile() {
          && data.salaryRange) {
       const regName = /^[a-zA-Z ]*$/;
       setTotalRequired('');
-      if (regName.test(data.name)) {
+      if (regName.test(data.headline)) {
         setHeadline(false);
         setHeadlineError('');
         if (regName.test(data.position)) {
@@ -96,13 +97,13 @@ export default function SeekerAddprofile() {
             data.image = '';
           }
           console.log(data);
-        //   axios.post(`/recruiter/add_job?id=${id}`, data).then((response) => {
-        //     if (response.data.status === 'success') {
-        //       navigate('/recruiter/jobs');
-        //     } else {
-        //       swal('OOPS', response.data.message, 'error');
-        //     }
-        //   });
+          axios.post(`/add_profile?userId=${userData.id}`, data).then((response) => {
+            if (response.data.status === 'success') {
+              navigate('/');
+            } else {
+              swal('OOPS', response.data.message, 'error');
+            }
+          });
         } else {
           setPosition(true);
           setPositionError('Please enter valid Name');

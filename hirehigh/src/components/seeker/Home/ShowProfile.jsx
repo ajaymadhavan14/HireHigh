@@ -46,6 +46,7 @@ import Swal2 from 'sweetalert2';
 import axios from '../../../axios/axios';
 import { userDetails } from '../../../redux/seeker';
 import SeekerAddprofile from '../Profile/AddProfile';
+import SeekerProfile from '../Profile/ProfileShow';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -430,7 +431,7 @@ export default function SeekerHome() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <SeekerAddprofile />
+            <SeekerProfile user={user} />
           </Container>
         </Box>
       </Box>

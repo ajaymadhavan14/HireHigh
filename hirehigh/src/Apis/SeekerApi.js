@@ -52,3 +52,12 @@ export const getSingleJobData = async (id) => {
     return error;
   }
 };
+
+export const getProfile = async (id) => {
+  try {
+    const { data } = await axios.get(`/get_data?userId=${id}`);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

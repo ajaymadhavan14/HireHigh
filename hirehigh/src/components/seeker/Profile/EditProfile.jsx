@@ -27,6 +27,14 @@ import { getProfileData } from '../../../apis/SeekerApi';
 
 const theme = createTheme();
 export default function SeekerEditprofile(props) {
+  const [firstName, setFirstName] = useState(false);
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastName, setLastName] = useState(false);
+  const [lastNameError, setLastNameError] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState(false);
+  const [phoneNumberError, setPhoneNumberError] = useState('');
+  const [email, setEmail] = useState(false);
+  const [emailError, setEmailError] = useState('');
   const [headline, setHeadline] = useState(false);
   const [headlineError, setHeadlineError] = useState('');
   const [position, setPosition] = useState(false);
@@ -49,22 +57,23 @@ export default function SeekerEditprofile(props) {
 
   const navigate = useNavigate();
   const userData = props?.user;
-  const [data, setData] = useState({});
+  const [datas, setDatas] = useState({});
   useEffect(() => {
     async function invoke() {
-      const res = await getProfileData(userData.id);
-      console.log('fffffffffffff', res);
-      if (res) {
-        setData(res);
-      }
+      await getProfileData(userData.id).then((response) => {
+        setDatas(response);
+      });
     }
     invoke();
   }, []);
-  console.log(data);
   const handleSubmit = async (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
     data = {
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
+      email: data.get('email'),
+      phoneNumber: data.get('phoneNumber'),
       headline: data.get('headline'),
       position: data.get('position'),
       location: data.get('location'),
@@ -75,54 +84,90 @@ export default function SeekerEditprofile(props) {
       image: data.get('image'),
       experiance: data.get('experiance'),
     };
-    if (data.position && data.headline && data.qualification && data.experiance
-      && data.discription && data.age && data.location
-         && data.salaryRange) {
+    if (data.position && data.headline && data.qualification && data.experiance && data.firstName
+      && data.discription && data.age && data.location && data.lastName && data.email
+      && data.phoneNumber && data.salaryRange) {
       const regName = /^[a-zA-Z ]*$/;
+      const regEmail = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
+      const regPhone = /^[0-9]+$/;
       setTotalRequired('');
-      if (regName.test(data.headline)) {
-        setHeadline(false);
-        setHeadlineError('');
-        if (regName.test(data.position)) {
-          setPosition(false);
-          setPositionError('');
+      if (regName.test(data.firstName)) {
+        setFirstName(false);
+        setFirstNameError('');
+        if (regName.test(data.lastName)) {
+          setLastName(false);
+          setLastNameError('');
+          if (regEmail.test(data.email)) {
+            setEmail(false);
+            setEmailError('');
+            if (regPhone.test(data.phoneNumber)) {
+              setPhoneNumber(false);
+              setPhoneNumberError('');
+              if (data.phoneNumber.length === 10) {
+                setPhoneNumber(false);
+                setPhoneNumberError('');
+                if (regName.test(data.headline)) {
+                  setHeadline(false);
+                  setHeadlineError('');
+                  if (regName.test(data.position)) {
+                    setPosition(false);
+                    setPositionError('');
 
-          if (data.image.name) {
-            const dirs = Date.now();
-            const rand = Math.random();
-            const { image } = data;
-            const imageRef = ref(storage, `/seekerImages/${dirs}${rand}_${image?.name}`);
-            const toBase64 = (image) => new Promise((resolve, reject) => {
-              const reader = new FileReader();
-              reader.readAsDataURL(image);
-              reader.onload = () => resolve(reader.result);
-              reader.onerror = (error) => reject(error);
-            }).catch((err) => {
-              console.log(err);
-            });
-            const imgBase = await toBase64(image);
-            await uploadString(imageRef, imgBase, 'data_url').then(async () => {
-              const downloadURL = await getDownloadURL(imageRef);
-              data.image = downloadURL;
-            });
-          } else {
-            data.image = '';
-          }
-          console.log(data);
-          axios.post(`/add_profile?userId=${userData.id}`, data).then((response) => {
-            if (response.data.status === 'success') {
-              navigate('/');
+                    if (data.image.name) {
+                      const dirs = Date.now();
+                      const rand = Math.random();
+                      const { image } = data;
+                      const imageRef = ref(storage, `/seekerImages/${dirs}${rand}_${image?.name}`);
+                      const toBase64 = (image) => new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(image);
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = (error) => reject(error);
+                      }).catch((err) => {
+                        console.log(err);
+                      });
+                      const imgBase = await toBase64(image);
+                      await uploadString(imageRef, imgBase, 'data_url').then(async () => {
+                        const downloadURL = await getDownloadURL(imageRef);
+                        data.image = downloadURL;
+                      });
+                    } else {
+                      data.image = datas.image;
+                    }
+                    axios.post(`/edit_profile_post?userId=${userData.id}`, data).then((response) => {
+                      if (response.data.status === 'success') {
+                        navigate('/profile');
+                      } else {
+                        swal('OOPS', response.data.message, 'error');
+                      }
+                    });
+                  } else {
+                    setPosition(true);
+                    setPositionError('Please enter valid Name');
+                  }
+                } else {
+                  setHeadline(true);
+                  setHeadlineError('Please enter valid Name');
+                }
+              } else {
+                setPhoneNumber(true);
+                setPhoneNumberError('Please enter 10 digit');
+              }
             } else {
-              swal('OOPS', response.data.message, 'error');
+              setPhoneNumber(true);
+              setPhoneNumberError('Please Enter valid Phone no');
             }
-          });
+          } else {
+            setEmail(true);
+            setEmailError('Please enter valid Email');
+          }
         } else {
-          setPosition(true);
-          setPositionError('Please enter valid Name');
+          setLastName(true);
+          setLastNameError('Please enter valid Name');
         }
       } else {
-        setHeadline(true);
-        setHeadlineError('Please enter valid Name');
+        setFirstName(true);
+        setFirstNameError('Please enter valid Name');
       }
     } else {
       setTotalRequired('Please enter your Details');
@@ -149,7 +194,70 @@ export default function SeekerEditprofile(props) {
               Add Profile Details
             </Typography>
           </Grid>
+          <Grid container spacing={2} py={2}>
 
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="firstName"
+                required
+                fullWidth
+                id="firstName"
+                label="First Name"
+                autoFocus
+                error={firstName}
+                helperText={firstNameError}
+                defaultValue={datas.firstName}
+                multiline
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                name="lastName"
+                autoComplete="family-name"
+                error={lastName}
+                helperText={lastNameError}
+                defaultValue={datas.lastName}
+                multiline
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2} py={2}>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                error={email}
+                helperText={emailError}
+                defaultValue={datas.email}
+                multiline
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="phoneNumber"
+                type="number"
+                label="Phone Number"
+                name="phoneNumber"
+                autoComplete="phoneNumber"
+                error={phoneNumber}
+                helperText={phoneNumberError}
+                defaultValue={datas.phoneNumber}
+                multiline
+              />
+            </Grid>
+          </Grid>
           <Grid container spacing={2} py={2}>
 
             <Grid item xs={12} sm={6}>
@@ -161,9 +269,12 @@ export default function SeekerEditprofile(props) {
                 type="text"
                 id="headline"
                 label="Headline"
+                placeholder="a"
                 error={headline}
                 helperText={headlineError}
-                defaultValue={data?.headline}
+                defaultValue={datas.headline}
+                autoFocus
+                multiline
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -177,8 +288,9 @@ export default function SeekerEditprofile(props) {
                 label="Position"
                 error={position}
                 helperText={positionError}
-                defaultValue={data?.position}
-
+                defaultValue={datas.position}
+                autoFocus
+                multiline
               />
             </Grid>
           </Grid>
@@ -196,8 +308,8 @@ export default function SeekerEditprofile(props) {
                 label="Expected Salary"
                 error={salaryRange}
                 helperText={salaryRangeError}
-                defaultValue={data?.salaryRange}
-
+                defaultValue={datas.salaryRange}
+                multiline
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -210,9 +322,62 @@ export default function SeekerEditprofile(props) {
                 autoComplete="location"
                 error={location}
                 helperText={locationError}
-                defaultValue={data?.location}
+                defaultValue={datas.location}
+                multiline
               />
             </Grid>
+          </Grid>
+
+          <Grid item xs={12} py={2}>
+            <TextField
+              required
+              fullWidth
+              id="qualification"
+              type="text"
+              label="Qualification"
+              name="qualification"
+              autoComplete="qualification"
+              error={qualification}
+              helperText={qualificationError}
+              defaultValue={datas?.qualification}
+              multiline
+              autoFocus
+            />
+          </Grid>
+          <Grid item xs={12} py={2}>
+            <TextField
+              required
+              fullWidth
+              id="experiance"
+              type="text"
+              label="Experiance"
+              name="experiance"
+              autoComplete="experiance"
+              error={experiance}
+              helperText={experianceError}
+              defaultValue={datas.experiance}
+              multiline
+            />
+          </Grid>
+          <Grid item xs={12} py={2} maxWidth="md">
+
+            <TextareaAutosize
+              style={{ resize: 'vertical', width: '100%' }}
+              minRows={4}
+              required
+              fullWidth
+              id="discription"
+              type="text"
+              label=" Discription"
+              placeholder=" Discription"
+              name="discription"
+              autoComplete="discription"
+              error={discription}
+              helperText={discriptionError}
+              defaultValue={datas.discription}
+              multiline
+              autoFocus
+            />
           </Grid>
           <Grid container spacing={2}>
 
@@ -241,60 +406,19 @@ export default function SeekerEditprofile(props) {
                 autoComplete="age"
                 error={age}
                 helperText={ageError}
-                defaultValue={data?.age}
+                defaultValue={datas?.age}
+                autoFocus
+                multiline
               />
             </Grid>
           </Grid>
-          <Grid item xs={12} py={2}>
-            <TextField
-              required
-              fullWidth
-              id="qualification"
-              type="text"
-              label="Qualification"
-              name="qualification"
-              autoComplete="qualification"
-              error={qualification}
-              helperText={qualificationError}
-              defaultValue={data?.qualification}
+          <Grid container spacing={2}>
 
-            />
+            <Grid item xs={12} sm={6} sx={{ marginTop: '10px' }}>
+              <img src={datas.image} alt="...loading" style={{ width: '30vh', height: '25vh' }} />
+            </Grid>
+            <Grid item xs={12} sm={6} />
           </Grid>
-          <Grid item xs={12} py={2}>
-            <TextField
-              required
-              fullWidth
-              id="experiance"
-              type="text"
-              label="Experiance"
-              name="experiance"
-              autoComplete="experiance"
-              error={experiance}
-              helperText={experianceError}
-              defaultValue={data?.experiance}
-
-            />
-          </Grid>
-          <Grid item xs={12} py={2} maxWidth="md">
-
-            <TextareaAutosize
-              style={{ resize: 'vertical', width: '100%' }}
-              minRows={4}
-              required
-              fullWidth
-              id="discription"
-              type="text"
-              label=" Discription"
-              placeholder=" Discription"
-              name="discription"
-              autoComplete="discription"
-              error={discription}
-              helperText={discriptionError}
-              defaultValue={data?.discription}
-
-            />
-          </Grid>
-
           <Box sx={{ backgroundColor: '#ffc5c5', borderRadius: '3px', pl: 2 }}>
             <p style={{ color: 'red' }}>{totalRequired}</p>
           </Box>
@@ -313,7 +437,7 @@ export default function SeekerEditprofile(props) {
                   fontWeight: '900',
                 }}
               >
-                POST
+                SUBMIT
               </Button>
             </Grid>
           </Grid>

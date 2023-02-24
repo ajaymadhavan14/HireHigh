@@ -100,13 +100,11 @@ const isUserAuth = async (req, res, next) => {
 
 const userBlock = async (req, res, next) => {
   try {
-    console.log(req.query.userId);
     await userModel.updateOne({ _id: req.query.userId }, {
       isActive: false,
     });
     res.json({ status: 'success' });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -133,16 +131,12 @@ const JobListShow = async (req, res, next) => {
 
 const jobApply = async (req, res, next) => {
   try {
-    console.log(req.body);
-    console.log(req.query.id);
-    const userData = await userModel.findOneAndUpdate({ _id: req.body.id }, {
+    await userModel.findOneAndUpdate({ _id: req.body.id }, {
       $push: { job: { jobId: req.query.id, applied: true } },
     });
-    const data = await jobModel.findOneAndUpdate({ _id: req.query.id }, {
+    await jobModel.findOneAndUpdate({ _id: req.query.id }, {
       $push: { users: { userId: req.body.id } },
     });
-    console.log(userData);
-    console.log(data);
     res.json({ status: 'success' });
   } catch (error) {
     next(error);
@@ -151,7 +145,6 @@ const jobApply = async (req, res, next) => {
 
 const getSingleView = async (req, res, next) => {
   try {
-    console.log(req.query.id);
     const singleData = await jobModel.findById(req.query.id);
     const catId = singleData.jobCategory;
     const fullData = await jobModel.find({
@@ -166,7 +159,6 @@ const getSingleView = async (req, res, next) => {
 
 const AddProfile = async (req, res, next) => {
   try {
-    console.log(req.body);
     const {
       headline, position, location, qualification, discription, salaryRange, age, image, experiance,
     } = req.body;
@@ -214,8 +206,36 @@ const searchProfilData = async (req, res, next) => {
 const userDataEditGet = async (req, res, next) => {
   try {
     const data = await userModel.findById(req.query.userId);
-    console.log(data);
     res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const editUserProfilePost = async (req, res, next) => {
+  try {
+    const {
+      experiance, age, salaryRange, discription, qualification, location, position, headline,
+      image, phoneNumber, email, firstName, lastName,
+    } = req.body;
+    await userModel.findByIdAndUpdate(req.query.userId, {
+      $set: {
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        experiance,
+        age,
+        salaryRange,
+        discription,
+        qualification,
+        location,
+        position,
+        headline,
+        image,
+      },
+    });
+    res.json({ status: 'success' });
   } catch (error) {
     next(error);
   }
@@ -233,4 +253,5 @@ export default {
   getProfileData,
   searchProfilData,
   userDataEditGet,
+  editUserProfilePost,
 };

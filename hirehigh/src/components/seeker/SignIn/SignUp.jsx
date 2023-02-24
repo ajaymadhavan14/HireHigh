@@ -104,14 +104,12 @@ export default function SeekerSignUp() {
                     // });
                     setUserDetails(data);
                     try {
-                      console.log(data.phoneNumber);
                       await setUpRecaptcha(`+91${data.phoneNumber}`).then((res) => {
                         setFlag(true);
                         setUserOtpConf(res);
                         navigate('/otp');
                       });
                     } catch (error) {
-                      console.log(error);
                       toast.warning(`${error.message}`, {
                         position: 'top-right',
                         autoClose: 3000,

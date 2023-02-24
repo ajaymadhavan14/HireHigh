@@ -63,7 +63,6 @@ export default function RecruiterPrfileData(props) {
   useEffect(() => {
     async function invoke() {
       await getProfileData(recruiter._id).then((response) => {
-        console.log(response, '2222222222222222222222');
         setDatas(response);
       });
     }

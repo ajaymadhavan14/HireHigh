@@ -121,7 +121,7 @@ export default function SeekerJobView() {
   const dispatch = useDispatch(userDetails);
   useEffect(() => {
     axios.get('/isUserAuth', {
-      headers: { 'u-access-token': localStorage.getItem('usertoken') },
+      headers: { 'user-access-token': localStorage.getItem('userToken') },
     }).then((response) => {
       console.log(response.data);
       if (!response.data.auth) {
@@ -154,7 +154,7 @@ export default function SeekerJobView() {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem('recruitertoken');
+        localStorage.removeItem('userToken');
         // Swal.fire(
         //     'Deleted!',
         //     'Your file has been deleted.',

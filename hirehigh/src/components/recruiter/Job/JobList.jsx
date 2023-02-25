@@ -68,7 +68,7 @@ export default function RecruiterJobList(props) {
     invoke();
   }, [refresh]);
 
-  const deleteJob = async (id) => {
+  const BlockJob = async (id) => {
     await RecruiterJobDele(id).then((response) => {
       if (response.data.status === 'success') {
         toast.success('🦄 Wow so easy!', {
@@ -107,7 +107,8 @@ export default function RecruiterJobList(props) {
               <StyledTableCell align="center">Posted On</StyledTableCell>
               <StyledTableCell align="center">Category</StyledTableCell>
               <StyledTableCell align="center">Salary</StyledTableCell>
-              <StyledTableCell align="center">Delete</StyledTableCell>
+              <StyledTableCell align="center">Edit</StyledTableCell>
+              <StyledTableCell align="center">Status</StyledTableCell>
               {/* <StyledTableCell align="center">PHONE NO</StyledTableCell>
               <StyledTableCell align="center">Website</StyledTableCell>
               <StyledTableCell align="center">Status</StyledTableCell> */}
@@ -135,11 +136,38 @@ export default function RecruiterJobList(props) {
                   </Button>
 
                 </StyledTableCell>
-                <StyledTableCell align="center">
-                  <Button variant="contained" sx={{ bgcolor: 'red' }} onClick={() => deleteJob(el?._id)}>
+                {/* <StyledTableCell align="center">
+                  <Button variant="contained" sx={{ bgcolor: 'red' }}
+                  onClick={() => deleteJob(el?._id)}>
                     Dele
                   </Button>
 
+                </StyledTableCell> */}
+                <StyledTableCell align="center">
+                  {el.isActive
+                    ? (
+                      <Button
+                        // eslint-disable-next-line no-underscore-dangle
+                        onClick={() => BlockJob(el?._id)}
+                        sx={{
+                          backgroundColor: '#03a903', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
+                        }}
+                      >
+                        Active
+                      </Button>
+                    )
+                    : (
+                      <Button
+                        // eslint-disable-next-line no-underscore-dangle
+                        // onClick={() => actived(el?._id)}
+                        sx={{
+                          ml: 1, backgroundColor: 'red', fontWeight: '800',
+                        }}
+                        disabled
+                      >
+                        Blocked
+                      </Button>
+                    )}
                 </StyledTableCell>
                 {/* <StyledTableCell align="center">
                   {el.isActive

@@ -11,8 +11,11 @@ const recruiterSignUpPost = async (req, res, next) => {
       website, password, image,
     } = req.body;
     const recruiter = await recruiterModel.findOne({ email });
+    const number = await recruiterModel.findOne({ phoneNumber });
     if (recruiter) {
       res.json({ status: 'failed', message: 'Email already exist login now' });
+    } else if (number) {
+      res.json({ status: 'failed', message: 'Phone Number already exist login now' });
     } else {
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hash(password.trim(), salt);
@@ -188,7 +191,9 @@ const getCategoryRec = async (req, res, next) => {
 
 const DeleteJob = async (req, res, next) => {
   try {
-    await jobPostModel.findByIdAndRemove(req.query.recruiterId);
+    await jobPostModel.findByIdAndUpdate(req.query.recruiterId, {
+      $set: { isActive: false },
+    });
     res.json({ status: 'success' });
   } catch (error) {
     next(error);

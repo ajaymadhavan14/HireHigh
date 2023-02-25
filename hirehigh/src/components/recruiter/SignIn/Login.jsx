@@ -48,7 +48,7 @@ export default function VendorSignIn() {
             if (!response.data.auth) {
               swal('sorry', response.data.message, 'error');
             } else {
-              localStorage.setItem('recruitertoken', response.data.token);
+              localStorage.setItem('recruiterToken', response.data.token);
               navigate('/recruiter/home');
             }
           });

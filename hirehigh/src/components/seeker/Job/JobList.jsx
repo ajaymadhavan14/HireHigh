@@ -28,9 +28,10 @@ export default function JobCard(props) {
   const [jobs, setJobs] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate();
+  const token = localStorage.getItem('userToken');
   useEffect(() => {
     async function invoke() {
-      const res = await jobListSeekerSide();
+      const res = await jobListSeekerSide(token);
       console.log(res);
       if (res) {
         setJobs(res);

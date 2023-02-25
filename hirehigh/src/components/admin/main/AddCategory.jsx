@@ -95,7 +95,7 @@ export default function AdminSideJobCategory() {
   const dispatch = useDispatch(adminDetails);
   useEffect(() => {
     axios.get('/admin/isAdminAuth', {
-      headers: { 'a-access-token': localStorage.getItem('admintoken') },
+      headers: { 'a-access-token': localStorage.getItem('adminToken') },
     }).then((response) => {
       console.log(response.data);
       if (!response.data.auth) {
@@ -118,7 +118,7 @@ export default function AdminSideJobCategory() {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem('admintoken');
+        localStorage.removeItem('adminToken');
         // Swal.fire(
         //     'Deleted!',
         //     'Your file has been deleted.',

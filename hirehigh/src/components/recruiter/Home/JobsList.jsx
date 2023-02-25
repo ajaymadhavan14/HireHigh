@@ -102,7 +102,7 @@ export default function RecruiterSideJobsList() {
 
   useEffect(() => {
     axios.get('/recruiter/isRecruiterAuth', {
-      headers: { 'r-access-token': localStorage.getItem('recruitertoken') },
+      headers: { 'r-access-token': localStorage.getItem('recruiterToken') },
     }).then((response) => {
       console.log(response.data, 'data');
       if (!response.data.auth) {
@@ -135,7 +135,7 @@ export default function RecruiterSideJobsList() {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem('recruitertoken');
+        localStorage.removeItem('recruierToken');
         // Swal.fire(
         //     'Deleted!',
         //     'Your file has been deleted.',

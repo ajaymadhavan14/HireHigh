@@ -26,9 +26,9 @@ export const isActivated = async (userId) => {
   }
 };
 
-export const jobListSeekerSide = async () => {
+export const jobListSeekerSide = async (token) => {
   try {
-    const { data } = await axios.get('/jobs');
+    const { data } = await axios.get('/jobs', { headers: { 'user-access-token': token } });
     return data;
   } catch (error) {
     return error;

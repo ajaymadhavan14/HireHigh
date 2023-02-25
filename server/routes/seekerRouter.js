@@ -9,7 +9,7 @@ router.post('/login', seekerController.signinPost);
 router.get('/isUserAuth', jwtAuth.jwtSeeker, seekerController.isUserAuth);
 router.patch('/blocked', seekerController.userBlock);
 router.patch('/actived', seekerController.userActive);
-router.get('/jobs', seekerController.JobListShow);
+router.get('/jobs', jwtAuth.jwtSeeker, seekerController.JobListShow);
 router.post('/job_apply', seekerController.jobApply);
 router.get('/single_view', seekerController.getSingleView);
 router.post('/add_profile', seekerController.AddProfile);

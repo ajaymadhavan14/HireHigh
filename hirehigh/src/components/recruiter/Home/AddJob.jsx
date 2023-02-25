@@ -99,7 +99,7 @@ function DashboardContent() {
   const dispatch = useDispatch(recruiterDetails);
   useEffect(() => {
     axios.get('/recruiter/isRecruiterAuth', {
-      headers: { 'r-access-token': localStorage.getItem('recruitertoken') },
+      headers: { 'r-access-token': localStorage.getItem('recruiterToken') },
     }).then((response) => {
       console.log(response.data);
       if (!response.data.auth) {
@@ -132,7 +132,7 @@ function DashboardContent() {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem('recruitertoken');
+        localStorage.removeItem('recruiterToken');
         // Swal.fire(
         //     'Deleted!',
         //     'Your file has been deleted.',

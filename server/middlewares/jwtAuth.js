@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 
 const jwtSeeker = async (req, res, next) => {
   try {
-    const token = req.headers['u-access-token'];
+    const token = req.headers['user-access-token'];
     if (!token) {
       res.send({ status: 'failed', message: 'You need token' });
     } else {

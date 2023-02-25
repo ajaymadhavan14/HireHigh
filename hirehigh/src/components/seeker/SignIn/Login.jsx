@@ -52,7 +52,7 @@ export default function SignIn() {
             if (!response.data.auth) {
               swal('sorry', response.data.message, 'error');
             } else {
-              localStorage.setItem('usertoken', response.data.token);
+              localStorage.setItem('userToken', response.data.token);
               navigate('/home');
             }
           });

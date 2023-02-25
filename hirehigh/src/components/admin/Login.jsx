@@ -48,7 +48,7 @@ export default function ASignIn() {
               if (!response.data.auth) {
                 swal('sorry', response.data.message, 'error');
               } else {
-                localStorage.setItem('admintoken', response.data.token);
+                localStorage.setItem('adminToken', response.data.token);
                 navigate('/admin/home');
               }
             });

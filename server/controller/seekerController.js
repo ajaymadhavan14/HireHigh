@@ -10,8 +10,11 @@ const signupPost = async (req, res, next) => {
       firstName, lastName, email, password, phoneNumber,
     } = req.body;
     const user = await userModel.findOne({ email });
+    const number = await userModel.findOne({ phoneNumber });
     if (user) {
       res.json({ status: 'failed', message: 'Email already exist login now' });
+    } else if (number) {
+      res.json({ status: 'failed', message: 'Phone Number already exist login now' });
     } else {
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hash(password.trim(), salt);
@@ -41,7 +44,7 @@ const signinPost = async (req, res, next) => {
           const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY, {
             expiresIn: 60 * 60 * 24,
           });
-
+          console.log(token);
           res.json({
             auth: true,
             token,

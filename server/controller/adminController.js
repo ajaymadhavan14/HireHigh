@@ -88,8 +88,9 @@ const getAllJobs = async (req, res, next) => {
 
 const jobPostBlock = async (req, res, next) => {
   try {
-    console.log(req.query.Id);
-    await jobPostModel.updateOne({ _id: req.query.Id }, {
+    console.log('11111111111111111');
+    console.log(req.query.jobId);
+    await jobPostModel.updateOne({ _id: req.query.jobId }, {
       isActive: false,
     });
     res.json({ status: 'success' });
@@ -100,7 +101,9 @@ const jobPostBlock = async (req, res, next) => {
 
 const jobPostActive = async (req, res, next) => {
   try {
-    await jobPostModel.updateOne({ _id: req.query.Id }, {
+    console.log('222222222222222222222222');
+    console.log(req.query.Id);
+    await jobPostModel.updateOne({ _id: req.query.jobId }, {
       isActive: true,
     });
     res.json({ status: 'success' });

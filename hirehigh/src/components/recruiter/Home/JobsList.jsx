@@ -102,7 +102,7 @@ export default function RecruiterSideJobsList() {
 
   useEffect(() => {
     axios.get('/recruiter/isRecruiterAuth', {
-      headers: { 'r-access-token': localStorage.getItem('recruiterToken') },
+      headers: { 'recruiter-access-token': localStorage.getItem('recruiterToken') },
     }).then((response) => {
       console.log(response.data, 'data');
       if (!response.data.auth) {
@@ -200,6 +200,7 @@ export default function RecruiterSideJobsList() {
                   justifyContent: open ? 'initial' : 'last',
                   px: 2.5,
                 }}
+                onClick={() => navigate('/recruiter/jobs')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,

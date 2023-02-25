@@ -148,11 +148,12 @@ const jobApply = async (req, res, next) => {
 
 const getSingleView = async (req, res, next) => {
   try {
+    console.log(req.query.id);
     const singleData = await jobModel.findById(req.query.id);
     const catId = singleData.jobCategory;
     const fullData = await jobModel.find({
       $and: [{ jobCategory: catId },
-        { _id: { $ne: req.query.id } }],
+        { _id: { $ne: req.query.id } }, { isActive: true }],
     });
     res.json({ data: singleData, category: fullData });
   } catch (error) {
@@ -165,7 +166,7 @@ const AddProfile = async (req, res, next) => {
     const {
       headline, position, location, qualification, discription, salaryRange, age, image, experiance,
     } = req.body;
-    await userModel.findByIdAndUpdate(req.query.userId, {
+    await userModel.findByIdAndUpdate(req.userId, {
       $set: {
         headline,
         position,
@@ -186,7 +187,7 @@ const AddProfile = async (req, res, next) => {
 
 const getProfileData = async (req, res, next) => {
   try {
-    const data = await userModel.findById(req.query.userId);
+    const data = await userModel.findById(req.userId);
     res.json(data);
   } catch (error) {
     next(error);
@@ -195,7 +196,7 @@ const getProfileData = async (req, res, next) => {
 
 const searchProfilData = async (req, res, next) => {
   try {
-    const data = await userModel.findById(req.query.userId);
+    const data = await userModel.findById(req.userId);
     if (data.headline) {
       res.json({ status: 'success' });
     } else {
@@ -208,7 +209,7 @@ const searchProfilData = async (req, res, next) => {
 
 const userDataEditGet = async (req, res, next) => {
   try {
-    const data = await userModel.findById(req.query.userId);
+    const data = await userModel.findById(req.userId);
     res.json(data);
   } catch (error) {
     next(error);
@@ -221,7 +222,7 @@ const editUserProfilePost = async (req, res, next) => {
       experiance, age, salaryRange, discription, qualification, location, position, headline,
       image, phoneNumber, email, firstName, lastName,
     } = req.body;
-    await userModel.findByIdAndUpdate(req.query.userId, {
+    await userModel.findByIdAndUpdate(req.userId, {
       $set: {
         firstName,
         lastName,

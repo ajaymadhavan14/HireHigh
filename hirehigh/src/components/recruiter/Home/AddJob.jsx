@@ -99,7 +99,7 @@ function DashboardContent() {
   const dispatch = useDispatch(recruiterDetails);
   useEffect(() => {
     axios.get('/recruiter/isRecruiterAuth', {
-      headers: { 'r-access-token': localStorage.getItem('recruiterToken') },
+      headers: { 'recruiter-access-token': localStorage.getItem('recruiterToken') },
     }).then((response) => {
       console.log(response.data);
       if (!response.data.auth) {
@@ -191,11 +191,13 @@ function DashboardContent() {
           <List>
 
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/jobs')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,

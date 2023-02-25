@@ -8,23 +8,6 @@ export const seekerSignupApi = async (userData) => {
     return error;
   }
 };
-export const isBlocked = async (userId) => {
-  try {
-    const { data } = await axios.patch(`/blocked?userId=${userId}`);
-    return data;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const isActivated = async (userId) => {
-  try {
-    const { data } = await axios.patch(`/actived?userId=${userId}`);
-    return data;
-  } catch (error) {
-    return error;
-  }
-};
 
 export const jobListSeekerSide = async (token) => {
   try {
@@ -35,45 +18,45 @@ export const jobListSeekerSide = async (token) => {
   }
 };
 
-export const jobApply = async (id, user) => {
+export const jobApply = async (id, user, token) => {
   try {
-    const data = await axios.post(`/job_apply?id=${id}`, user);
+    const data = await axios.post(`/job_apply?id=${id}`, user, { headers: { 'user-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const getSingleJobData = async (id) => {
+export const getSingleJobData = async (id, token) => {
   try {
-    const { data } = await axios.get(`/single_view?id=${id}`);
+    const { data } = await axios.get(`/single_view?id=${id}`, { headers: { 'user-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const getProfile = async (id) => {
+export const getProfile = async (token) => {
   try {
-    const { data } = await axios.get(`/get_data?userId=${id}`);
+    const { data } = await axios.get('/get_data', { headers: { 'user-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const searchProfileData = async (id) => {
+export const searchProfileData = async (token) => {
   try {
-    const { data } = await axios.get(`/profile_search?userId=${id}`);
+    const { data } = await axios.get('/profile_search', { headers: { 'user-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const getProfileData = async (id) => {
+export const getProfileData = async (token) => {
   try {
-    const { data } = await axios.get(`/get_profiledata?userId=${id}`);
+    const { data } = await axios.get('/get_profiledata', { headers: { 'user-access-token': token } });
     return data;
   } catch (error) {
     return error;

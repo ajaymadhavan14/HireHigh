@@ -53,7 +53,7 @@ export default function RecruiterJobPost({ id }) {
   const [vaccancyError, setVaccancyError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
   const navigate = useNavigate();
-
+  const token = localStorage.getItem('recruiterToken');
   const handleSubmit = async (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
@@ -106,7 +106,7 @@ export default function RecruiterJobPost({ id }) {
             data.image = '';
           }
           console.log(data);
-          axios.post(`/recruiter/add_job?id=${id}`, data).then((response) => {
+          axios.post('/recruiter/add_job', data, { headers: { 'recruiter-access-token': token } }).then((response) => {
             if (response.data.status === 'success') {
               navigate('/recruiter/jobs');
             } else {
@@ -126,9 +126,11 @@ export default function RecruiterJobPost({ id }) {
     }
   };
   const [cat, setCat] = useState([]);
+
   useEffect(() => {
     async function invoke() {
-      const res = await getCategory();
+      const token = localStorage.getItem('recruiterToken');
+      const res = await getCategory(token);
       setCat(res);
 
       console.log(res);

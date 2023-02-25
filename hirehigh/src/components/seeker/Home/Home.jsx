@@ -143,7 +143,8 @@ export default function SeekerHome() {
   const { user } = useSelector((state) => state.userInfo);
 
   const getSearchProfile = async () => {
-    await searchProfileData(user.id).then((response) => {
+    const token = localStorage.getItem('userToken');
+    await searchProfileData(token).then((response) => {
       if (response.status === 'success') {
         navigate('/profile');
       } else {

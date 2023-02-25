@@ -12,19 +12,19 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getProfile } from '../../../apis/RecruiterApi';
 
-export default function RecruiterProfile(props) {
+export default function RecruiterProfile() {
   const theme = createTheme();
   const [recruiter, setRecruiter] = useState([]);
   const navigate = useNavigate();
+  const token = localStorage.getItem('recruiterToken');
 
   useEffect(() => {
     async function invoke() {
-      console.log(props, 'hello');
       // eslint-disable-next-line max-len
       // eslint-disable-next-line no-underscore-dangle, react/destructuring-assignment, react/prop-types
-      const id = props.id._id;
-      const res = await getProfile(id);
-      setRecruiter(res);
+      await getProfile(token).then((response) => {
+        setRecruiter(response);
+      });
     }
     invoke();
   }, []);

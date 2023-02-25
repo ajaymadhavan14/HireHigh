@@ -135,7 +135,7 @@ const jobPost = async (req, res, next) => {
       jobTitle, companyName, jobCategory, jobQualification, jobDiscription,
       responsibilities, workPlace, salaryRange, jobType, image, location, vaccancy,
     } = req.body;
-    const Id = req.query.id;
+    const Id = req.recruiterId;
     await jobPostModel.create({
       jobTitle,
       jobCategory,
@@ -159,7 +159,7 @@ const jobPost = async (req, res, next) => {
 
 const getProfile = async (req, res, next) => {
   try {
-    const data = await recruiterModel.findById(req.query.recruiterId);
+    const data = await recruiterModel.findById(req.recruiterId);
     res.json(data);
   } catch (error) {
     next(error);
@@ -168,7 +168,7 @@ const getProfile = async (req, res, next) => {
 
 const jobsList = async (req, res, next) => {
   try {
-    const data = await jobPostModel.find({ recruiterId: req.query.recruiterId }).populate('jobCategory');
+    const data = await jobPostModel.find({ recruiterId: req.recruiterId }).populate('jobCategory');
     // console.log(data);
     if (data.length > 0) {
       res.json({ data });
@@ -191,7 +191,7 @@ const getCategoryRec = async (req, res, next) => {
 
 const DeleteJob = async (req, res, next) => {
   try {
-    await jobPostModel.findByIdAndUpdate(req.query.recruiterId, {
+    await jobPostModel.findByIdAndUpdate(req.query.id, {
       $set: { isActive: false },
     });
     res.json({ status: 'success' });
@@ -202,6 +202,7 @@ const DeleteJob = async (req, res, next) => {
 
 const getDataForEdit = async (req, res, next) => {
   try {
+    console.log(req.query.id);
     const data = await jobPostModel.findById(req.query.id);
     console.log(data);
     res.json(data);
@@ -242,7 +243,7 @@ const EditJobPostData = async (req, res, next) => {
 
 const getProfileData = async (req, res, next) => {
   try {
-    const data = await recruiterModel.findById(req.query.recruiterId);
+    const data = await recruiterModel.findById(req.recruiterId);
     console.log(data);
     res.json(data);
   } catch (error) {
@@ -255,7 +256,7 @@ const editProfilePost = async (req, res, next) => {
     const {
       userName, companyName, phoneNumber, email, tagLine, discription, website, image,
     } = req.body;
-    await recruiterModel.findByIdAndUpdate(req.query.recruiterId, {
+    await recruiterModel.findByIdAndUpdate(req.recruiterId, {
       $set: {
         tagLine, userName, companyName, phoneNumber, email, discription, website, image,
       },

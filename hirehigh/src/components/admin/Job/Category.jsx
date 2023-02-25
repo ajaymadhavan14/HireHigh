@@ -59,6 +59,7 @@ export default function AdminJobCategory() {
   const [refresh, setRefresh] = useState(false);
   const [category, setCategory] = useState(false);
   const [categoryError, setCategoryError] = useState('');
+  const token = localStorage.getItem('adminToken');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -69,7 +70,7 @@ export default function AdminJobCategory() {
     };
 
     if (data.category) {
-      axios.post('/admin/add_category', data).then((response) => {
+      axios.post('/admin/add_category', data, { headers: { 'admin-access-token': token } }).then((response) => {
         if (response.data.status === 'success') {
           toast.success('🦄 Wow so easy!', {
             position: 'top-center',
@@ -94,15 +95,15 @@ export default function AdminJobCategory() {
 
   useEffect(() => {
     async function invoke() {
-      const res = await AdminSideCategoryShow();
-      console.log(res, '11111111111');
-      setJob(res);
+      await AdminSideCategoryShow(token).then((response) => {
+        setJob(response);
+      });
     }
     invoke();
   }, [refresh]);
 
-  const deleteCat = async (Id) => {
-    await CategoryDelete(Id).then((response) => {
+  const deleteCat = async (id) => {
+    await CategoryDelete(id, token).then((response) => {
       console.log(response);
       if (response.data.status === 'success') {
         swal('success');

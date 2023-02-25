@@ -57,12 +57,12 @@ export default function RecruiterPrfileData(props) {
 
   const navigate = useNavigate();
   const [datas, setDatas] = useState({});
-  const recruiter = props?.data;
+  const token = localStorage.getItem('recruiterToken');
   //   console.log(recruiter, '111111111111111111');
 
   useEffect(() => {
     async function invoke() {
-      await getProfileData(recruiter._id).then((response) => {
+      await getProfileData(token).then((response) => {
         setDatas(response);
       });
     }
@@ -126,7 +126,7 @@ export default function RecruiterPrfileData(props) {
                 } else {
                   data.image = datas.image;
                 }
-                axios.post(`/recruiter/profile_edit_post?recruiterId=${datas._id}`, data).then((response) => {
+                axios.post('/recruiter/profile_edit_post', data, { headers: { 'recruiter-access-token': token } }).then((response) => {
                   if (response.data.status === 'success') {
                     navigate('/recruiter/profile');
                   } else {

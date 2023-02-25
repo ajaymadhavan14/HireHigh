@@ -59,9 +59,12 @@ export default function SingleJobView(props) {
   const [data, setData] = useState({});
   const [cat, setCat] = useState([]);
   const [refresh, setRefresh] = useState();
+  const token = localStorage.getItem('userToken');
+  const userData = props?.user;
+
   useEffect(() => {
     async function invoke() {
-      await getSingleJobData(state).then((response) => {
+      await getSingleJobData(state, token).then((response) => {
         console.log(response);
         setData(response.data);
         setCat(response.category);
@@ -71,8 +74,7 @@ export default function SingleJobView(props) {
   }, [refresh]);
   console.log(props, '11111111111111111');
   const apply = async (id) => {
-    const userData = props?.user;
-    await jobApply(id, userData).then((response) => {
+    await jobApply(id, userData, token).then((response) => {
       console.log(response);
       if (response.data.status === 'success') {
         swal('success');
@@ -160,10 +162,11 @@ export default function SingleJobView(props) {
               <Typography>Calicut</Typography>
             </Box>
           </Box>
-          {data?.applied
+          {userData.job.some((element) => element.jobId === data._id)
             ? (
               <Button
                         // eslint-disable-next-line no-underscore-dangle
+                    // onClick={() => apply(el?._id)}
                 variant="contained"
                 sx={{
                   backgroundColor: 'green', color: '#fff', fontWeight: '800', pointerEvents: 'none',
@@ -172,6 +175,7 @@ export default function SingleJobView(props) {
                 Applied
               </Button>
             )
+
             : (
               <Button
                         // eslint-disable-next-line no-underscore-dangle
@@ -188,7 +192,7 @@ export default function SingleJobView(props) {
       <Grid item xs={12} md={8} lg={9}>
 
         <Box>
-          {cat.map((el) => (
+          {cat && cat.map((el) => (
             <Card sx={{ minWidth: 275 }} key={el?.id}>
               <CardContent sx={{ display: 'flex', flexDirection: 'row' }} key={el?.id}>
                 <img src={el?.image} alt="" style={{ width: '20vh' }} />

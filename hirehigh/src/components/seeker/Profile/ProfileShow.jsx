@@ -16,17 +16,17 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getProfile } from '../../../apis/SeekerApi';
 
-export default function SeekerProfile(props) {
+export default function SeekerProfile() {
   const theme = createTheme();
   const navigate = useNavigate();
   const [user, setUser] = useState([]);
+  const token = localStorage.getItem('userToken');
 
   useEffect(() => {
     async function invoke() {
       // eslint-disable-next-line max-len
       // eslint-disable-next-line no-underscore-dangle, react/destructuring-assignment, react/prop-types
-      const id = props?.user?.id;
-      const res = await getProfile(id);
+      const res = await getProfile(token);
       setUser(res);
     }
     invoke();

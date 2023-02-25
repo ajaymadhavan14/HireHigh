@@ -58,9 +58,11 @@ export default function SeekerEditprofile(props) {
   const navigate = useNavigate();
   const userData = props?.user;
   const [datas, setDatas] = useState({});
+  const token = localStorage.getItem('userToken');
+
   useEffect(() => {
     async function invoke() {
-      await getProfileData(userData.id).then((response) => {
+      await getProfileData(token).then((response) => {
         setDatas(response);
       });
     }
@@ -134,7 +136,7 @@ export default function SeekerEditprofile(props) {
                     } else {
                       data.image = datas.image;
                     }
-                    axios.post(`/edit_profile_post?userId=${userData.id}`, data).then((response) => {
+                    axios.post('/edit_profile_post', data, { headers: { 'user-access-token': token } }).then((response) => {
                       if (response.data.status === 'success') {
                         navigate('/profile');
                       } else {

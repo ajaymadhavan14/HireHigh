@@ -54,6 +54,7 @@ export default function RecruiterJobEdit() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const id = state?._id;
+  const token = localStorage.getItem('recruiterToken');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -107,7 +108,7 @@ export default function RecruiterJobEdit() {
             data.image = state.image;
           }
           console.log(data);
-          axios.post(`/recruiter/edit_job?jobid=${id}`, data).then((response) => {
+          axios.post(`/recruiter/edit_job?jobid=${id}`, data, { headers: { 'recruiter-access-token': token } }).then((response) => {
             if (response.data.status === 'success') {
               navigate('/recruiter/jobs');
             } else {
@@ -129,7 +130,7 @@ export default function RecruiterJobEdit() {
   const [cat, setCat] = useState([]);
   useEffect(() => {
     async function invoke() {
-      const res = await getCategory();
+      const res = await getCategory(token);
       setCat(res);
     }
     invoke();
@@ -170,7 +171,7 @@ export default function RecruiterJobEdit() {
                 error={jobTitle}
                 helperText={jobTitleError}
                 autoFocus
-                defaultValue={state.jobTitle}
+                defaultValue={state?.jobTitle}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -185,7 +186,7 @@ export default function RecruiterJobEdit() {
                 error={companyName}
                 helperText={companyNameError}
                 autoFocus
-                defaultValue={state.companyName}
+                defaultValue={state?.companyName}
 
               />
             </Grid>

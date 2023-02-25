@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { RecruiterSideJobList, RecruiterJobDele, RecruiterJobEdit } from '../../../apis/RecruiterApi';
 
-export default function RecruiterJobList(props) {
+export default function RecruiterJobList() {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.white,
@@ -53,11 +53,12 @@ export default function RecruiterJobList(props) {
   const navigate = useNavigate();
   const [job, setJob] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const token = localStorage.getItem('recruiterToken');
 
   useEffect(() => {
     async function invoke() {
-      const id = props.id._id;
-      await RecruiterSideJobList(id).then((response) => {
+      // const id = props.id._id;
+      await RecruiterSideJobList(token).then((response) => {
         if (response.status === 'failed') {
           navigate('/recruiter/add_job');
         } else {
@@ -69,7 +70,7 @@ export default function RecruiterJobList(props) {
   }, [refresh]);
 
   const BlockJob = async (id) => {
-    await RecruiterJobDele(id).then((response) => {
+    await RecruiterJobDele(id, token).then((response) => {
       if (response.data.status === 'success') {
         toast.success('🦄 Wow so easy!', {
           position: 'top-center',
@@ -89,7 +90,7 @@ export default function RecruiterJobList(props) {
   };
 
   const editJob = async (id) => {
-    await RecruiterJobEdit(id).then((response) => {
+    await RecruiterJobEdit(id, token).then((response) => {
       console.log(response, '11111111111111111111111');
       navigate('/recruiter/edit_jobs', { state: response });
     });

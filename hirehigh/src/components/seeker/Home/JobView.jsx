@@ -166,7 +166,8 @@ export default function SeekerJobView() {
   };
 
   const getSearchProfile = async () => {
-    await searchProfileData(user.id).then((response) => {
+    const token = localStorage.getItem('userToken');
+    await searchProfileData(token).then((response) => {
       if (response.status === 'success') {
         navigate('/profile');
       } else {

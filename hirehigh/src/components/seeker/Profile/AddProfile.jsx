@@ -48,6 +48,7 @@ export default function SeekerAddprofile(props) {
   const [totalRequired, setTotalRequired] = useState('');
   const navigate = useNavigate();
   const userData = props?.user;
+  const token = localStorage.getItem('userToken');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -97,7 +98,7 @@ export default function SeekerAddprofile(props) {
             data.image = '';
           }
           console.log(data);
-          axios.post(`/add_profile?userId=${userData.id}`, data).then((response) => {
+          axios.post('/add_profile', data, { headers: { 'user-access-token': token } }).then((response) => {
             if (response.data.status === 'success') {
               navigate('/');
             } else {

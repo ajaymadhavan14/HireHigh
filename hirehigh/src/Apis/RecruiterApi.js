@@ -8,72 +8,55 @@ export const recruiterSignupApi = async (recruiterData) => {
     return error;
   }
 };
-export const isBlocked = async (recruiterId) => {
+
+export const getProfile = async (token) => {
   try {
-    const { data } = await axios.patch(`/recruiter/blocked?recruiterId=${recruiterId}`);
+    const { data } = await axios.get('/recruiter/get_profile', { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const isActivated = async (recruiterId) => {
+export const RecruiterSideJobList = async (token) => {
   try {
-    const { data } = await axios.patch(`/recruiter/actived?recruiterId=${recruiterId}`);
+    const { data } = await axios.get('/recruiter/jobs', { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const getProfile = async (id) => {
+export const getCategory = async (token) => {
   try {
-    const { data } = await axios.get(`/recruiter/get_profile?recruiterId=${id}`);
+    const { data } = await axios.get('/recruiter/get_cat', { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const RecruiterSideJobList = async (id) => {
+export const RecruiterJobDele = async (id, token) => {
   try {
-    const { data } = await axios.get(`/recruiter/jobs?recruiterId=${id}`);
+    const data = await axios.patch(`/recruiter/job_dele?id=${id}`, { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const getCategory = async () => {
+export const RecruiterJobEdit = async (id, token) => {
   try {
-    const { data } = await axios.get('/recruiter/get_cat');
+    const { data } = await axios.get(`/recruiter/job_edit?id=${id}`, { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const RecruiterJobDele = async (id) => {
+export const getProfileData = async (token) => {
   try {
-    const data = await axios.patch(`/recruiter/job_dele?recruiterId=${id}`);
-    return data;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const RecruiterJobEdit = async (id) => {
-  try {
-    const { data } = await axios.get(`/recruiter/job_edit?id=${id}`);
-    return data;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const getProfileData = async (id) => {
-  try {
-    const { data } = await axios.get(`/recruiter/get_profile_data?recruiterId=${id}`);
+    const { data } = await axios.get('/recruiter/get_profile_data', { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;

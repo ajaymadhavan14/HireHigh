@@ -42,7 +42,7 @@ export default function JobCard(props) {
   const user = props?.data;
   console.log(user, '111111111111111111111111');
   const apply = async (id) => {
-    await jobApply(id, user).then((response) => {
+    await jobApply(id, user, token).then((response) => {
       console.log(response);
       if (response.data.status === 'success') {
         swal('success');
@@ -75,7 +75,7 @@ export default function JobCard(props) {
                 ? (
                   <Button
                         // eslint-disable-next-line no-underscore-dangle
-                    onClick={() => apply(el?._id)}
+                    // onClick={() => apply(el?._id)}
                     variant="contained"
                     sx={{
                       backgroundColor: 'green', color: '#fff', fontWeight: '800', pointerEvents: 'none',

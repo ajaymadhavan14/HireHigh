@@ -102,7 +102,7 @@ export default function RecruiterProfileEdit() {
   const dispatch = useDispatch(recruiterDetails);
   useEffect(() => {
     axios.get('/recruiter/isRecruiterAuth', {
-      headers: { 'r-access-token': localStorage.getItem('recruiterToken') },
+      headers: { 'recruiter-access-token': localStorage.getItem('recruiterToken') },
     }).then((response) => {
       console.log(response.data);
       if (!response.data.auth) {

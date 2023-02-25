@@ -11,8 +11,7 @@ import TableHead from '@mui/material/TableHead';
 import Container from '@mui/material/Container';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
-import { AdminGetRecruiters } from '../../../apis/AdminApi';
-import { isActivated, isBlocked } from '../../../apis/RecruiterApi';
+import { AdminGetRecruiters, recruiterActivated, recruiterBlocked } from '../../../apis/AdminApi';
 
 export default function RecruiterList() {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -46,25 +45,24 @@ export default function RecruiterList() {
 
   const [recruiter, setRecruiter] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const token = localStorage.getItem('adminToken');
 
   useEffect(() => {
     async function invoke() {
-      const res = await AdminGetRecruiters();
-      console.log(res);
-      if (res) {
-        setRecruiter(res);
-      }
+      await AdminGetRecruiters(token).then((response) => {
+        setRecruiter(response);
+      });
     }
     invoke();
   }, [refresh]);
 
   const blocked = async (recruiterId) => {
-    await isBlocked(recruiterId);
+    await recruiterBlocked(recruiterId, token);
     setRefresh(!refresh);
   };
 
   const actived = async (recruiterId) => {
-    await isActivated(recruiterId);
+    await recruiterActivated(recruiterId, token);
     setRefresh(!refresh);
   };
 

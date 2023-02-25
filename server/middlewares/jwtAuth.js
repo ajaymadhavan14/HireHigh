@@ -22,7 +22,7 @@ const jwtSeeker = async (req, res, next) => {
 
 const jwtRecruiter = async (req, res, next) => {
   try {
-    const token = req.headers['r-access-token'];
+    const token = req.headers['recruiter-access-token'];
     if (!token) {
       res.send({ status: 'failed', message: 'You need token' });
     } else {
@@ -42,7 +42,7 @@ const jwtRecruiter = async (req, res, next) => {
 
 const jwtAdmin = async (req, res, next) => {
   try {
-    const token = req.headers['a-access-token'];
+    const token = req.headers['admin-access-token'];
     if (!token) {
       res.send({ status: 'failed', message: 'You need token' });
     } else {

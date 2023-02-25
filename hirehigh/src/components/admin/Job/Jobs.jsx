@@ -45,23 +45,24 @@ export default function AdminJobList() {
 
   const [job, setJob] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const token = localStorage.getItem('adminToken');
 
   useEffect(() => {
     async function invoke() {
-      const res = await AdminSideJobList();
-      console.log(res, '11111111111');
-      setJob(res);
+      await AdminSideJobList(token).then((response) => {
+        setJob(response);
+      });
     }
     invoke();
   }, [refresh]);
 
-  const blocked = async (Id) => {
-    await JobBlocked(Id);
+  const blocked = async (id) => {
+    await JobBlocked(id, token);
     setRefresh(!refresh);
   };
 
-  const actived = async (Id) => {
-    await JobActivated(Id);
+  const actived = async (id) => {
+    await JobActivated(id, token);
     setRefresh(!refresh);
   };
 

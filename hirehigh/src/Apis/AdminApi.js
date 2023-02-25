@@ -1,63 +1,100 @@
 import axios from '../axios/axios';
 
 // eslint-disable-next-line import/prefer-default-export
-export const AdminGetUsers = async () => {
+export const AdminGetUsers = async (token) => {
   try {
-    const { data } = await axios.get('/admin/get_users');
+    const { data } = await axios.get('/admin/get_users', { headers: { 'admin-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const AdminGetRecruiters = async () => {
+export const AdminGetRecruiters = async (token) => {
   try {
-    const { data } = await axios.get('/admin/get_recruiters');
+    const { data } = await axios.get('/admin/get_recruiters', { headers: { 'admin-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const AdminSideJobList = async () => {
+export const AdminSideJobList = async (token) => {
   try {
-    const { data } = await axios.get('/admin/jobs');
+    const { data } = await axios.get('/admin/jobs', { headers: { 'admin-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const JobBlocked = async (Id) => {
+export const seekerBlocked = async (userId, token) => {
   try {
-    const { data } = await axios.patch(`/admin/job_blocked?Id=${Id}`);
+    const { data } = await axios.patch(`/blocked?userId=${userId}`, {}, { headers: { 'admin-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const JobActivated = async (Id) => {
+export const seekerActivated = async (userId, token) => {
   try {
-    const { data } = await axios.patch(`/admin/job_actived?Id=${Id}`);
+    const { data } = await axios.patch(`/actived?userId=${userId}`, {}, { headers: { 'admin-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const AdminSideCategoryShow = async () => {
+export const recruiterBlocked = async (recruiterId, token) => {
   try {
-    const { data } = await axios.get('/admin/job_category');
+    const { data } = await axios.patch(`/recruiter/blocked?recruiterId=${recruiterId}`, {}, { headers: { 'admin-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const CategoryDelete = async (Id) => {
+export const recruiterActivated = async (recruiterId, token) => {
   try {
-    const data = await axios.patch(`admin/cat_dele?Id=${Id}`);
+    const { data } = await axios.patch(`/recruiter/actived?recruiterId=${recruiterId}`, {}, { headers: { 'admin-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const JobBlocked = async (id, token) => {
+  try {
+    const { data } = await axios.patch(`/admin/job_blocked?jobId=${id}`, {}, { headers: { 'admin-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const JobActivated = async (id, token) => {
+  try {
+    const { data } = await axios.patch(`/admin/job_actived?jobId=${id}`, {}, { headers: { 'admin-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const AdminSideCategoryShow = async (token) => {
+  try {
+    const { data } = await axios.get('/admin/job_category', { headers: { 'admin-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const CategoryDelete = async (id, token) => {
+  console.log(token);
+  try {
+    const data = await axios.delete(`/admin/cat_dele?Id=${id}`, { headers: { 'admin-access-token': token } });
     return data;
   } catch (error) {
     return error;

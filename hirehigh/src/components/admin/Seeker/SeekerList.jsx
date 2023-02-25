@@ -11,8 +11,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Container from '@mui/material/Container';
 import { useEffect, useState } from 'react';
-import { AdminGetUsers } from '../../../apis/AdminApi';
-import { isActivated, isBlocked } from '../../../apis/SeekerApi';
+import { AdminGetUsers, seekerActivated, seekerBlocked } from '../../../apis/AdminApi';
 
 export default function SeekerList() {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -48,25 +47,24 @@ export default function SeekerList() {
 
   const [users, setUsers] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const token = localStorage.getItem('adminToken');
 
   useEffect(() => {
     async function invoke() {
-      const res = await AdminGetUsers();
-      console.log(res);
-      if (res) {
-        setUsers(res);
-      }
+      await AdminGetUsers(token).then((response) => {
+        setUsers(response);
+      });
     }
     invoke();
   }, [refresh]);
 
   const blocked = async (userId) => {
-    await isBlocked(userId);
+    await seekerBlocked(userId, token);
     setRefresh(!refresh);
   };
 
   const actived = async (userId) => {
-    await isActivated(userId);
+    await seekerActivated(userId, token);
     setRefresh(!refresh);
   };
   return (

@@ -84,7 +84,7 @@ export default function RetSingnUP() {
 
     };
     if (data.companyName && data.email && data.password && data.confPassword && data.userName
-         && data.phoneNumber && data.tagLine && data.website && data.discription) {
+         && data.phoneNumber && data.tagLine && data.website && data.discription && data.image) {
       const regName = /^[a-zA-Z]+$/;
       const regEmail = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
       const regPhone = /^[0-9]+$/;
@@ -112,26 +112,39 @@ export default function RetSingnUP() {
                     setConfPassword(false);
                     setPasswordError('');
                     setConfPasswordError('');
-
                     if (data.image.name) {
-                      const dirs = Date.now();
-                      const rand = Math.random();
-                      const image = data.image;
-                      const imageRef = ref(storage, `/seekerImages/${dirs}${rand}_${image?.name}`);
-                      const toBase64 = (image) =>
-                        new Promise((resolve, reject) => {
-                          const reader = new FileReader();
-                          reader.readAsDataURL(image);
-                          reader.onload = () => resolve(reader.result);
-                          reader.onerror = (error) => reject(error);
-                        }).catch((err) => {
-                          console.log(err);
+                      const allowedFormats = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+                      if (!allowedFormats.exec(data.image.name)) {
+                        toast.error('Invalid file type!', {
+                          position: 'top-right',
+                          autoClose: 4000,
+                          hideProgressBar: false,
+                          closeOnClick: true,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                          theme: 'colored',
                         });
-                      const imgBase = await toBase64(image);
-                      await uploadString(imageRef, imgBase, 'data_url').then(async () => {
-                        const downloadURL = await getDownloadURL(imageRef);
-                        data.image = downloadURL;
-                      });
+                      } else {
+                        const dirs = Date.now();
+                        const rand = Math.random();
+                        const image = data.image;
+                        const imageRef = ref(storage, `/seekerImages/${dirs}${rand}_${image?.name}`);
+                        const toBase64 = (image) =>
+                          new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.readAsDataURL(image);
+                            reader.onload = () => resolve(reader.result);
+                            reader.onerror = (error) => reject(error);
+                          }).catch((err) => {
+                            console.log(err);
+                          });
+                        const imgBase = await toBase64(image);
+                        await uploadString(imageRef, imgBase, 'data_url').then(async () => {
+                          const downloadURL = await getDownloadURL(imageRef);
+                          data.image = downloadURL;
+                        });
+                      }
                     } else {
                       data.image = '';
                     }
@@ -210,6 +223,7 @@ export default function RetSingnUP() {
         <h2 onClick={() => navigate('/')}>HIREHIGH</h2>
       </Typography>
       <Container component="main" maxWidth="md">
+        <ToastContainer />
         <CssBaseline />
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
 
@@ -342,6 +356,24 @@ export default function RetSingnUP() {
                 autoComplete="image"
                 error={image}
                 helperText={imageError}
+                onChange={(e) => {
+                  const allowedFormats = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+                  const fileType = e.target.files[0].name;
+                  if (!allowedFormats.exec(fileType)) {
+                    toast.error('Invalid file type!', {
+                      position: 'top-right',
+                      autoClose: 4000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: 'colored',
+                    });
+                  } else {
+                    setImage(e.target.files[0]);
+                  }
+                }}
               />
             </Grid>
           </Grid>

@@ -254,11 +254,11 @@ const getProfileData = async (req, res, next) => {
 const editProfilePost = async (req, res, next) => {
   try {
     const {
-      userName, companyName, phoneNumber, email, tagLine, discription, website, image,
+      userName, companyName, phoneNumber, email, tagLine, discription, website, image, location,
     } = req.body;
     await recruiterModel.findByIdAndUpdate(req.recruiterId, {
       $set: {
-        tagLine, userName, companyName, phoneNumber, email, discription, website, image,
+        tagLine, userName, companyName, phoneNumber, email, discription, website, image, location,
       },
     });
     res.json({ status: 'success' });

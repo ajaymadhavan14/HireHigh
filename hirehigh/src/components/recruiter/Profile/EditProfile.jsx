@@ -52,6 +52,8 @@ export default function RecruiterPrfileData(props) {
   const [passwordError, setPasswordError] = useState('');
   const [confPassword, setConfPassword] = useState(false);
   const [confPasswordError, setConfPasswordError] = useState('');
+  const [location, setLocation] = useState(false);
+  const [locationError, setLocationError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
   const [flag, setFlag] = useState(false);
 
@@ -80,9 +82,10 @@ export default function RecruiterPrfileData(props) {
       discription: data.get('discription'),
       phoneNumber: data.get('phoneNumber'),
       image: data.get('image'),
+      location: data.get('location'),
 
     };
-    if (data.companyName && data.email && data.userName
+    if (data.companyName && data.email && data.userName && data.location
          && data.phoneNumber && data.tagLine && data.website && data.discription) {
       const regName = /^[a-zA-Z]+$/;
       const regEmail = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
@@ -105,24 +108,38 @@ export default function RecruiterPrfileData(props) {
                 setPhoneNumberError('');
 
                 if (data.image.name) {
-                  const dirs = Date.now();
-                  const rand = Math.random();
-                  const image = data.image;
-                  const imageRef = ref(storage, `/seekerImages/${dirs}${rand}_${image?.name}`);
-                  const toBase64 = (image) =>
-                    new Promise((resolve, reject) => {
-                      const reader = new FileReader();
-                      reader.readAsDataURL(image);
-                      reader.onload = () => resolve(reader.result);
-                      reader.onerror = (error) => reject(error);
-                    }).catch((err) => {
-                      console.log(err);
+                  const allowedFormats = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+                  if (!allowedFormats.exec(data.image.name)) {
+                    toast.error('Invalid file type!', {
+                      position: 'top-right',
+                      autoClose: 4000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: 'colored',
                     });
-                  const imgBase = await toBase64(image);
-                  await uploadString(imageRef, imgBase, 'data_url').then(async () => {
-                    const downloadURL = await getDownloadURL(imageRef);
-                    data.image = downloadURL;
-                  });
+                  } else {
+                    const dirs = Date.now();
+                    const rand = Math.random();
+                    const image = data.image;
+                    const imageRef = ref(storage, `/seekerImages/${dirs}${rand}_${image?.name}`);
+                    const toBase64 = (image) =>
+                      new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(image);
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = (error) => reject(error);
+                      }).catch((err) => {
+                        console.log(err);
+                      });
+                    const imgBase = await toBase64(image);
+                    await uploadString(imageRef, imgBase, 'data_url').then(async () => {
+                      const downloadURL = await getDownloadURL(imageRef);
+                      data.image = downloadURL;
+                    });
+                  }
                 } else {
                   data.image = datas.image;
                 }
@@ -305,6 +322,24 @@ export default function RecruiterPrfileData(props) {
                 autoComplete="image"
                 error={image}
                 helperText={imageError}
+                onChange={(e) => {
+                  const allowedFormats = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+                  const fileType = e.target.files[0].name;
+                  if (!allowedFormats.exec(fileType)) {
+                    toast.error('Invalid file type!', {
+                      position: 'top-right',
+                      autoClose: 4000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: 'colored',
+                    });
+                  } else {
+                    setImage(e.target.files[0]);
+                  }
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -328,7 +363,21 @@ export default function RecruiterPrfileData(props) {
             <Grid item xs={12} sm={6}>
               <img src={datas.image} alt="...loading" style={{ height: '30vh', width: '45vh' }} />
             </Grid>
-            <Grid item xs={12} sm={6} />
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="location"
+                type="text"
+                label="Location"
+                name="location"
+                autoComplete="location"
+                error={location}
+                helperText={locationError}
+                defaultValue={datas?.location}
+                multiline
+              />
+            </Grid>
           </Grid>
           <Box sx={{ backgroundColor: '#ffc5c5', borderRadius: '3px', pl: 2 }}>
             <p style={{ color: 'red' }}>{totalRequired}</p>

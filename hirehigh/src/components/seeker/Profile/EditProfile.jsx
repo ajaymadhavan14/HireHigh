@@ -18,6 +18,8 @@ import FormControl from '@mui/material/FormControl';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormLabel from '@mui/material/FormLabel';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Select from '@mui/material/Select';
 import swal from 'sweetalert';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
@@ -116,23 +118,37 @@ export default function SeekerEditprofile(props) {
                     setPositionError('');
 
                     if (data.image.name) {
-                      const dirs = Date.now();
-                      const rand = Math.random();
-                      const { image } = data;
-                      const imageRef = ref(storage, `/seekerImages/${dirs}${rand}_${image?.name}`);
-                      const toBase64 = (image) => new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.readAsDataURL(image);
-                        reader.onload = () => resolve(reader.result);
-                        reader.onerror = (error) => reject(error);
-                      }).catch((err) => {
-                        console.log(err);
-                      });
-                      const imgBase = await toBase64(image);
-                      await uploadString(imageRef, imgBase, 'data_url').then(async () => {
-                        const downloadURL = await getDownloadURL(imageRef);
-                        data.image = downloadURL;
-                      });
+                      const allowedFormats = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+                      if (!allowedFormats.exec(data.image.name)) {
+                        toast.error('Invalid file type!', {
+                          position: 'top-right',
+                          autoClose: 4000,
+                          hideProgressBar: false,
+                          closeOnClick: true,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                          theme: 'colored',
+                        });
+                      } else {
+                        const dirs = Date.now();
+                        const rand = Math.random();
+                        const { image } = data;
+                        const imageRef = ref(storage, `/seekerImages/${dirs}${rand}_${image?.name}`);
+                        const toBase64 = (image) => new Promise((resolve, reject) => {
+                          const reader = new FileReader();
+                          reader.readAsDataURL(image);
+                          reader.onload = () => resolve(reader.result);
+                          reader.onerror = (error) => reject(error);
+                        }).catch((err) => {
+                          console.log(err);
+                        });
+                        const imgBase = await toBase64(image);
+                        await uploadString(imageRef, imgBase, 'data_url').then(async () => {
+                          const downloadURL = await getDownloadURL(imageRef);
+                          data.image = downloadURL;
+                        });
+                      }
                     } else {
                       data.image = datas.image;
                     }
@@ -395,6 +411,24 @@ export default function SeekerEditprofile(props) {
                 autoComplete="image"
                 error={image}
                 helperText={imageError}
+                onChange={(e) => {
+                  const allowedFormats = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+                  const fileType = e.target.files[0].name;
+                  if (!allowedFormats.exec(fileType)) {
+                    toast.error('Invalid file type!', {
+                      position: 'top-right',
+                      autoClose: 3000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: 'colored',
+                    });
+                  } else {
+                    setImage(e.target.files[0]);
+                  }
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6} sx={{ marginTop: 'auto' }}>

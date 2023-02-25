@@ -48,6 +48,9 @@ const recruiterSignup = new Schema(
       type: Boolean,
       default: true,
     },
+    location: {
+      type: String,
+    },
     image: {
       type: String,
     },

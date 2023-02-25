@@ -111,7 +111,7 @@ export default function RecruiterProfile() {
                     <FormLabel>Location</FormLabel>
                     <Typography pt={1}>
 
-                      {recruiter?.Location}
+                      {recruiter?.location}
 
                     </Typography>
                   </Box>

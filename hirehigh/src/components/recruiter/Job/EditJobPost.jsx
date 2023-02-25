@@ -18,6 +18,8 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import FormLabel from '@mui/material/FormLabel';
 import Select from '@mui/material/Select';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../../firebase/Config';
@@ -87,27 +89,40 @@ export default function RecruiterJobEdit() {
           setCompanyNameError('');
 
           if (data.image.name) {
-            const dirs = Date.now();
-            const rand = Math.random();
-            const { image } = data;
-            const imageRef = ref(storage, `/jobPost/${dirs}${rand}_${image?.name}`);
-            const toBase64 = (image) => new Promise((resolve, reject) => {
-              const reader = new FileReader();
-              reader.readAsDataURL(image);
-              reader.onload = () => resolve(reader.result);
-              reader.onerror = (error) => reject(error);
-            }).catch((err) => {
-              console.log(err);
-            });
-            const imgBase = await toBase64(image);
-            await uploadString(imageRef, imgBase, 'data_url').then(async () => {
-              const downloadURL = await getDownloadURL(imageRef);
-              data.image = downloadURL;
-            });
+            const allowedFormats = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+            if (!allowedFormats.exec(data.image.name)) {
+              toast.error('Invalid file type!', {
+                position: 'top-right',
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'colored',
+              });
+            } else {
+              const dirs = Date.now();
+              const rand = Math.random();
+              const { image } = data;
+              const imageRef = ref(storage, `/jobPost/${dirs}${rand}_${image?.name}`);
+              const toBase64 = (image) => new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(image);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = (error) => reject(error);
+              }).catch((err) => {
+                console.log(err);
+              });
+              const imgBase = await toBase64(image);
+              await uploadString(imageRef, imgBase, 'data_url').then(async () => {
+                const downloadURL = await getDownloadURL(imageRef);
+                data.image = downloadURL;
+              });
+            }
           } else {
             data.image = state.image;
           }
-          console.log(data);
           axios.post(`/recruiter/edit_job?jobid=${id}`, data, { headers: { 'recruiter-access-token': token } }).then((response) => {
             if (response.data.status === 'success') {
               navigate('/recruiter/jobs');
@@ -366,6 +381,24 @@ export default function RecruiterJobEdit() {
                 autoComplete="image"
                 error={image}
                 helperText={imageError}
+                onChange={(e) => {
+                  const allowedFormats = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+                  const fileType = e.target.files[0].name;
+                  if (!allowedFormats.exec(fileType)) {
+                    toast.error('Invalid file type!', {
+                      position: 'top-right',
+                      autoClose: 4000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: 'colored',
+                    });
+                  } else {
+                    setImage(e.target.files[0]);
+                  }
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6} sx={{ marginTop: 'auto' }}>

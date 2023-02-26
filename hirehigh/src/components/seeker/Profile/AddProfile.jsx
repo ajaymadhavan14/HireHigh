@@ -1,6 +1,4 @@
-/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-shadow */
-/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from 'react';
 import Button from '@mui/material/Button';
@@ -12,30 +10,26 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormLabel from '@mui/material/FormLabel';
-import Select from '@mui/material/Select';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../../firebase/Config';
 import axios from '../../../axios/axios';
-import { getCategory } from '../../../apis/RecruiterApi';
 
 const theme = createTheme();
-export default function SeekerAddprofile(props) {
+export default function SeekerAddprofile() {
   const [headline, setHeadline] = useState(false);
   const [headlineError, setHeadlineError] = useState('');
   const [position, setPosition] = useState(false);
   const [positionError, setPositionError] = useState('');
   const [age, setAge] = useState(false);
   const [ageError, setAgeError] = useState('');
-  const [qualification, setQualification] = useState(false);
+  const [qualification, setQualification] = useState('');
+  const [qualifications, setQualifications] = useState([]);
   const [qualificationError, setQualificationError] = useState('');
   const [discription, setDiscription] = useState(false);
   const [discriptionError, setDiscriptionError] = useState('');
@@ -49,7 +43,6 @@ export default function SeekerAddprofile(props) {
   const [experianceError, setExperianceError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
   const navigate = useNavigate();
-  const userData = props?.user;
   const token = localStorage.getItem('userToken');
 
   const handleSubmit = async (event) => {
@@ -113,7 +106,6 @@ export default function SeekerAddprofile(props) {
           } else {
             data.image = '';
           }
-          console.log(data);
           axios.post('/add_profile', data, { headers: { 'user-access-token': token } }).then((response) => {
             if (response.data.status === 'success') {
               navigate('/');
@@ -133,6 +125,14 @@ export default function SeekerAddprofile(props) {
       setTotalRequired('Please enter your Details');
     }
   };
+  const onchangeInput = (val, index) => {
+    const temp = qualification;
+    temp[index] = val.target.value;
+    setQualification(temp);
+    console.log(temp);
+  };
+
+  console.log(qualifications);
 
   return (
     <ThemeProvider theme={theme}>
@@ -267,9 +267,9 @@ export default function SeekerAddprofile(props) {
             </Grid>
           </Grid>
           <Grid item xs={12} py={2}>
+
             <TextField
               required
-              fullWidth
               id="qualification"
               type="text"
               label="Qualification"
@@ -277,7 +277,38 @@ export default function SeekerAddprofile(props) {
               autoComplete="qualification"
               error={qualification}
               helperText={qualificationError}
+              sx={{ width: '92%' }}
             />
+            <Button
+              onClick={() => setQualifications([...qualifications,
+                { text: qualification }])}
+              variant="contained"
+              sx={{ height: '7.5vh' }}
+            >
+              Add
+
+            </Button>
+
+          </Grid>
+          <Grid item xs={12}>
+            {qualifications.map((squalification, index) => (
+
+              <TextField
+                key={index}
+                required
+                id="qualification"
+                type="text"
+                label="Qualification"
+                name="qualification"
+                autoComplete="qualification"
+                error={qualification}
+                helperText={qualificationError}
+                sx={{ width: '92%', marginBottom: '10px' }}
+                onChange={(val) => onchangeInput(val, index)}
+
+              />
+
+            ))}
           </Grid>
           <Grid item xs={12} py={2}>
             <TextField

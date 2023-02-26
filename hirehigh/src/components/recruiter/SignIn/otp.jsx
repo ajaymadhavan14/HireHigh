@@ -96,7 +96,7 @@ export default function RecruiterOTP() {
           });
           navigate('/recruiter/login');
         } else {
-          toast.error('This email is already registered!', {
+          toast.error(`${response.message}`, {
             position: 'top-right',
             autoClose: 4000,
             hideProgressBar: false,

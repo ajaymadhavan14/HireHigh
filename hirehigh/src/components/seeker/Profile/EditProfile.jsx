@@ -1,6 +1,4 @@
-/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-shadow */
-/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from 'react';
 import Button from '@mui/material/Button';
@@ -12,15 +10,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormLabel from '@mui/material/FormLabel';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Select from '@mui/material/Select';
 import swal from 'sweetalert';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../../firebase/Config';
@@ -28,7 +22,7 @@ import axios from '../../../axios/axios';
 import { getProfileData } from '../../../apis/SeekerApi';
 
 const theme = createTheme();
-export default function SeekerEditprofile(props) {
+export default function SeekerEditprofile() {
   const [firstName, setFirstName] = useState(false);
   const [firstNameError, setFirstNameError] = useState('');
   const [lastName, setLastName] = useState(false);
@@ -58,7 +52,6 @@ export default function SeekerEditprofile(props) {
   const [totalRequired, setTotalRequired] = useState('');
 
   const navigate = useNavigate();
-  const userData = props?.user;
   const [datas, setDatas] = useState({});
   const token = localStorage.getItem('userToken');
 
@@ -197,6 +190,7 @@ export default function SeekerEditprofile(props) {
 
       <Container component="main" maxWidth="md">
         <CssBaseline />
+        <ToastContainer />
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
 
           <Grid

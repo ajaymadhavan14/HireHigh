@@ -1,8 +1,6 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react/prop-types */
-/* eslint-disable array-callback-return */
 /* eslint-disable no-unused-vars */
-/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -31,19 +29,15 @@ export default function JobCard(props) {
   const token = localStorage.getItem('userToken');
   useEffect(() => {
     async function invoke() {
-      const res = await jobListSeekerSide(token);
-      console.log(res);
-      if (res) {
+      await jobListSeekerSide(token).then((res) => {
         setJobs(res);
-      }
+      });
     }
     invoke();
   }, [refresh]);
   const user = props?.data;
-  console.log(user, '111111111111111111111111');
   const apply = async (id) => {
     await jobApply(id, user, token).then((response) => {
-      console.log(response);
       if (response.data.status === 'success') {
         swal('success');
         setRefresh(!refresh);

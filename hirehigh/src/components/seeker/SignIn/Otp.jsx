@@ -1,8 +1,5 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-unused-vars */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -96,7 +93,7 @@ export default function SeekerOTP() {
           });
           navigate('/login');
         } else {
-          toast.error('This email is already registered!', {
+          toast.error(`${response.message}`, {
             position: 'top-right',
             autoClose: 4000,
             hideProgressBar: false,

@@ -1,40 +1,12 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import BusinessIcon from '@mui/icons-material/Business';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import TaskIcon from '@mui/icons-material/Task';
-import NoteAddIcon from '@mui/icons-material/NoteAdd';
-import MessageIcon from '@mui/icons-material/Message';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import LogoutIcon from '@mui/icons-material/Logout';
-import Menu from '@mui/material/Menu';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import WorkIcon from '@mui/icons-material/Work';
 import Card from '@mui/material/Card';
 import Moment from 'react-moment';
 import CardActions from '@mui/material/CardActions';
@@ -65,17 +37,14 @@ export default function SingleJobView(props) {
   useEffect(() => {
     async function invoke() {
       await getSingleJobData(state, token).then((response) => {
-        console.log(response);
         setData(response.data);
         setCat(response.category);
       });
     }
     invoke();
   }, [refresh]);
-  console.log(props, '11111111111111111');
   const apply = async (id) => {
     await jobApply(id, userData, token).then((response) => {
-      console.log(response);
       if (response.data.status === 'success') {
         swal('success');
         setRefresh(!refresh);

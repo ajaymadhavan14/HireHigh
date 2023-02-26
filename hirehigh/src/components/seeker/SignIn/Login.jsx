@@ -48,7 +48,6 @@ export default function SignIn() {
           setPasswordError('');
 
           axios.post('/login', data).then((response) => {
-            console.log(response);
             if (!response.data.auth) {
               swal('sorry', response.data.message, 'error');
             } else {
@@ -137,12 +136,12 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link variant="body2" onClick={() => navigate('/enter_number')} component="button">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link onClick={() => { navigate('/signup'); }} variant="body2" component="button">
+                <Link onClick={() => navigate('/signup')} variant="body2" component="button">
                   Don't have an account? Sign Up
                 </Link>
               </Grid>

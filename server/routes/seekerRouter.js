@@ -17,5 +17,7 @@ router.get('/get_data', jwtAuth.jwtSeeker, seekerController.getProfileData);
 router.get('/profile_search', jwtAuth.jwtSeeker, seekerController.searchProfilData);
 router.get('/get_profiledata', jwtAuth.jwtSeeker, seekerController.userDataEditGet);
 router.post('/edit_profile_post', jwtAuth.jwtSeeker, seekerController.editUserProfilePost);
+router.post('/enter_number', seekerController.NumberCheck);
+router.post('/new_password', seekerController.setNewPassword);
 
 export default router;

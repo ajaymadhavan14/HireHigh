@@ -10,6 +10,9 @@ import OtpSignUp from '../pages/seeker/OtpSignUp';
 import ProfileShow from '../pages/seeker/ProfileShow';
 import AddProfile from '../pages/seeker/AddProfile';
 import EditProfile from '../pages/seeker/EditProfile';
+import FPNumber from '../pages/seeker/Forgot-Password/FPNumber';
+import OtpPage from '../pages/seeker/Forgot-Password/OtpPage';
+import NewPassword from '../pages/seeker/Forgot-Password/NewPassword';
 
 function SeekerRouter() {
   return (
@@ -36,6 +39,12 @@ function SeekerRouter() {
         <Route path="/add_profile" element={<AddProfile />} />
 
         <Route path="/edit_profile" element={<EditProfile />} />
+
+        <Route path="/enter_number" element={<FPNumber />} />
+
+        <Route path="/fp_otp" element={<OtpPage />} />
+
+        <Route path="/new_password" element={<NewPassword />} />
 
       </Routes>
 

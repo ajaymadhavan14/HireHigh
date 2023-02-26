@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -7,58 +8,89 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import BusinessIcon from '@mui/icons-material/Business';
 import swal from 'sweetalert';
-import { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from '../../../axios/axios';
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
+import { auth } from '../../../../firebase/Config';
+import axios from '../../../../axios/axios';
+import AuthContext from '../../../../context/AppContext';
 
 const theme = createTheme();
 
-export default function VendorSignIn() {
+export default function FPEnterNumber() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  const [password, setPassword] = useState(false);
-  const [passwordError, setPasswordError] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState(false);
+  const [phoneNumberError, setPhoneNumberError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
+  const { userDetails, setUserDetails } = useContext(AuthContext);
+  const { userOtpConf, setUserOtpConf } = useContext(AuthContext);
+  const [flag, setFlag] = useState(false);
+
+  function setUpRecaptcha(number) {
+    const recaptchaVerifier = new RecaptchaVerifier(
+      'recaptcha-seeker-container',
+      {},
+      auth,
+    );
+    recaptchaVerifier.render();
+    return signInWithPhoneNumber(auth, number, recaptchaVerifier);
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
     data = {
-      email: data.get('email'),
-      password: data.get('password'),
+      phoneNumber: data.get('phoneNumber'),
     };
-    if (data.email && data.password) {
-      const regEmail = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
-      if (regEmail.test(data.email)) {
-        setEmail(false);
-        setEmailError('');
-        if (data.password.length >= 6) {
-          setPassword(false);
-          setPasswordError('');
-          axios.post('/recruiter/login', data).then((response) => {
-            if (!response.data.auth) {
+    const regPhone = /^[0-9]+$/;
+    if (data.phoneNumber) {
+      if (regPhone.test(data.phoneNumber)) {
+        setPhoneNumber(false);
+        setPhoneNumberError('');
+        if (data.phoneNumber.length === 10) {
+          setPhoneNumber(false);
+          setPhoneNumberError('');
+          axios.post('/enter_number', data).then(async (response) => {
+            if (response.data.status === 'failed') {
               swal('sorry', response.data.message, 'error');
             } else {
-              localStorage.setItem('recruiterToken', response.data.token);
-              navigate('/recruiter/home');
+              setUserDetails(data);
+              try {
+                await setUpRecaptcha(`+91${data.phoneNumber}`).then((res) => {
+                  setFlag(true);
+                  setUserOtpConf(res);
+                  navigate('/fp_otp');
+                });
+              } catch (error) {
+                toast.warning(`${error.message}`, {
+                  position: 'top-right',
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: 'colored',
+                });
+              }
             }
           });
         } else {
-          setPassword(true);
-          setPasswordError('Minimum 6 character');
+          setPhoneNumber(true);
+          setPhoneNumberError('Please enter 10 digit');
         }
       } else {
-        setEmail(true);
-        setEmailError('Please enter valid Email');
+        setPhoneNumber(true);
+        setPhoneNumberError('Please Enter valid Phone no');
       }
     } else {
       setTotalRequired('All feilds are required');
@@ -69,6 +101,7 @@ export default function VendorSignIn() {
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="md">
         <CssBaseline />
+        <ToastContainer />
         <Box
           sx={{
             marginTop: 12,
@@ -107,7 +140,7 @@ export default function VendorSignIn() {
             <Grid item xs={12} sm={6}>
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Avatar sx={{ mb: 1, bgcolor: 'secondary.main' }}>
-                  <BusinessIcon />
+                  <AccountCircleIcon />
                 </Avatar>
               </Box>
               <Typography
@@ -115,7 +148,7 @@ export default function VendorSignIn() {
                 component="h1"
                 variant="h5"
               >
-                Recruiter SIGN IN
+                Enter Your Register Mobile Number
               </Typography>
 
               <hr />
@@ -126,7 +159,7 @@ export default function VendorSignIn() {
                 component="form"
                 onSubmit={handleSubmit}
                 noValidate
-                sx={{ mt: 3 }}
+                sx={{ mt: 5 }}
               >
                 {totalRequired && <Typography mb={0.5} sx={{ color: 'red', fontFamily: 'sans-serif' }} align="center">{totalRequired}</Typography>}
 
@@ -134,52 +167,27 @@ export default function VendorSignIn() {
                   margin="normal"
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  error={email}
-                  helperText={emailError}
-                  autoComplete="email"
-                  autoFocus
+                  name="phoneNumber"
+                  label="PhoneNumber"
+                  type="number"
+                  id="phoneNumber"
+                  error={phoneNumber}
+                  helperText={phoneNumberError}
+                  autoComplete="phoneNumber"
                 />
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  error={password}
-                  helperText={passwordError}
-                  autoComplete="current-password"
-                />
+                <Grid item xs={12} sx={{ px: 2 }}>
+                  <div style={{ marginTop: '5px' }} id="recaptcha-seeker-container" />
+                </Grid>
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   sx={{
-                    mt: 3, mb: 2, p: 1.4, fontWeight: '900',
+                    mt: 5, mb: 1, p: 1.4, fontWeight: '900',
                   }}
                 >
-                  Sign In
+                  Get Otp
                 </Button>
-                <Grid sm={12} container>
-                  <Grid sm={5} item xs>
-                    <Link variant="body2" component="button" onClick={() => navigate('/recruiter/enter_number')}>
-                      Forgot password?
-                    </Link>
-                  </Grid>
-                  <Grid sm={7} item>
-                    <Link
-                      onClick={() => navigate('/recruiter/signup')}
-                      variant="body2"
-                      component="button"
-                    >
-                      Don't have an account? Sign Up
-                    </Link>
-                  </Grid>
-                </Grid>
               </Box>
             </Grid>
           </Grid>

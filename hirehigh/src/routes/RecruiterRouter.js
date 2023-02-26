@@ -9,6 +9,9 @@ import MyJobs from '../pages/recruiter/MyJobs';
 import JobEdit from '../pages/recruiter/JobEdit';
 import OtpSignUp from '../pages/recruiter/OtpSignUp';
 import EditProfile from '../pages/recruiter/EditProfile';
+import FPNumber from '../pages/recruiter/Forgot-Password/FPNumber';
+import OtpPage from '../pages/recruiter/Forgot-Password/OtpPage';
+import NewPassword from '../pages/recruiter/Forgot-Password/NewPassword';
 
 function RecruiterRouter() {
   return (
@@ -33,6 +36,12 @@ function RecruiterRouter() {
         <Route path="/jobs" element={<MyJobs />} />
 
         <Route path="/edit_profile" element={<EditProfile />} />
+
+        <Route path="/enter_number" element={<FPNumber />} />
+
+        <Route path="/fp_otp" element={<OtpPage />} />
+
+        <Route path="/new_password" element={<NewPassword />} />
 
       </Routes>
 

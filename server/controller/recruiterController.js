@@ -108,7 +108,6 @@ const isRecruiterAuth = async (req, res, next) => {
 
 const recruiterBlock = async (req, res, next) => {
   try {
-    console.log(req.query.userId);
     await recruiterModel.updateOne({ _id: req.query.recruiterId }, {
       isActive: false,
     });
@@ -169,7 +168,6 @@ const getProfile = async (req, res, next) => {
 const jobsList = async (req, res, next) => {
   try {
     const data = await jobPostModel.find({ recruiterId: req.recruiterId }).populate('jobCategory');
-    // console.log(data);
     if (data.length > 0) {
       res.json({ data });
     } else {
@@ -202,9 +200,7 @@ const DeleteJob = async (req, res, next) => {
 
 const getDataForEdit = async (req, res, next) => {
   try {
-    console.log(req.query.id);
     const data = await jobPostModel.findById(req.query.id);
-    console.log(data);
     res.json(data);
   } catch (error) {
     next(error);
@@ -213,7 +209,6 @@ const getDataForEdit = async (req, res, next) => {
 
 const EditJobPostData = async (req, res, next) => {
   try {
-    console.log(req.body);
     const {
       jobTitle, companyName, jobCategory, jobQualification, jobDiscription,
       responsibilities, workPlace, salaryRange, jobType, image, location, vaccancy,
@@ -244,7 +239,6 @@ const EditJobPostData = async (req, res, next) => {
 const getProfileData = async (req, res, next) => {
   try {
     const data = await recruiterModel.findById(req.recruiterId);
-    console.log(data);
     res.json(data);
   } catch (error) {
     next(error);
@@ -267,6 +261,38 @@ const editProfilePost = async (req, res, next) => {
   }
 };
 
+const NumberCheck = async (req, res, next) => {
+  try {
+    const { phoneNumber } = req.body;
+    const data = await recruiterModel.findOne({ phoneNumber });
+    if (data) {
+      res.json({ status: 'success' });
+    } else {
+      res.json({ status: 'failed', message: 'Phone Number not Exisit' });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const setNewPassword = async (req, res, next) => {
+  try {
+    const { password, confPassword, phoneNumber } = req.body;
+    if (password && confPassword && phoneNumber) {
+      const salt = await bcrypt.genSalt(10);
+      const hashPassword = await bcrypt.hash(password.trim(), salt);
+      await recruiterModel.findOneAndUpdate({ phoneNumber }, {
+        $set: { password: hashPassword },
+      });
+      res.json({ status: 'success' });
+    } else {
+      res.json({ status: 'failed', message: 'Please Retry' });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   recruiterSignUpPost,
   recruiterSignInPost,
@@ -282,4 +308,6 @@ export default {
   EditJobPostData,
   getProfileData,
   editProfilePost,
+  NumberCheck,
+  setNewPassword,
 };

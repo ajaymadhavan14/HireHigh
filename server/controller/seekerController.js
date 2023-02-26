@@ -44,7 +44,6 @@ const signinPost = async (req, res, next) => {
           const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY, {
             expiresIn: 60 * 60 * 24,
           });
-          console.log(token);
           res.json({
             auth: true,
             token,
@@ -148,7 +147,6 @@ const jobApply = async (req, res, next) => {
 
 const getSingleView = async (req, res, next) => {
   try {
-    console.log(req.query.id);
     const singleData = await jobModel.findById(req.query.id);
     const catId = singleData.jobCategory;
     const fullData = await jobModel.find({
@@ -244,6 +242,38 @@ const editUserProfilePost = async (req, res, next) => {
     next(error);
   }
 };
+
+const NumberCheck = async (req, res, next) => {
+  try {
+    const { phoneNumber } = req.body;
+    const data = await userModel.findOne({ phoneNumber });
+    if (data) {
+      res.json({ status: 'success' });
+    } else {
+      res.json({ status: 'failed', message: 'Phone Number not Exisit' });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const setNewPassword = async (req, res, next) => {
+  try {
+    const { password, confPassword, phoneNumber } = req.body;
+    if (password && confPassword && phoneNumber) {
+      const salt = await bcrypt.genSalt(10);
+      const hashPassword = await bcrypt.hash(password.trim(), salt);
+      await userModel.findOneAndUpdate({ phoneNumber }, {
+        $set: { password: hashPassword },
+      });
+      res.json({ status: 'success' });
+    } else {
+      res.json({ status: 'failed', message: 'Please Retry' });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 export default {
   signupPost,
   signinPost,
@@ -258,4 +288,6 @@ export default {
   searchProfilData,
   userDataEditGet,
   editUserProfilePost,
+  NumberCheck,
+  setNewPassword,
 };

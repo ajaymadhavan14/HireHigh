@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import {
-  styled, createTheme, ThemeProvider, useTheme,
+  styled, createTheme, ThemeProvider, useTheme, alpha,
 } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -13,6 +14,8 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
 import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -31,14 +34,57 @@ import MenuItem from '@mui/material/MenuItem';
 import WorkIcon from '@mui/icons-material/Work';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal2 from 'sweetalert2';
 import swal from 'sweetalert';
 import axios from '../../../axios/axios';
 import { userDetails } from '../../../redux/seeker';
 import JobCard from '../Job/JobList';
-import { searchProfileData } from '../../../apis/SeekerApi';
+import { searchProfileData, getSerachJob } from '../../../apis/SeekerApi';
+import JobCardSearch from '../Job/JobListSearch';
+
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '20ch',
+      },
+    },
+  },
+}));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -166,6 +212,27 @@ export default function SeekerJobView() {
       }
     });
   };
+  const token = localStorage.getItem('userToken');
+  const [data, setData] = useState('');
+  const [jobData, setJobData] = useState([]);
+
+  // const invoke = async () => {
+  //   await getSerachJob(data, token);
+  let searchData = false;
+  // };
+  useEffect(() => {
+    const set = { job: data };
+    async function invoke() {
+      await getSerachJob(set, token).then((res) => {
+        console.log(res);
+        searchData = true;
+        setJobData(res);
+        console.log(searchData);
+      });
+    }
+    invoke();
+  }, [data]);
+  console.log(data);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -198,6 +265,19 @@ export default function SeekerJobView() {
             >
               HIREHIGH
             </Typography>
+            <Box sx={{ marginRight: '10vh' }}>
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ 'aria-label': 'search' }}
+                  onChange={(e) => setData(e.target.value)}
+                />
+                {/* <Button onClick={invoke} /> */}
+              </Search>
+            </Box>
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip>
                 <Button
@@ -296,11 +376,13 @@ export default function SeekerJobView() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/applied_jobs')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -371,8 +453,9 @@ export default function SeekerJobView() {
               {/* Chart */}
 
               <Grid item xs={12} md={8} lg={9}>
-
-                <JobCard data={user} />
+                {searchData === true
+                  ? <JobCardSearch newData={jobData} data={user} />
+                  : <JobCard data={user} />}
 
               </Grid>
               <Grid item xs={12} md={4} lg={3}>

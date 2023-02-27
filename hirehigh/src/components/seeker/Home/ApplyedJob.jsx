@@ -10,9 +10,9 @@ import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -23,6 +23,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TaskIcon from '@mui/icons-material/Task';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 import MessageIcon from '@mui/icons-material/Message';
 import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
@@ -37,8 +39,8 @@ import swal from 'sweetalert';
 import Swal2 from 'sweetalert2';
 import axios from '../../../axios/axios';
 import { userDetails } from '../../../redux/seeker';
-import SeekerAddprofile from '../Profile/AddProfile';
 import { searchProfileData } from '../../../apis/SeekerApi';
+import JobCardApplied from '../Job/ApplyedList';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -139,7 +141,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-export default function SeekerAddProfileData() {
+export default function SeekerApplyedJobs() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleCloseUserMenu = () => {
@@ -175,7 +177,19 @@ export default function SeekerAddProfileData() {
   };
   const { user } = useSelector((state) => state.userInfo);
 
+  const getSearchProfile = async () => {
+    const token = localStorage.getItem('userToken');
+    await searchProfileData(token).then((response) => {
+      if (response.status === 'success') {
+        navigate('/profile');
+      } else {
+        navigate('/add_profile');
+      }
+    });
+  };
+
   const LogOut = () => {
+    handleCloseUserMenu();
     Swal2.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -193,17 +207,6 @@ export default function SeekerAddProfileData() {
         //     'success'
         // )
         navigate('/');
-      }
-    });
-  };
-
-  const getSearchProfile = async () => {
-    const token = localStorage.getItem('userToken');
-    await searchProfileData(token).then((response) => {
-      if (response.status === 'success') {
-        navigate('/profile');
-      } else {
-        navigate('/add_profile');
       }
     });
   };
@@ -289,8 +292,8 @@ export default function SeekerAddProfileData() {
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Typography textAlign="center" onClick={getSearchProfile}>Profile</Typography>
                 </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={LogOut}>Logout</Typography>
+                <MenuItem onClick={LogOut}>
+                  <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
 
               </Menu>
@@ -422,7 +425,30 @@ export default function SeekerAddProfileData() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <SeekerAddprofile user={user} />
+            <Grid container spacing={3}>
+              {/* Chart */}
+
+              <Grid item xs={12} md={8} lg={9}>
+
+                <JobCardApplied data={user} />
+
+              </Grid>
+              <Grid item xs={12} md={4} lg={3}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 240,
+                  }}
+                />
+              </Grid>
+              {/* Recent Deposits */}
+              {/* Recent Orders */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
+              </Grid>
+            </Grid>
           </Container>
         </Box>
       </Box>

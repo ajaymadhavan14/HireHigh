@@ -178,11 +178,13 @@ export default function SingleJobView(props) {
                     </Typography>
                   </Box>
                 </Box>
+
                 <Box sx={{ alignSelf: 'center', ml: 'auto' }}>
-                  {el?.applied
+                  {userData.job.some((element) => element.jobId === el._id)
                     ? (
                       <Button
                         // eslint-disable-next-line no-underscore-dangle
+                    // onClick={() => apply(el?._id)}
                         variant="contained"
                         sx={{
                           backgroundColor: 'green', color: '#fff', fontWeight: '800', pointerEvents: 'none',
@@ -191,6 +193,7 @@ export default function SingleJobView(props) {
                         Applied
                       </Button>
                     )
+
                     : (
                       <Button
                         // eslint-disable-next-line no-underscore-dangle

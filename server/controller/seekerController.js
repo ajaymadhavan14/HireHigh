@@ -124,7 +124,7 @@ const userActive = async (req, res, next) => {
 
 const JobListShow = async (req, res, next) => {
   try {
-    const data = await jobModel.find({ isActive: true });
+    const data = await jobModel.find({ 'users.userId': { $ne: req.userId } });
     res.json(data);
   } catch (error) {
     next(error);
@@ -151,8 +151,9 @@ const getSingleView = async (req, res, next) => {
     const catId = singleData.jobCategory;
     const fullData = await jobModel.find({
       $and: [{ jobCategory: catId },
-        { _id: { $ne: req.query.id } }, { isActive: true }],
+        { _id: { $ne: req.query.id } }, { 'users.userId': { $ne: req.userId } }],
     });
+    console.log(fullData);
     res.json({ data: singleData, category: fullData });
   } catch (error) {
     next(error);
@@ -276,6 +277,28 @@ const setNewPassword = async (req, res, next) => {
     next(error);
   }
 };
+
+const getAppliedJobs = async (req, res, next) => {
+  try {
+    const data = await userModel.findById(req.userId).populate('job.jobId');
+    res.json(data.job);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const jobSearch = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    const searchdata = req.body.job;
+    const qData = new RegExp(searchdata, 'i');
+    const data = await jobModel.find({ $and: [{ jobTitle: { $regex: qData } }, { 'users.userId': { $ne: req.userId } }] });
+    console.log(data);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
 export default {
   signupPost,
   signinPost,
@@ -292,4 +315,6 @@ export default {
   editUserProfilePost,
   NumberCheck,
   setNewPassword,
+  getAppliedJobs,
+  jobSearch,
 };

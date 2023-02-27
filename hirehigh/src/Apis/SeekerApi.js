@@ -62,3 +62,21 @@ export const getProfileData = async (token) => {
     return error;
   }
 };
+
+export const applyedJobsSeeker = async (token) => {
+  try {
+    const { data } = await axios.get('/applied_jobs', { headers: { 'user-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getSerachJob = async (job, token) => {
+  try {
+    const { data } = await axios.post('/search_job', job, { headers: { 'user-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

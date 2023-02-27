@@ -13,6 +13,7 @@ import EditProfile from '../pages/seeker/EditProfile';
 import FPNumber from '../pages/seeker/Forgot-Password/FPNumber';
 import OtpPage from '../pages/seeker/Forgot-Password/OtpPage';
 import NewPassword from '../pages/seeker/Forgot-Password/NewPassword';
+import AppliedJobs from '../pages/seeker/AppliedJobs';
 
 function SeekerRouter() {
   return (
@@ -45,6 +46,8 @@ function SeekerRouter() {
         <Route path="/fp_otp" element={<OtpPage />} />
 
         <Route path="/new_password" element={<NewPassword />} />
+
+        <Route path="/applied_jobs" element={<AppliedJobs />} />
 
       </Routes>
 

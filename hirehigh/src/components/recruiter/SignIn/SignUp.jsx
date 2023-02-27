@@ -1,9 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable prefer-destructuring */
 /* eslint-disable no-shadow */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable no-unused-vars */
 import * as React from 'react';
 import Button from '@mui/material/Button';
@@ -18,15 +16,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
-import swal from 'sweetalert';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { auth, storage } from '../../../firebase/Config';
 import AuthContext from '../../../context/AppContext';
-import axios from '../../../axios/axios';
 
 const theme = createTheme();
 export default function RetSingnUP() {
@@ -128,17 +123,16 @@ export default function RetSingnUP() {
                       } else {
                         const dirs = Date.now();
                         const rand = Math.random();
-                        const image = data.image;
+                        const { image } = data;
                         const imageRef = ref(storage, `/seekerImages/${dirs}${rand}_${image?.name}`);
-                        const toBase64 = (image) =>
-                          new Promise((resolve, reject) => {
-                            const reader = new FileReader();
-                            reader.readAsDataURL(image);
-                            reader.onload = () => resolve(reader.result);
-                            reader.onerror = (error) => reject(error);
-                          }).catch((err) => {
-                            console.log(err);
-                          });
+                        const toBase64 = (image) => new Promise((resolve, reject) => {
+                          const reader = new FileReader();
+                          reader.readAsDataURL(image);
+                          reader.onload = () => resolve(reader.result);
+                          reader.onerror = (error) => reject(error);
+                        }).catch((err) => {
+                          console.log(err);
+                        });
                         const imgBase = await toBase64(image);
                         await uploadString(imageRef, imgBase, 'data_url').then(async () => {
                           const downloadURL = await getDownloadURL(imageRef);
@@ -157,14 +151,12 @@ export default function RetSingnUP() {
                     // });
                     setRecruiterDetails(data);
                     try {
-                      console.log(data.phoneNumber);
                       await setUpRecaptcha(`+91${data.phoneNumber}`).then((res) => {
                         setFlag(true);
                         setRecruiterOtpConf(res);
                         navigate('/recruiter/otp');
                       });
                     } catch (error) {
-                      console.log(error);
                       toast.warning(`${error.message}`, {
                         position: 'top-right',
                         autoClose: 3000,

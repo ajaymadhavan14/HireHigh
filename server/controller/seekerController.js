@@ -162,7 +162,8 @@ const getSingleView = async (req, res, next) => {
 const AddProfile = async (req, res, next) => {
   try {
     const {
-      headline, position, location, qualification, discription, salaryRange, age, image, experiance,
+      headline, position, location, qualification, discription, salaryRange, age, image,
+      experiance, resume,
     } = req.body;
     await userModel.findByIdAndUpdate(req.userId, {
       $set: {
@@ -175,6 +176,7 @@ const AddProfile = async (req, res, next) => {
         discription,
         salaryRange,
         age,
+        resume,
       },
     });
     res.json({ status: 'success' });

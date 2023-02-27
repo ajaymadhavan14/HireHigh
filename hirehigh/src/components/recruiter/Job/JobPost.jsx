@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-shadow */
-/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import * as React from 'react';
 import Button from '@mui/material/Button';
@@ -28,7 +27,7 @@ import axios from '../../../axios/axios';
 import { getCategory } from '../../../apis/RecruiterApi';
 
 const theme = createTheme();
-export default function RecruiterJobPost({ id }) {
+export default function RecruiterJobPost() {
   const [jobTitle, setJobTitle] = useState(false);
   const [jobTitleError, setJobTitleError] = useState('');
   const [companyName, setCompanyName] = useState(false);
@@ -143,11 +142,8 @@ export default function RecruiterJobPost({ id }) {
 
   useEffect(() => {
     async function invoke() {
-      const token = localStorage.getItem('recruiterToken');
       const res = await getCategory(token);
       setCat(res);
-
-      console.log(res);
     }
     invoke();
   }, []);

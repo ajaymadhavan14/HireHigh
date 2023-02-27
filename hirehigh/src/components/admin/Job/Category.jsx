@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import Paper from '@mui/material/Paper';

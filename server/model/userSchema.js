@@ -60,6 +60,9 @@ const userSignup = new Schema(
     experiance: {
       type: String,
     },
+    resume: {
+      type: String,
+    },
     job: [
       {
         jobId: {

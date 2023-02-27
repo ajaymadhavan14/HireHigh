@@ -1,37 +1,30 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react/prop-types */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable prefer-destructuring */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import swal from 'sweetalert';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { auth, storage } from '../../../firebase/Config';
-import AuthContext from '../../../context/AppContext';
+import { storage } from '../../../firebase/Config';
 import axios from '../../../axios/axios';
 import { getProfileData } from '../../../apis/RecruiterApi';
 
 const theme = createTheme();
-export default function RecruiterPrfileData(props) {
+export default function RecruiterPrfileData() {
   const [userName, setUserName] = useState(false);
   const [userNameError, setUserNameError] = useState('');
   const [companyName, setCompanyName] = useState(false);
@@ -48,14 +41,9 @@ export default function RecruiterPrfileData(props) {
   const [websiteError, setWebsiteError] = useState('');
   const [image, setImage] = useState(false);
   const [imageError, setImageError] = useState('');
-  const [password, setPassword] = useState(false);
-  const [passwordError, setPasswordError] = useState('');
-  const [confPassword, setConfPassword] = useState(false);
-  const [confPasswordError, setConfPasswordError] = useState('');
   const [location, setLocation] = useState(false);
   const [locationError, setLocationError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
-  const [flag, setFlag] = useState(false);
 
   const navigate = useNavigate();
   const [datas, setDatas] = useState({});
@@ -123,17 +111,16 @@ export default function RecruiterPrfileData(props) {
                   } else {
                     const dirs = Date.now();
                     const rand = Math.random();
-                    const image = data.image;
+                    const { image } = data;
                     const imageRef = ref(storage, `/seekerImages/${dirs}${rand}_${image?.name}`);
-                    const toBase64 = (image) =>
-                      new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.readAsDataURL(image);
-                        reader.onload = () => resolve(reader.result);
-                        reader.onerror = (error) => reject(error);
-                      }).catch((err) => {
-                        console.log(err);
-                      });
+                    const toBase64 = (image) => new Promise((resolve, reject) => {
+                      const reader = new FileReader();
+                      reader.readAsDataURL(image);
+                      reader.onload = () => resolve(reader.result);
+                      reader.onerror = (error) => reject(error);
+                    }).catch((err) => {
+                      console.log(err);
+                    });
                     const imgBase = await toBase64(image);
                     await uploadString(imageRef, imgBase, 'data_url').then(async () => {
                       const downloadURL = await getDownloadURL(imageRef);
@@ -188,6 +175,7 @@ export default function RecruiterPrfileData(props) {
       </Typography>
       <Container component="main" maxWidth="md">
         <CssBaseline />
+        <ToastContainer />
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
 
           <Grid

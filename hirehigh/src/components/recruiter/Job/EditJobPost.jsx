@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
 /* eslint-disable no-underscore-dangle */
+/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -156,6 +156,7 @@ export default function RecruiterJobEdit() {
 
       <Container component="main" maxWidth="md">
         <CssBaseline />
+        <ToastContainer />
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
 
           <Grid

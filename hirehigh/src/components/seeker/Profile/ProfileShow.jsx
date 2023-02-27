@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import Button from '@mui/material/Button';
@@ -120,11 +122,28 @@ export default function SeekerProfile() {
                   </Box>
 
                 </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: '10vh' }}>
-                  <FormLabel>headLine</FormLabel>
-                  <Typography pt={1}>
-                    {user?.headline}
-                  </Typography>
+                <Box sx={{
+                  display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: '10vh',
+                }}
+                >
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <FormLabel>headLine</FormLabel>
+                    <Typography pt={1}>
+                      {user?.headline}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <FormLabel>Resume</FormLabel>
+                    <a
+                      href={user?.resume}
+                      download
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Download
+
+                    </a>
+                  </Box>
                 </Box>
                 <Button variant="contained" sx={{ mt: '5vh', width: '10vh', alignSelf: 'end' }} onClick={() => navigate('/edit_profile')}>
                   Edit

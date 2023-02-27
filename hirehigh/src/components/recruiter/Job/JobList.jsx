@@ -1,6 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
@@ -91,7 +88,6 @@ export default function RecruiterJobList() {
 
   const editJob = async (id) => {
     await RecruiterJobEdit(id, token).then((response) => {
-      console.log(response, '11111111111111111111111');
       navigate('/recruiter/edit_jobs', { state: response });
     });
   };

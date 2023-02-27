@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
+import { IconButton } from '@mui/material';
+import { FileUpload } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormLabel from '@mui/material/FormLabel';
@@ -49,6 +51,7 @@ export default function SeekerEditprofile() {
   const [locationError, setLocationError] = useState('');
   const [experiance, setExperiance] = useState(false);
   const [experianceError, setExperianceError] = useState('');
+  const [pdf, setPdf] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
 
   const navigate = useNavigate();
@@ -63,9 +66,19 @@ export default function SeekerEditprofile() {
     }
     invoke();
   }, []);
+  // pdf converted to base64
+  const toBase64 = (image) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  }).catch((err) => {
+    console.log(err);
+  });
   const handleSubmit = async (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
+    const pdfBase = await toBase64(pdf);
     data = {
       firstName: data.get('firstName'),
       lastName: data.get('lastName'),
@@ -80,10 +93,12 @@ export default function SeekerEditprofile() {
       age: data.get('age'),
       image: data.get('image'),
       experiance: data.get('experiance'),
+      resume: pdfBase,
+
     };
     if (data.position && data.headline && data.qualification && data.experiance && data.firstName
       && data.discription && data.age && data.location && data.lastName && data.email
-      && data.phoneNumber && data.salaryRange) {
+      && data.phoneNumber && data.salaryRange && data.resume) {
       const regName = /^[a-zA-Z ]*$/;
       const regEmail = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
       const regPhone = /^[0-9]+$/;
@@ -447,7 +462,26 @@ export default function SeekerEditprofile() {
             <Grid item xs={12} sm={6} sx={{ marginTop: '10px' }}>
               <img src={datas.image} alt="...loading" style={{ width: '30vh', height: '25vh' }} />
             </Grid>
-            <Grid item xs={12} sm={6} />
+            <Grid item xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'column', marginTop: '15px' }}>
+              <FormLabel>Add New Resume</FormLabel>
+              <IconButton
+                className="text-center flex"
+                color="primary"
+                aria-label="upload picture"
+                component="label"
+                sx={{ marginTop: '10px', ':hover': { bgcolor: 'blue' } }}
+              >
+                <input
+                  hidden
+                  accept="application/pdf"
+                    // onChange={(e) => setPdf(e.target.files[0])}
+                  type="file"
+                />
+
+                <FileUpload />
+                <Typography>Upload resume</Typography>
+              </IconButton>
+            </Grid>
           </Grid>
           <Box sx={{ backgroundColor: '#ffc5c5', borderRadius: '3px', pl: 2 }}>
             <p style={{ color: 'red' }}>{totalRequired}</p>

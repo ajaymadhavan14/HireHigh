@@ -7,10 +7,12 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { IconButton } from '@mui/material';
+import { FileUpload } from '@mui/icons-material';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormLabel from '@mui/material/FormLabel';
 import { toast, ToastContainer } from 'react-toastify';
@@ -42,12 +44,23 @@ export default function SeekerAddprofile() {
   const [experiance, setExperiance] = useState(false);
   const [experianceError, setExperianceError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
+  const [pdf, setPdf] = useState('');
   const navigate = useNavigate();
   const token = localStorage.getItem('userToken');
 
+  // pdf converted to base64
+  const toBase64 = (image) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  }).catch((err) => {
+    console.log(err);
+  });
   const handleSubmit = async (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
+    const pdfBase = await toBase64(pdf);
     data = {
       headline: data.get('headline'),
       position: data.get('position'),
@@ -58,10 +71,11 @@ export default function SeekerAddprofile() {
       age: data.get('age'),
       image: data.get('image'),
       experiance: data.get('experiance'),
+      resume: pdfBase,
     };
     if (data.position && data.headline && data.qualification && data.experiance
       && data.discription && data.age && data.location && data.image
-         && data.salaryRange) {
+         && data.salaryRange && data.resume) {
       const regName = /^[a-zA-Z ]*$/;
       setTotalRequired('');
       if (regName.test(data.headline)) {
@@ -125,14 +139,15 @@ export default function SeekerAddprofile() {
       setTotalRequired('Please enter your Details');
     }
   };
-  const onchangeInput = (val, index) => {
-    const temp = qualification;
-    temp[index] = val.target.value;
-    setQualification(temp);
-    console.log(temp);
-  };
 
+  // const onchangeInput = (val, index) => {
+  //   const temp = qualification;
+  //   temp[index] = val.target.value;
+  //   setQualification(temp);
+  //   console.log(temp);
+  // };
   console.log(qualifications);
+  const inputRef = useRef(null);
 
   return (
     <ThemeProvider theme={theme}>
@@ -274,13 +289,15 @@ export default function SeekerAddprofile() {
               type="text"
               label="Qualification"
               name="qualification"
-              autoComplete="qualification"
               error={qualification}
               helperText={qualificationError}
               sx={{ width: '92%' }}
+              autoFocus
+              inputRef={inputRef}
+              onChange={(e) => setQualification(e.target.value)}
             />
             <Button
-              onClick={() => setQualifications([...qualifications,
+              onClick={(e) => setQualifications([...qualifications,
                 { text: qualification }])}
               variant="contained"
               sx={{ height: '7.5vh' }}
@@ -291,23 +308,19 @@ export default function SeekerAddprofile() {
 
           </Grid>
           <Grid item xs={12}>
-            {qualifications.map((squalification, index) => (
+            {qualifications.map((e, index) => (
 
               <TextField
-                key={index}
                 required
-                id="qualification"
+                id="qualifications"
                 type="text"
-                label="Qualification"
-                name="qualification"
+                label="Qualifications"
+                name="qualifications"
                 autoComplete="qualification"
-                error={qualification}
-                helperText={qualificationError}
+                error={qualifications}
                 sx={{ width: '92%', marginBottom: '10px' }}
-                onChange={(val) => onchangeInput(val, index)}
-
+                value={e.text}
               />
-
             ))}
           </Grid>
           <Grid item xs={12} py={2}>
@@ -339,6 +352,25 @@ export default function SeekerAddprofile() {
               error={discription}
               helperText={discriptionError}
             />
+          </Grid>
+          <Grid item xs={12} py={1}>
+            <FormLabel>Resume</FormLabel>
+            <IconButton
+              className="text-center flex"
+              color="primary"
+              aria-label="upload picture"
+              component="label"
+            >
+              <input
+                hidden
+                accept="application/pdf"
+                onChange={(e) => setPdf(e.target.files[0])}
+                type="file"
+              />
+
+              <FileUpload />
+              <Typography>Upload resume</Typography>
+            </IconButton>
           </Grid>
 
           <Box sx={{ backgroundColor: '#ffc5c5', borderRadius: '3px', pl: 2 }}>

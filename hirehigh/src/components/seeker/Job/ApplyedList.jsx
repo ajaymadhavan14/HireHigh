@@ -31,7 +31,11 @@ export default function JobCardApplied(props) {
     async function invoke() {
       await applyedJobsSeeker(token).then((res) => {
         console.log(res);
-        setJobs(res);
+        if (res.length === 0) {
+          navigate('/jobs');
+        } else {
+          setJobs(res);
+        }
       });
     }
     invoke();
@@ -65,6 +69,16 @@ export default function JobCardApplied(props) {
                 </Typography>
               </Box>
             </Box>
+            {el?.comment
+            && (
+            <Box sx={{ marginLeft: '15vh' }}>
+              <Typography component="h1" variant="h5" sx={{ fontWeight: 600 }}>Replay</Typography>
+              <Typography sx={{ marginTop: '2vh' }}>
+                {el?.comment}
+                {' for the post '}
+              </Typography>
+            </Box>
+            )}
             <Box sx={{ alignSelf: 'center', ml: 'auto' }}>
               {user.job.some((element) => element.jobId === el.jobId?._id)
                 ? (

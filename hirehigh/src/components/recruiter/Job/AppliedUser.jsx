@@ -12,6 +12,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import Modal from '@mui/material/Modal';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 // import Moment from 'react-moment';
@@ -20,9 +21,26 @@ import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { Typography } from '@mui/material';
 import { RecruiterJobEdit, RecruiterComment } from '../../../apis/RecruiterApi';
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 export default function RecruiterJobAppliedList() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.white,
@@ -59,21 +77,36 @@ export default function RecruiterJobAppliedList() {
 
   const handleChangeComment = async (id, event) => {
     const comment = { comment: event.target.value, userId: id, jobId: state._id };
-    await RecruiterComment(token, comment).then((res) => {
-      console.log(res);
+    await RecruiterComment(token, comment).then((response) => {
+      console.log(response);
+      if (response.status === 'success') {
+        toast.success('🦄 Wow so easy!', {
+          position: 'top-center',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        });
+        setRefresh(!refresh);
+      } else {
+        swal('OOPS', response.message, 'error');
+      }
     });
   };
 
   useEffect(() => {
     setJob(state.users);
-  }, []);
+  }, [refresh]);
   console.log(job);
 
-  const editJob = async (id) => {
-    await RecruiterJobEdit(id, token).then((response) => {
-      navigate('/recruiter/edit_jobs', { state: response });
-    });
-  };
+  // const editJob = async (id) => {
+  //   await RecruiterJobEdit(id, token).then((response) => {
+  //     navigate('/recruiter/edit_jobs', { state: response });
+  //   });
+  // };
 
   return (
     <Box>
@@ -107,25 +140,42 @@ export default function RecruiterJobAppliedList() {
                 <StyledTableCell align="center">{el?.userId?.email}</StyledTableCell>
                 <StyledTableCell align="center">{el?.userId?.phoneNumber}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Button variant="contained" sx={{ bgcolor: 'blue' }} onClick={() => editJob(el?.userId._id)}>
-                    view
-                  </Button>
+                  <Button onClick={handleOpen}>View</Button>
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box sx={style}>
+                      <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Text in a modal
+                      </Typography>
+                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                      </Typography>
+                    </Box>
+                  </Modal>
 
                 </StyledTableCell>
                 <StyledTableCell>
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Comment</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      label="comment"
-                      onChange={(e) => handleChangeComment(el?.userId._id, e)}
-                    >
-                      <MenuItem value="Good">Good</MenuItem>
-                      <MenuItem value="Maybe">Maybe</MenuItem>
-                      <MenuItem value="Notfit">NotFit</MenuItem>
-                    </Select>
-                  </FormControl>
+
+                  {el.comment
+                    ? <Typography>{el?.comment}</Typography>
+                    : (
+                      <FormControl variant="standard" fullWidth>
+                        <InputLabel id="demo-simple-select-label">Comment</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          onChange={(e) => handleChangeComment(el?.userId._id, e)}
+                        >
+                          <MenuItem value="Good">Good</MenuItem>
+                          <MenuItem value="Maybe">Maybe</MenuItem>
+                          <MenuItem value="Notfit">NotFit</MenuItem>
+                        </Select>
+                      </FormControl>
+                    )}
                 </StyledTableCell>
 
               </StyledTableRow>

@@ -20,5 +20,7 @@ router.get('/get_profile_data', jwtAuth.jwtRecruiter, recruiterController.getPro
 router.post('/profile_edit_post', jwtAuth.jwtRecruiter, recruiterController.editProfilePost);
 router.post('/enter_number', recruiterController.NumberCheck);
 router.post('/new_password', recruiterController.setNewPassword);
+router.get('/applied_users', jwtAuth.jwtRecruiter, recruiterController.jobAppliedUsers);
+router.post('/job_comment', jwtAuth.jwtRecruiter, recruiterController.updateJobComment);
 
 export default router;

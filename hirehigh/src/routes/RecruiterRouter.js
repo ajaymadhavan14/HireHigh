@@ -12,6 +12,7 @@ import EditProfile from '../pages/recruiter/EditProfile';
 import FPNumber from '../pages/recruiter/Forgot-Password/FPNumber';
 import OtpPage from '../pages/recruiter/Forgot-Password/OtpPage';
 import NewPassword from '../pages/recruiter/Forgot-Password/NewPassword';
+import AppliedList from '../pages/recruiter/AppliedList';
 
 function RecruiterRouter() {
   return (
@@ -42,6 +43,8 @@ function RecruiterRouter() {
         <Route path="/fp_otp" element={<OtpPage />} />
 
         <Route path="/new_password" element={<NewPassword />} />
+
+        <Route path="/applied_users" element={<AppliedList />} />
 
       </Routes>
 

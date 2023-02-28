@@ -16,7 +16,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { RecruiterSideJobList, RecruiterJobDele, RecruiterJobEdit } from '../../../apis/RecruiterApi';
+import {
+  RecruiterSideJobList, RecruiterJobDele, RecruiterJobEdit, RecruiterSideJobAppliedList,
+} from '../../../apis/RecruiterApi';
 
 export default function RecruiterJobList() {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -92,6 +94,13 @@ export default function RecruiterJobList() {
     });
   };
 
+  const usersList = async (id) => {
+    await RecruiterSideJobAppliedList(id, token).then((res) => {
+      navigate('/recruiter/applied_users', { state: res });
+      console.log(res);
+    });
+  };
+
   return (
     <Box>
       <ToastContainer />
@@ -105,6 +114,7 @@ export default function RecruiterJobList() {
               <StyledTableCell align="center">Category</StyledTableCell>
               <StyledTableCell align="center">Salary</StyledTableCell>
               <StyledTableCell align="center">Edit</StyledTableCell>
+              <StyledTableCell align="center">Users</StyledTableCell>
               <StyledTableCell align="center">Status</StyledTableCell>
               {/* <StyledTableCell align="center">PHONE NO</StyledTableCell>
               <StyledTableCell align="center">Website</StyledTableCell>
@@ -130,6 +140,12 @@ export default function RecruiterJobList() {
                 <StyledTableCell align="center">
                   <Button variant="contained" sx={{ bgcolor: 'blue' }} onClick={() => editJob(el?._id)}>
                     Edit
+                  </Button>
+
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <Button variant="contained" sx={{ bgcolor: 'blue' }} onClick={() => usersList(el?._id)}>
+                    view
                   </Button>
 
                 </StyledTableCell>

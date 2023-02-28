@@ -37,7 +37,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal2 from 'sweetalert2';
 import axios from '../../../axios/axios';
 import { recruiterDetails } from '../../../redux/recruiter';
-import RecruiterJobList from '../Job/JobList';
+import RecruiterJobAppliedList from '../Job/AppliedUser';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -96,7 +96,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-export default function RecruiterSideJobsList() {
+export default function RecruiterSideJobAppliedList() {
   const navigate = useNavigate();
   const dispatch = useDispatch(recruiterDetails);
   const { recruiter } = useSelector((state) => state.recruiterInfo);
@@ -360,7 +360,7 @@ export default function RecruiterSideJobsList() {
               <Button onClick={() => navigate('/recruiter/add_job')} variant="contained" size="large">Post a Job</Button>
             </Box>
             <Container maxWidth="xl">
-              <RecruiterJobList id={recruiter} />
+              <RecruiterJobAppliedList />
             </Container>
           </Box>
         </Box>

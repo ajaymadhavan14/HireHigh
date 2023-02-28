@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import recruiterModel from '../model/recruiterSchema.js';
 import jobPostModel from '../model/jobPostSchema.js';
 import categoryModel from '../model/jobCategorySchema.js';
+import userModel from '../model/userSchema.js';
 
 const recruiterSignUpPost = async (req, res, next) => {
   try {
@@ -293,6 +294,34 @@ const setNewPassword = async (req, res, next) => {
   }
 };
 
+const jobAppliedUsers = async (req, res, next) => {
+  try {
+    const data = await jobPostModel.findById(req.query.jobId).populate('users.userId');
+    console.log(data);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateJobComment = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    await jobPostModel.updateOne({ _id: req.body.jobId, 'users.userId': req.body.userId }, {
+      $set: {
+        'users.$.comment': req.body.comment,
+      },
+    });
+    await userModel.updateOne({ _id: req.body.userId, 'job.jobId': req.body.jobId }, {
+      $set: {
+        'job.$.comment': req.body.comment,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   recruiterSignUpPost,
   recruiterSignInPost,
@@ -310,4 +339,6 @@ export default {
   editProfilePost,
   NumberCheck,
   setNewPassword,
+  jobAppliedUsers,
+  updateJobComment,
 };

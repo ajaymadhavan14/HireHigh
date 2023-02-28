@@ -62,3 +62,21 @@ export const getProfileData = async (token) => {
     return error;
   }
 };
+
+export const RecruiterSideJobAppliedList = async (id, token) => {
+  try {
+    const { data } = await axios.get(`/recruiter/applied_users?jobId=${id}`, { headers: { 'recruiter-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const RecruiterComment = async (token, reData) => {
+  try {
+    const { data } = await axios.post('/recruiter/job_comment', reData, { headers: { 'recruiter-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

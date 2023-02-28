@@ -55,6 +55,7 @@ export default function RecruiterJobPost() {
   const [totalRequired, setTotalRequired] = useState('');
   const navigate = useNavigate();
   const token = localStorage.getItem('recruiterToken');
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);

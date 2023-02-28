@@ -72,6 +72,9 @@ const userSignup = new Schema(
         applied: {
           type: Boolean,
         },
+        comment: {
+          type: String,
+        },
       },
     ],
   },

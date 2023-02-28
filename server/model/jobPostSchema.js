@@ -73,6 +73,9 @@ const jobPosts = new Schema(
           type: Schema.Types.ObjectId,
           ref: 'users',
         },
+        comment: {
+          type: String,
+        },
       },
     ],
   },

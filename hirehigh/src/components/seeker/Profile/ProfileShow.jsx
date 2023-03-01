@@ -22,14 +22,19 @@ export default function SeekerProfile() {
   const theme = createTheme();
   const navigate = useNavigate();
   const [user, setUser] = useState([]);
+  const [qualifications, setQualifications] = useState([]);
+  const [experiances, setExperiances] = useState([]);
   const token = localStorage.getItem('userToken');
 
   useEffect(() => {
     async function invoke() {
       // eslint-disable-next-line max-len
       // eslint-disable-next-line no-underscore-dangle, react/destructuring-assignment, react/prop-types
-      const res = await getProfile(token);
-      setUser(res);
+      await getProfile(token).then((res) => {
+        setUser(res);
+        setExperiances(res.experiances);
+        setQualifications(res.qualifications);
+      });
     }
     invoke();
   }, []);
@@ -172,11 +177,16 @@ export default function SeekerProfile() {
               >
                 <Typography>Qualification</Typography>
               </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  {user?.qualification}
-                </Typography>
-              </AccordionDetails>
+              {qualifications.map((el, ind) => (
+                <AccordionDetails>
+                  <Typography>
+                    {ind + 1}
+                    {' : '}
+                    {el?.text}
+                  </Typography>
+                </AccordionDetails>
+              ))}
+
             </Accordion>
             <Accordion sx={{ marginTop: '5vh' }}>
               <AccordionSummary
@@ -186,11 +196,15 @@ export default function SeekerProfile() {
               >
                 <Typography>Experiance</Typography>
               </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  {user?.experiance}
-                </Typography>
-              </AccordionDetails>
+              {experiances.map((el, ind) => (
+                <AccordionDetails>
+                  <Typography>
+                    {ind + 1}
+                    {' : '}
+                    {el?.text}
+                  </Typography>
+                </AccordionDetails>
+              ))}
             </Accordion>
           </Grid>
         </Grid>

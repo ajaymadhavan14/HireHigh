@@ -41,8 +41,9 @@ export default function SeekerAddprofile() {
   const [salaryRangeError, setSalaryRangeError] = useState('');
   const [location, setLocation] = useState(false);
   const [locationError, setLocationError] = useState('');
-  const [experiance, setExperiance] = useState(false);
+  const [experiance, setExperiance] = useState('');
   const [experianceError, setExperianceError] = useState('');
+  const [experiances, setExperiances] = useState([]);
   const [totalRequired, setTotalRequired] = useState('');
   const [pdf, setPdf] = useState('');
   const navigate = useNavigate();
@@ -61,19 +62,21 @@ export default function SeekerAddprofile() {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
     const pdfBase = await toBase64(pdf);
+    const experiance = experiances;
+    const qualification = qualifications;
     data = {
       headline: data.get('headline'),
       position: data.get('position'),
       location: data.get('location'),
-      qualification: data.get('qualification'),
       discription: data.get('discription'),
       salaryRange: data.get('salaryRange'),
       age: data.get('age'),
       image: data.get('image'),
-      experiance: data.get('experiance'),
+      qualifications: qualification,
+      experiances: experiance,
       resume: pdfBase,
     };
-    if (data.position && data.headline && data.qualification && data.experiance
+    if (data.position && data.headline && data.qualifications && data.experiances
       && data.discription && data.age && data.location && data.image
          && data.salaryRange && data.resume) {
       const regName = /^[a-zA-Z ]*$/;
@@ -120,9 +123,10 @@ export default function SeekerAddprofile() {
           } else {
             data.image = '';
           }
+          console.log(data);
           axios.post('/add_profile', data, { headers: { 'user-access-token': token } }).then((response) => {
             if (response.data.status === 'success') {
-              navigate('/');
+              navigate('/home');
             } else {
               swal('OOPS', response.data.message, 'error');
             }
@@ -146,8 +150,16 @@ export default function SeekerAddprofile() {
   //   setQualification(temp);
   //   console.log(temp);
   // };
-  console.log(qualifications);
-  const inputRef = useRef(null);
+  const arrayRemove = (index) => {
+    const list = [...qualifications];
+    list.splice(index, 1);
+    setQualifications(list);
+  };
+  const ExRemove = (index) => {
+    const list = [...experiances];
+    list.splice(index, 1);
+    setExperiances(list);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -291,10 +303,20 @@ export default function SeekerAddprofile() {
               name="qualification"
               error={qualification}
               helperText={qualificationError}
-              sx={{ width: '92%' }}
+              sx={{
+                width: '92%',
+                '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'black',
+                },
+                '& .MuiOutlinedInput-root.Mui-focused  .MuiOutlinedInput-notchedOutline':
+                  {
+                    borderColor: 'skyblue',
+                  },
+
+              }}
               autoFocus
-              inputRef={inputRef}
               onChange={(e) => setQualification(e.target.value)}
+              variant="outlined"
             />
             <Button
               onClick={(e) => setQualifications([...qualifications,
@@ -307,8 +329,9 @@ export default function SeekerAddprofile() {
             </Button>
 
           </Grid>
-          <Grid item xs={12}>
-            {qualifications.map((e, index) => (
+          {qualifications.map((e, index) => (
+
+            <Grid item xs={12}>
 
               <TextField
                 required
@@ -318,11 +341,29 @@ export default function SeekerAddprofile() {
                 name="qualifications"
                 autoComplete="qualification"
                 error={qualifications}
-                sx={{ width: '92%', marginBottom: '10px' }}
+                variant="outlined"
+                sx={{
+                  width: '90%',
+                  marginBottom: '10px',
+                  '& .MuiInputBase-input.Mui-disabled': {
+                    WebkitTextFillColor: 'black',
+                  },
+                }}
                 value={e.text}
+                disabled
+
               />
-            ))}
-          </Grid>
+              <Button
+                variant="contained"
+                sx={{ height: '7.5vh', bgcolor: 'red' }}
+                onClick={() => { arrayRemove(index); }}
+              >
+                Dele
+
+              </Button>
+
+            </Grid>
+          ))}
           <Grid item xs={12} py={2}>
             <TextField
               required
@@ -334,8 +375,61 @@ export default function SeekerAddprofile() {
               autoComplete="experiance"
               error={experiance}
               helperText={experianceError}
+              sx={{
+                width: '92%',
+                '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'black',
+                },
+                '& .MuiOutlinedInput-root.Mui-focused  .MuiOutlinedInput-notchedOutline':
+                  {
+                    borderColor: 'skyblue',
+                  },
+
+              }}
+              onChange={(e) => setExperiance(e.target.value)}
             />
+            <Button
+              onClick={(e) => setExperiances([...experiances,
+                { text: experiance }])}
+              variant="contained"
+              sx={{ height: '7.5vh' }}
+            >
+              Add
+
+            </Button>
           </Grid>
+          {experiances.map((e, index) => (
+            <Grid item xs={12} py={2}>
+              <TextField
+                required
+                fullWidth
+                id="experiances"
+                type="text"
+                label="Experiances"
+                name="experiances"
+                autoComplete="experiances"
+                error={experiances}
+                sx={{
+                  width: '90%',
+                  marginBottom: '10px',
+                  '& .MuiInputBase-input.Mui-disabled': {
+                    WebkitTextFillColor: 'black',
+                  },
+                }}
+                value={e.text}
+                disabled
+              />
+              <Button
+                variant="contained"
+                sx={{ height: '7.5vh', bgcolor: 'red' }}
+                onClick={() => { ExRemove(index); }}
+              >
+                Dele
+
+              </Button>
+            </Grid>
+          ))}
+
           <Grid item xs={12} py={2} maxWidth="md">
 
             <TextareaAutosize

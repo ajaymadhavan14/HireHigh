@@ -39,7 +39,7 @@ export default function SeekerEditprofile() {
   const [positionError, setPositionError] = useState('');
   const [age, setAge] = useState(false);
   const [ageError, setAgeError] = useState('');
-  const [qualification, setQualification] = useState(false);
+  const [qualification, setQualification] = useState();
   const [qualificationError, setQualificationError] = useState('');
   const [discription, setDiscription] = useState(false);
   const [discriptionError, setDiscriptionError] = useState('');
@@ -49,7 +49,7 @@ export default function SeekerEditprofile() {
   const [salaryRangeError, setSalaryRangeError] = useState('');
   const [location, setLocation] = useState(false);
   const [locationError, setLocationError] = useState('');
-  const [experiance, setExperiance] = useState(false);
+  const [experiance, setExperiance] = useState('');
   const [experianceError, setExperianceError] = useState('');
   const [pdf, setPdf] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
@@ -57,11 +57,25 @@ export default function SeekerEditprofile() {
   const navigate = useNavigate();
   const [datas, setDatas] = useState({});
   const token = localStorage.getItem('userToken');
+  const [refresh, setRefresh] = useState();
+  const [qualifications, setQualifications] = useState([]);
+  const [experiances, setExperiances] = useState([]);
+  const [quali, setQualifi] = useState([]);
+  const [experi, setExperi] = useState([]);
+  const [addQuali, setAddQuali] = useState(false);
+  const [addExperi, setAddExperi] = useState(false);
+  // useEffect(() => {
+  //   setQualifi([...quali, { text: qualification }]);
+  //   setExperi([...experi, { text: experiance }]);
+  // }, [qualification, experiance]);
+  // console.log(qualification);
 
   useEffect(() => {
     async function invoke() {
       await getProfileData(token).then((response) => {
         setDatas(response);
+        setExperiances(response.experiances);
+        setQualifications(response.qualifications);
       });
     }
     invoke();
@@ -79,6 +93,19 @@ export default function SeekerEditprofile() {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
     const pdfBase = await toBase64(pdf);
+    console.log(experi);
+    let experiance;
+    let qualification;
+    if (experi.length === 0) {
+      experiance = experiances;
+    } else {
+      experiance = experi;
+    }
+    if (quali.length === 0) {
+      qualification = qualifications;
+    } else {
+      qualification = quali;
+    }
     data = {
       firstName: data.get('firstName'),
       lastName: data.get('lastName'),
@@ -87,18 +114,18 @@ export default function SeekerEditprofile() {
       headline: data.get('headline'),
       position: data.get('position'),
       location: data.get('location'),
-      qualification: data.get('qualification'),
       discription: data.get('discription'),
       salaryRange: data.get('salaryRange'),
       age: data.get('age'),
       image: data.get('image'),
-      experiance: data.get('experiance'),
+      qualifications: qualification,
+      experiances: experiance,
       resume: pdfBase,
 
-    };
-    if (data.position && data.headline && data.qualification && data.experiance && data.firstName
+    }; console.log(data);
+    if (data.position && data.headline && data.qualifications && data.experiances && data.firstName
       && data.discription && data.age && data.location && data.lastName && data.email
-      && data.phoneNumber && data.salaryRange && data.resume) {
+      && data.phoneNumber && data.salaryRange) {
       const regName = /^[a-zA-Z ]*$/;
       const regEmail = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
       const regPhone = /^[0-9]+$/;
@@ -160,6 +187,7 @@ export default function SeekerEditprofile() {
                     } else {
                       data.image = datas.image;
                     }
+                    console.log(data);
                     axios.post('/edit_profile_post', data, { headers: { 'user-access-token': token } }).then((response) => {
                       if (response.data.status === 'success') {
                         navigate('/profile');
@@ -200,6 +228,76 @@ export default function SeekerEditprofile() {
     }
   };
 
+  const editQualification = (index) => {
+    if (qualification !== '') {
+      qualifications[index].text = qualification;
+      toast.success('success', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+      });
+    }
+  };
+
+  const editExperiance = (index) => {
+    if (experiance !== '') {
+      experiances[index].text = experiance;
+      toast.success('success', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+      });
+    }
+  };
+  const addQualification = () => {
+    setQualifications([...qualifications,
+      { text: qualification }]);
+    toast.success('success', {
+      position: 'top-right',
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+    });
+    setAddQuali(false);
+  };
+  const addExperiance = () => {
+    setExperiances([...experiances, { text: experiance }]);
+    toast.success('success', {
+      position: 'top-right',
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+    });
+    setAddExperi(false);
+  };
+  const QuRemove = (index) => {
+    const list = [...qualifications];
+    list.splice(index, 1);
+    setQualifications(list);
+  };
+  const ExRemove = (index) => {
+    const list = [...experiances];
+    list.splice(index, 1);
+    setExperiances(list);
+  };
   return (
     <ThemeProvider theme={theme}>
 
@@ -354,7 +452,44 @@ export default function SeekerEditprofile() {
               />
             </Grid>
           </Grid>
+          {qualifications.map((el, index) => (
+            <Grid item xs={12} py={2}>
+              <TextField
+                required
+                fullWidth
+                id="qualification"
+                type="text"
+                label="Qualification"
+                name="qualification"
+                autoComplete="qualification"
+                error={qualification}
+                helperText={qualificationError}
+                onChange={(e) => setQualification(e.target.value)}
+                defaultValue={el?.text}
+                multiline
+                autoFocus
+                sx={{ width: '84%' }}
+              />
+              <Button
+                onClick={() => { editQualification(index); }}
+                variant="contained"
+                sx={{ height: '7.5vh' }}
+              >
+                +
 
+              </Button>
+              <Button
+                variant="contained"
+                sx={{ height: '7.5vh', bgcolor: 'red', ':hover': { bgcolor: 'darkred' } }}
+                onClick={() => { QuRemove(index); }}
+              >
+                X
+
+              </Button>
+            </Grid>
+          ))}
+          {addQuali
+          && (
           <Grid item xs={12} py={2}>
             <TextField
               required
@@ -366,11 +501,68 @@ export default function SeekerEditprofile() {
               autoComplete="qualification"
               error={qualification}
               helperText={qualificationError}
-              defaultValue={datas?.qualification}
+              onChange={(e) => setQualification(e.target.value)}
               multiline
               autoFocus
+              sx={{ width: '92%' }}
             />
+            <Button
+              onClick={addQualification}
+              variant="contained"
+              sx={{ height: '7.5vh' }}
+            >
+              Add
+
+            </Button>
           </Grid>
+          )}
+          <Button
+            variant="contained"
+            onClick={() => {
+              setAddQuali(true);
+            }}
+          >
+            AddMore
+          </Button>
+
+          {experiances.map((el, index) => (
+            <Grid item xs={12} py={2}>
+              <TextField
+                required
+                fullWidth
+                id="experiance"
+                type="text"
+                label="Experiance"
+                name="experiance"
+                autoComplete="experiance"
+                error={experiance}
+                helperText={experianceError}
+                onChange={(e) => setExperiance(e.target.value)}
+                defaultValue={el?.text}
+                multiline
+                sx={{ width: '84%' }}
+
+              />
+              <Button
+                onClick={() => { editExperiance(index); }}
+                variant="contained"
+                sx={{ height: '7.5vh' }}
+              >
+                +
+
+              </Button>
+              <Button
+                variant="contained"
+                sx={{ height: '7.5vh', bgcolor: 'red', ':hover': { bgcolor: 'darkred' } }}
+                onClick={() => { ExRemove(index); }}
+              >
+                X
+
+              </Button>
+            </Grid>
+          ))}
+          {addExperi
+          && (
           <Grid item xs={12} py={2}>
             <TextField
               required
@@ -382,10 +574,29 @@ export default function SeekerEditprofile() {
               autoComplete="experiance"
               error={experiance}
               helperText={experianceError}
-              defaultValue={datas.experiance}
+              onChange={(e) => setExperiance(e.target.value)}
               multiline
+              sx={{ width: '92%' }}
             />
+            <Button
+              onClick={addExperiance}
+              variant="contained"
+              sx={{ height: '7.5vh' }}
+            >
+              okk
+
+            </Button>
           </Grid>
+          )}
+          <Button
+            variant="contained"
+            onClick={() => {
+              setAddExperi(true);
+            }}
+          >
+            AddMore
+          </Button>
+
           <Grid item xs={12} py={2} maxWidth="md">
 
             <TextareaAutosize

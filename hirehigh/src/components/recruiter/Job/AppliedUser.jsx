@@ -15,25 +15,30 @@ import MenuItem from '@mui/material/MenuItem';
 import Modal from '@mui/material/Modal';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 // import Moment from 'react-moment';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { RecruiterJobEdit, RecruiterComment } from '../../../apis/RecruiterApi';
+import { RecruiterComment } from '../../../apis/RecruiterApi';
 
 const style = {
   position: 'absolute',
   top: '50%',
+  width: 500,
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
   bgcolor: 'background.paper',
   border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
+  boxShadow: 4,
+  p: 5,
 };
 
 export default function RecruiterJobAppliedList() {
@@ -70,7 +75,7 @@ export default function RecruiterJobAppliedList() {
   //   setPage(0);
   // };
   const { state } = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [job, setJob] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const token = localStorage.getItem('recruiterToken');
@@ -98,9 +103,8 @@ export default function RecruiterJobAppliedList() {
   };
 
   useEffect(() => {
-    setJob(state.users);
+    setJob(state?.users);
   }, [refresh]);
-  console.log(job);
 
   // const editJob = async (id) => {
   //   await RecruiterJobEdit(id, token).then((response) => {
@@ -140,7 +144,7 @@ export default function RecruiterJobAppliedList() {
                 <StyledTableCell align="center">{el?.userId?.email}</StyledTableCell>
                 <StyledTableCell align="center">{el?.userId?.phoneNumber}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Button onClick={handleOpen}>View</Button>
+                  <Button onClick={handleOpen} variant="contained">Details</Button>
                   <Modal
                     open={open}
                     onClose={handleClose}
@@ -149,11 +153,90 @@ export default function RecruiterJobAppliedList() {
                   >
                     <Box sx={style}>
                       <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Text in a modal
+                        Full details
                       </Typography>
-                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                      </Typography>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                          <Typography>Full Name :</Typography>
+                          <Typography>{`${el?.userId?.firstName} ${el?.userId?.lastName}`}</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                          <Typography>Email :</Typography>
+                          <Typography>{el?.userId?.email}</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                          <Typography>PhoneNumnber :</Typography>
+                          <Typography>{el?.userId?.phoneNumber}</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                          <Typography>Location :</Typography>
+                          <Typography>{el?.userId?.location}</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                          <Typography>Position :</Typography>
+                          <Typography>{el?.userId?.position}</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                          <Typography>HeadLine :</Typography>
+                          <Typography>{el?.userId?.headline}</Typography>
+                        </Box>
+                        <Box>
+                          <Accordion>
+                            <AccordionSummary
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls="panel1a-content"
+                              id="panel1a-header"
+                            >
+                              <Typography>Qualification</Typography>
+                            </AccordionSummary>
+                            {el?.userId?.qualifications?.map((e, ind) => (
+                              <AccordionDetails>
+                                <Typography>
+                                  {ind + 1}
+                                  {' : '}
+                                  {e?.text}
+                                </Typography>
+                              </AccordionDetails>
+                            ))}
+                          </Accordion>
+                        </Box>
+                        <Box>
+                          <Accordion>
+                            <AccordionSummary
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls="panel1a-content"
+                              id="panel1a-header"
+                            >
+                              <Typography>Experience</Typography>
+                            </AccordionSummary>
+                            {el?.userId?.experiances?.map((e, ind) => (
+                              <AccordionDetails>
+                                <Typography>
+                                  {ind + 1}
+                                  {' : '}
+                                  {e?.text}
+                                </Typography>
+                              </AccordionDetails>
+                            ))}
+                          </Accordion>
+                        </Box>
+                        <Box>
+                          <Accordion>
+                            <AccordionSummary
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls="panel1a-content"
+                              id="panel1a-header"
+                            >
+                              <Typography>Description</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                              <Typography>
+                                {el?.userId?.discription}
+                              </Typography>
+                            </AccordionDetails>
+                          </Accordion>
+                        </Box>
+                      </Box>
                     </Box>
                   </Modal>
 
@@ -168,7 +251,7 @@ export default function RecruiterJobAppliedList() {
                         <Select
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
-                          onChange={(e) => handleChangeComment(el?.userId._id, e)}
+                          onChange={(e) => handleChangeComment(el?.userId?._id, e)}
                         >
                           <MenuItem value="Good">Good</MenuItem>
                           <MenuItem value="Maybe">Maybe</MenuItem>

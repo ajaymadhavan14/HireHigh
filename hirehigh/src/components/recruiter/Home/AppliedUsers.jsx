@@ -19,7 +19,6 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import BusinessIcon from '@mui/icons-material/Business';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import Button from '@mui/material/Button';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
@@ -356,8 +355,13 @@ export default function RecruiterSideJobAppliedList() {
         >
           <Toolbar />
           <Box>
-            <Box sx={{ display: 'flex', justifyContent: 'end', padding: '4vh' }}>
-              <Button onClick={() => navigate('/recruiter/add_job')} variant="contained" size="large">Post a Job</Button>
+            <Box sx={{ display: 'flex', justifyContent: 'start', padding: '4vh' }}>
+              <Typography
+                component="h1"
+                variant="h5"
+              >
+                Applied Candidates
+              </Typography>
             </Box>
             <Container maxWidth="xl">
               <RecruiterJobAppliedList />

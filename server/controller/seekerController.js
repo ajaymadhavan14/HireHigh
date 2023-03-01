@@ -162,18 +162,19 @@ const getSingleView = async (req, res, next) => {
 
 const AddProfile = async (req, res, next) => {
   try {
+    console.log(req.body);
     const {
-      headline, position, location, qualification, discription, salaryRange, age, image,
-      experiance, resume,
+      headline, position, location, qualifications, discription, salaryRange, age, image,
+      experiances, resume,
     } = req.body;
     await userModel.findByIdAndUpdate(req.userId, {
       $set: {
         headline,
         position,
         image,
-        experiance,
+        experiances,
         location,
-        qualification,
+        qualifications,
         discription,
         salaryRange,
         age,
@@ -189,6 +190,7 @@ const AddProfile = async (req, res, next) => {
 const getProfileData = async (req, res, next) => {
   try {
     const data = await userModel.findById(req.userId);
+    console.log(data);
     res.json(data);
   } catch (error) {
     next(error);
@@ -219,8 +221,9 @@ const userDataEditGet = async (req, res, next) => {
 
 const editUserProfilePost = async (req, res, next) => {
   try {
+    console.log(req.body);
     const {
-      experiance, age, salaryRange, discription, qualification, location, position, headline,
+      experiances, age, salaryRange, discription, qualifications, location, position, headline,
       image, phoneNumber, email, firstName, lastName,
     } = req.body;
     await userModel.findByIdAndUpdate(req.userId, {
@@ -229,11 +232,11 @@ const editUserProfilePost = async (req, res, next) => {
         lastName,
         email,
         phoneNumber,
-        experiance,
+        experiances,
         age,
         salaryRange,
         discription,
-        qualification,
+        qualifications,
         location,
         position,
         headline,

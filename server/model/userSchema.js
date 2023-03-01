@@ -45,9 +45,8 @@ const userSignup = new Schema(
     location: {
       type: String,
     },
-    qualification: {
-      type: String,
-    },
+    qualifications: [
+    ],
     discription: {
       type: String,
     },
@@ -57,9 +56,8 @@ const userSignup = new Schema(
     age: {
       type: String,
     },
-    experiance: {
-      type: String,
-    },
+    experiances: [
+    ],
     resume: {
       type: String,
     },

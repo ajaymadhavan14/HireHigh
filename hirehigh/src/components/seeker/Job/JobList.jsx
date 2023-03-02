@@ -3,15 +3,31 @@
 /* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import Box from '@mui/material/Box';
+import {
+  styled, createTheme, ThemeProvider, useTheme, alpha,
+} from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
+import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
 import swal from 'sweetalert';
+import { CheckBox } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { jobListSeekerSide, jobApply } from '../../../apis/SeekerApi';
+import { FormControlLabel, FormGroup } from '@mui/material';
+import {
+  jobListSeekerSide, jobApply, getSerachJob, getFilterJob,
+} from '../../../apis/SeekerApi';
+import { getCategory } from '../../../apis/RecruiterApi';
 
 const bull = (
   <Box
@@ -22,11 +38,54 @@ const bull = (
   </Box>
 );
 
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '20ch',
+      },
+    },
+  },
+}));
+
 export default function JobCard(props) {
   const [jobs, setJobs] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem('userToken');
+  const [noData, setNoData] = useState(false);
   useEffect(() => {
     async function invoke() {
       await jobListSeekerSide(token).then((res) => {
@@ -40,63 +99,236 @@ export default function JobCard(props) {
     await jobApply(id, user, token).then((response) => {
       if (response.data.status === 'success') {
         swal('success');
+        setNoData(false);
         setRefresh(!refresh);
       }
     });
   };
+  const [cat, setCat] = useState([]);
+  useEffect(() => {
+    async function invoke() {
+      const res = await getCategory(token);
+      setCat(res);
+    }
+    invoke();
+  }, []);
+
+  const searchJob = async (value) => {
+    await getSerachJob(value, token).then((res) => {
+      if (res.length === 0) {
+        setNoData(true);
+      } else {
+        setNoData(false);
+        setJobs(res);
+      }
+    });
+  };
+  const allData = {};
+
+  const getJobType = async (value) => {
+    if (value === 'none') {
+      setNoData(false);
+      setRefresh(!refresh);
+    } else {
+      allData.jobType = value;
+      await getFilterJob(allData, token).then((res) => {
+        if (res.length === 0) {
+          setNoData(true);
+        } else {
+          setNoData(false);
+          setJobs(res);
+        }
+      });
+    }
+  };
+  const getWorkPlacetype = async (value) => {
+    if (value === 'none') {
+      setNoData(false);
+      setRefresh(!refresh);
+    } else {
+      allData.workPlace = value;
+      await getFilterJob(allData, token).then((res) => {
+        if (res.length === 0) {
+          setNoData(true);
+        } else {
+          setNoData(false);
+          setJobs(res);
+        }
+      });
+    }
+  };
+  const getCategoryFor = async (value) => {
+    if (value === 'none') {
+      setNoData(false);
+      setRefresh(!refresh);
+    } else {
+      allData.jobCategory = value;
+      await getFilterJob(allData, token).then((res) => {
+        if (res.length === 0) {
+          setNoData(true);
+        } else {
+          setNoData(false);
+          setJobs(res);
+        }
+      });
+    }
+  };
 
   return (
-    <Box>
-      {jobs.map((el) => (
-        <Card sx={{ minWidth: 275 }} key={el?.id}>
-          <CardContent sx={{ display: 'flex', flexDirection: 'row' }} key={el?.id}>
-            <img src={el?.image} alt="...loading" style={{ width: '20vh' }} />
-            <Box sx={{ marginLeft: '8vh', alignSelf: 'center' }}>
-              <Box sx={{ justifyContent: 'space-between' }}>
-                <Typography variant="h5" component="div">
-                  {el?.jobTitle}
-                </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                  {el?.companyName}
-                </Typography>
-                <Typography variant="body2">
-                  {el?.jobType}
-                </Typography>
-              </Box>
-            </Box>
-            <Box sx={{ alignSelf: 'center', ml: 'auto' }}>
-              {user.job.some((element) => element.jobId === el._id)
-                ? (
-                  <Button
+    <Grid container spacing={3}>
+      {/* Chart */}
+      {noData === true ? (
+        <Grid item xs={12} md={8} lg={9}>
+          <Box>
+            <img src="/nodata.jpg" alt="...loading" />
+          </Box>
+        </Grid>
+      )
+        : (
+          <Grid item xs={12} md={8} lg={9}>
+            {/* <JobCardSearch newData={jobData} data={user} /> */}
+            <Box>
+              {jobs.map((el) => (
+                <Card sx={{ minWidth: 275 }} key={el?.id}>
+                  <CardContent sx={{ display: 'flex', flexDirection: 'row' }} key={el?.id}>
+                    <img src={el?.image} alt="...loading" style={{ width: '20vh' }} />
+                    <Box sx={{ marginLeft: '8vh', alignSelf: 'center' }}>
+                      <Box sx={{ justifyContent: 'space-between' }}>
+                        <Typography variant="h5" component="div">
+                          {el?.jobTitle}
+                        </Typography>
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                          {el?.companyName}
+                        </Typography>
+                        <Typography variant="body2">
+                          {el?.jobType}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box sx={{ alignSelf: 'center', ml: 'auto' }}>
+                      {user.job.some((element) => element.jobId === el._id)
+                        ? (
+                          <Button
                         // eslint-disable-next-line no-underscore-dangle
                     // onClick={() => apply(el?._id)}
-                    variant="contained"
-                    sx={{
-                      backgroundColor: 'green', color: '#fff', fontWeight: '800', pointerEvents: 'none',
-                    }}
-                  >
-                    Applied
-                  </Button>
-                )
+                            variant="contained"
+                            sx={{
+                              backgroundColor: 'green', color: '#fff', fontWeight: '800', pointerEvents: 'none',
+                            }}
+                          >
+                            Applied
+                          </Button>
+                        )
 
-                : (
-                  <Button
+                        : (
+                          <Button
                         // eslint-disable-next-line no-underscore-dangle
-                    onClick={() => apply(el?._id)}
-                    sx={{
-                      ml: 1, backgroundColor: 'blue', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'green' },
-                    }}
-                  >
-                    Apply
-                  </Button>
-                )}
+                            onClick={() => apply(el?._id)}
+                            sx={{
+                              ml: 1, backgroundColor: 'blue', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'green' },
+                            }}
+                          >
+                            Apply
+                          </Button>
+                        )}
+                    </Box>
+                  </CardContent>
+                  <CardActions>
+                    <Button size="small" onClick={() => navigate('/job_view', { state: el?._id })}>full details</Button>
+                  </CardActions>
+                </Card>
+              ))}
             </Box>
-          </CardContent>
-          <CardActions>
-            <Button size="small" onClick={() => navigate('/job_view', { state: el?._id })}>full details</Button>
-          </CardActions>
-        </Card>
-      ))}
-    </Box>
+
+          </Grid>
+        )}
+      <Grid item xs={12} md={4} lg={3}>
+        <Paper
+          sx={{
+            p: 2,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <Box>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={(e) => searchJob(e.target.value)}
+                // onKeyUp={() => {
+                //   setOpenBox(true);
+                // }}
+                onFocus={() => {
+                  setRefresh(!refresh);
+                }}
+              />
+            </Search>
+          </Box>
+          <Box sx={{ marginTop: '15px' }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Category</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Category"
+                name="category"
+                onChange={(e) => getCategoryFor(e.target.value)}
+              >
+                <MenuItem value="none">none</MenuItem>
+
+                {cat.map((el) => (
+                  <MenuItem value={el?._id}>{el?.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+          <Box sx={{ marginTop: '15px' }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Job Type</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="jobType"
+                label="JobType"
+                name="jobType"
+                onChange={(e) => { getJobType(e.target.value); }}
+              >
+                <MenuItem value="none">none</MenuItem>
+                <MenuItem value="Full-time">Full-time</MenuItem>
+                <MenuItem value="Part-time">Part-time</MenuItem>
+                <MenuItem value="Internship">Internship</MenuItem>
+                <MenuItem value="Other">Other</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          <Box sx={{ marginTop: '15px' }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">WorkPlace Type</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="workPlace"
+                label="WorkPlace Type"
+                name="workPlace"
+                onChange={(e) => getWorkPlacetype(e.target.value)}
+              >
+                <MenuItem value="none">none</MenuItem>
+                <MenuItem value="On-site">On-site</MenuItem>
+                <MenuItem value="Remote">Remote</MenuItem>
+                <MenuItem value="Hybrid">Hybrid</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </Paper>
+      </Grid>
+      {/* Recent Deposits */}
+      {/* Recent Orders */}
+      <Grid item xs={12}>
+        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
+      </Grid>
+    </Grid>
+
   );
 }

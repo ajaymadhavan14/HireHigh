@@ -113,6 +113,7 @@ export default function RecruiterJobAppliedList() {
   // };
 
   return (
+
     <Box>
       <ToastContainer />
       <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
@@ -267,5 +268,6 @@ export default function RecruiterJobAppliedList() {
         </Table>
       </TableContainer>
     </Box>
+
   );
 }

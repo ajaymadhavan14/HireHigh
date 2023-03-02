@@ -74,7 +74,16 @@ export const applyedJobsSeeker = async (token) => {
 
 export const getSerachJob = async (job, token) => {
   try {
-    const { data } = await axios.post('/search_job', job, { headers: { 'user-access-token': token } });
+    const { data } = await axios.get(`/search_job?value=${job}`, { headers: { 'user-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getFilterJob = async (getData, token) => {
+  try {
+    const { data } = await axios.post('/get_jobfilter', getData, { headers: { 'user-access-token': token } });
     return data;
   } catch (error) {
     return error;

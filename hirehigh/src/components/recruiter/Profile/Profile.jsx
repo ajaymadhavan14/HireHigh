@@ -42,15 +42,16 @@ export default function RecruiterProfile() {
               }}
               >
 
-                <img style={{ width: '15vh', height: '20vh' }} src={recruiter?.image} alt="" />
+                <img style={{ width: '20vh', height: '25vh' }} src={recruiter?.image} alt="" />
 
                 <Typography sx={{ fontSize: '3vh', fontWeight: '500' }}>{recruiter?.userName}</Typography>
-                <Box mt={4}>
-                  <FormLabel>Discription</FormLabel>
-                  <Typography>{recruiter?.discription}</Typography>
-                </Box>
-              </Box>
 
+              </Box>
+              <Box sx={{ textAlignLast: 'center' }}>
+                <Button variant="contained" sx={{ mt: '5vh', width: '10vh' }} onClick={() => navigate('/recruiter/edit_profile')}>
+                  Edit
+                </Button>
+              </Box>
             </Paper>
           </Grid>
 
@@ -123,16 +124,18 @@ export default function RecruiterProfile() {
                     {recruiter?.tagLine}
                   </Typography>
                 </Box>
-                <Button variant="contained" sx={{ mt: '5vh', width: '10vh', alignSelf: 'end' }} onClick={() => navigate('/recruiter/edit_profile')}>
-                  Edit
-                </Button>
               </Box>
             </Paper>
           </Grid>
           {/* Recent Deposits */}
           {/* Recent Orders */}
           <Grid item xs={12}>
-            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
+            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+              <Box mt={4}>
+                <FormLabel>Discription</FormLabel>
+                <Typography>{recruiter?.discription}</Typography>
+              </Box>
+            </Paper>
           </Grid>
         </Grid>
       </Container>

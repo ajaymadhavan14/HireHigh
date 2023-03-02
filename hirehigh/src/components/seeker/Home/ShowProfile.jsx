@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import {
   styled, createTheme, ThemeProvider, useTheme, alpha,
@@ -240,7 +241,7 @@ export default function SeekerHome() {
             >
               HIREHIGH
             </Typography>
-            <Box sx={{ marginRight: '10vh' }}>
+            {/* <Box sx={{ marginRight: '10vh' }}>
               <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
@@ -250,7 +251,7 @@ export default function SeekerHome() {
                   inputProps={{ 'aria-label': 'search' }}
                 />
               </Search>
-            </Box>
+            </Box> */}
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip>
                 <Button

@@ -20,6 +20,7 @@ router.post('/edit_profile_post', jwtAuth.jwtSeeker, seekerController.editUserPr
 router.post('/enter_number', seekerController.NumberCheck);
 router.post('/new_password', seekerController.setNewPassword);
 router.get('/applied_jobs', jwtAuth.jwtSeeker, seekerController.getAppliedJobs);
-router.post('/search_job', jwtAuth.jwtSeeker, seekerController.jobSearch);
+router.get('/search_job', jwtAuth.jwtSeeker, seekerController.jobSearch);
+router.post('/get_jobfilter', jwtAuth.jwtSeeker, seekerController.getFilterJob);
 
 export default router;

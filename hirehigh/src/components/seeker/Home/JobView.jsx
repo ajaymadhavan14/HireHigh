@@ -145,6 +145,7 @@ const mdTheme = createTheme();
 
 export default function SeekerJobView() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [openBox, setOpenBox] = React.useState(false);
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -160,7 +161,6 @@ export default function SeekerJobView() {
     axios.get('/isUserAuth', {
       headers: { 'user-access-token': localStorage.getItem('userToken') },
     }).then((response) => {
-      console.log(response.data);
       if (!response.data.auth) {
         if (response.data.status === 'blocked') {
           swal('Your profile blocked');
@@ -214,25 +214,8 @@ export default function SeekerJobView() {
   };
   const token = localStorage.getItem('userToken');
   const [data, setData] = useState('');
-  const [jobData, setJobData] = useState([]);
 
-  // const invoke = async () => {
-  //   await getSerachJob(data, token);
-  let searchData = false;
-  // };
-  useEffect(() => {
-    const set = { job: data };
-    async function invoke() {
-      await getSerachJob(set, token).then((res) => {
-        console.log(res);
-        searchData = true;
-        setJobData(res);
-        console.log(searchData);
-      });
-    }
-    invoke();
-  }, [data]);
-  console.log(data);
+  // let searchData = false;
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -265,7 +248,7 @@ export default function SeekerJobView() {
             >
               HIREHIGH
             </Typography>
-            <Box sx={{ marginRight: '10vh' }}>
+            {/* <Box sx={{ marginRight: '10vh' }}>
               <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
@@ -273,11 +256,9 @@ export default function SeekerJobView() {
                 <StyledInputBase
                   placeholder="Search…"
                   inputProps={{ 'aria-label': 'search' }}
-                  onChange={(e) => setData(e.target.value)}
                 />
-                {/* <Button onClick={invoke} /> */}
               </Search>
-            </Box>
+            </Box> */}
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip>
                 <Button
@@ -449,31 +430,8 @@ export default function SeekerJobView() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
 
-              <Grid item xs={12} md={8} lg={9}>
-                {searchData === true
-                  ? <JobCardSearch newData={jobData} data={user} />
-                  : <JobCard data={user} />}
-
-              </Grid>
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                />
-              </Grid>
-              {/* Recent Deposits */}
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
-              </Grid>
-            </Grid>
+            <JobCard data={user} />
           </Container>
         </Box>
       </Box>

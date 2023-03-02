@@ -241,7 +241,7 @@ export default function SeekerSingleJobView() {
             >
               HIREHIGH
             </Typography>
-            <Box sx={{ marginRight: '10vh' }}>
+            {/* <Box sx={{ marginRight: '10vh' }}>
               <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
@@ -251,7 +251,7 @@ export default function SeekerSingleJobView() {
                   inputProps={{ 'aria-label': 'search' }}
                 />
               </Search>
-            </Box>
+            </Box> */}
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip>
                 <Button

@@ -226,7 +226,7 @@ export default function RecruiterJobPost() {
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              {/* <TextField
                 required
                 fullWidth
                 id="workPlace"
@@ -235,7 +235,20 @@ export default function RecruiterJobPost() {
                 autoComplete="workPlace"
                 error={workPlace}
                 helperText={workPlaceError}
-              />
+              /> */}
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">WorkPlace Type</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="workPlace"
+                  label="WorkPlace Type"
+                  name="workPlace"
+                >
+                  <MenuItem value="On-site">On-site</MenuItem>
+                  <MenuItem value="Remote">Remote</MenuItem>
+                  <MenuItem value="Hybrid">Hybrid</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
           </Grid>
           <Grid item xs={12} py={2} maxWidth="md">
@@ -292,7 +305,7 @@ export default function RecruiterJobPost() {
           <Grid container spacing={2} py={2}>
 
             <Grid item xs={12} sm={6}>
-              <TextField
+              {/* <TextField
                 required
                 fullWidth
                 id="jobType"
@@ -301,7 +314,22 @@ export default function RecruiterJobPost() {
                 autoComplete="jobType"
                 error={jobType}
                 helperText={jobTypeError}
-              />
+              /> */}
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Job Type</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="jobType"
+                  label="JobType"
+                  name="jobType"
+                >
+
+                  <MenuItem value="Full-time">Full-time</MenuItem>
+                  <MenuItem value="Part-time">Part-time</MenuItem>
+                  <MenuItem value="Internship">Internship</MenuItem>
+                  <MenuItem value="Other">Other</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
 
             <Grid item xs={12} sm={6}>

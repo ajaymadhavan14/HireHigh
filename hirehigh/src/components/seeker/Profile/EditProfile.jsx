@@ -522,7 +522,7 @@ export default function SeekerEditprofile() {
               setAddQuali(true);
             }}
           >
-            AddMore
+            AddMore Qualification
           </Button>
 
           {experiances.map((el, index) => (
@@ -594,7 +594,7 @@ export default function SeekerEditprofile() {
               setAddExperi(true);
             }}
           >
-            AddMore
+            AddMore Experiance
           </Button>
 
           <Grid item xs={12} py={2} maxWidth="md">
@@ -647,6 +647,16 @@ export default function SeekerEditprofile() {
                     });
                   } else {
                     setImage(e.target.files[0]);
+                    toast.success('success', {
+                      position: 'top-right',
+                      autoClose: 2000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: 'colored',
+                    });
                   }
                 }}
               />
@@ -685,7 +695,33 @@ export default function SeekerEditprofile() {
                 <input
                   hidden
                   accept="application/pdf"
-                    // onChange={(e) => setPdf(e.target.files[0])}
+                  onChange={(e) => {
+                    const fsize = parseFloat(e.target.files[0].size / 1024).toFixed(2);
+                    if (fsize > 1024) {
+                      toast.error('File too large!', {
+                        position: 'top-right',
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'colored',
+                      });
+                    } else {
+                      setPdf(e.target.files[0]);
+                      toast.success('success', {
+                        position: 'top-right',
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'colored',
+                      });
+                    }
+                  }}
                   type="file"
                 />
 

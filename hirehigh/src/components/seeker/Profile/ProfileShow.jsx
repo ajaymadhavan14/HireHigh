@@ -52,15 +52,16 @@ export default function SeekerProfile() {
               }}
               >
 
-                <img style={{ width: '15vh', height: '20vh' }} src={user?.image} alt="" />
+                <img style={{ width: '20vh', height: '25vh' }} src={user?.image} alt="" />
 
                 <Typography sx={{ fontSize: '3vh', fontWeight: '500' }}>{`${user?.firstName} ${user?.lastName}`}</Typography>
-                <Box mt={4}>
-                  <FormLabel>Discription</FormLabel>
-                  <Typography>{user?.discription}</Typography>
-                </Box>
               </Box>
-
+              <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: '20px' }}>
+                <FormLabel>headLine</FormLabel>
+                <Typography pt={1}>
+                  {user?.headline}
+                </Typography>
+              </Box>
             </Paper>
           </Grid>
 
@@ -132,12 +133,6 @@ export default function SeekerProfile() {
                 }}
                 >
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <FormLabel>headLine</FormLabel>
-                    <Typography pt={1}>
-                      {user?.headline}
-                    </Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <FormLabel>Resume</FormLabel>
                     <a
                       href={user?.resume}
@@ -164,9 +159,14 @@ export default function SeekerProfile() {
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                height: 240,
               }}
-            />
+            >
+              <Box mt={4}>
+                <FormLabel>Discription</FormLabel>
+                <Typography>{user?.discription}</Typography>
+              </Box>
+
+            </Paper>
           </Grid>
           <Grid item xs={12} md={8} lg={9}>
             <Accordion>

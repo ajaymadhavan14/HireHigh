@@ -292,11 +292,25 @@ const getAppliedJobs = async (req, res, next) => {
 
 const jobSearch = async (req, res, next) => {
   try {
-    console.log(req.body);
-    const searchdata = req.body.job;
+    console.log(req.query.value);
+    const searchdata = req.query.value.trim();
     const qData = new RegExp(searchdata, 'i');
-    const data = await jobModel.find({ $and: [{ jobTitle: { $regex: qData } }, { 'users.userId': { $ne: req.userId } }] });
+    const data = await jobModel.find({ jobTitle: { $regex: qData } });
     console.log(data);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getFilterJob = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    const data = await jobModel.find({
+      $or: [
+        { jobType: req.body.jobType }, { workPlace: req.body.workPlace },
+        { jobCategory: req.body.jobCategory }],
+    });
     res.json(data);
   } catch (error) {
     next(error);
@@ -320,4 +334,5 @@ export default {
   setNewPassword,
   getAppliedJobs,
   jobSearch,
+  getFilterJob,
 };

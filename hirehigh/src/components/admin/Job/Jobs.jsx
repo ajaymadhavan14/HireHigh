@@ -91,7 +91,7 @@ export default function AdminJobList() {
                   {index + 1}
                 </StyledTableCell>
                 <StyledTableCell align="center" component="th" scope="row">
-                  {el?.recruiterId.companyName}
+                  {el?.companyName}
                 </StyledTableCell>
                 <StyledTableCell align="center" component="th" scope="row">
                   {el?.jobTitle}
@@ -101,7 +101,7 @@ export default function AdminJobList() {
                   <Moment format="DD/MM/YYYY" date={el?.createdAt} />
 
                 </StyledTableCell>
-                <StyledTableCell align="center">{el?.jobCategory}</StyledTableCell>
+                <StyledTableCell align="center">{el?.jobCategory.name}</StyledTableCell>
                 <StyledTableCell align="center">{el?.salaryRange}</StyledTableCell>
 
                 {/* <StyledTableCell align="center">{el?.phoneNumber}</StyledTableCell>

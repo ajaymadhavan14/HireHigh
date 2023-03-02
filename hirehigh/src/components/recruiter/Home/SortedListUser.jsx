@@ -8,11 +8,11 @@ import Box from '@mui/material/Box';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
+import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -29,13 +29,14 @@ import MessageIcon from '@mui/icons-material/Message';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useSelector, useDispatch } from 'react-redux';
+import swal from 'sweetalert';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import Swal2 from 'sweetalert2';
-import swal from 'sweetalert';
 import axios from '../../../axios/axios';
 import { recruiterDetails } from '../../../redux/recruiter';
-import RecruiterPrfileData from '../Profile/EditProfile';
+import RecruiterJobSortedList from '../Job/SortList';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -94,14 +95,16 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-export default function RecruiterProfileEdit() {
+export default function RecruiterSideJobSortedList() {
   const navigate = useNavigate();
   const dispatch = useDispatch(recruiterDetails);
+  const { recruiter } = useSelector((state) => state.recruiterInfo);
+
   useEffect(() => {
     axios.get('/recruiter/isRecruiterAuth', {
       headers: { 'recruiter-access-token': localStorage.getItem('recruiterToken') },
     }).then((response) => {
-      console.log(response.data);
+      console.log(response.data, 'data');
       if (!response.data.auth) {
         if (response.data.status === 'blocked') {
           swal('Your profile blocked');
@@ -110,16 +113,16 @@ export default function RecruiterProfileEdit() {
           navigate('/');
         }
       } else {
-        dispatch(recruiterDetails(response.data));
+        dispatch(recruiterDetails(response?.data));
       }
-    });
+    }).catch((err) => console.log(err));
   }, []);
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const { recruiter } = useSelector((state) => state.recruiterInfo);
 
   const LogOut = () => {
     Swal2.fire({
@@ -132,7 +135,7 @@ export default function RecruiterProfileEdit() {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem('recruiterToken');
+        localStorage.removeItem('recruierToken');
         // Swal.fire(
         //     'Deleted!',
         //     'Your file has been deleted.',
@@ -225,6 +228,7 @@ export default function RecruiterProfileEdit() {
 
                 }}
                 >
+
                   <TaskIcon />
                   <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Hire Candidates</ListItemText>
                 </ListItemIcon>
@@ -353,9 +357,19 @@ export default function RecruiterProfileEdit() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <RecruiterPrfileData data={recruiter} />
-          </Container>
+          <Box>
+            <Box sx={{ display: 'flex', justifyContent: 'start', padding: '4vh' }}>
+              <Typography
+                component="h1"
+                variant="h5"
+              >
+                Sorted Candidates
+              </Typography>
+            </Box>
+            <Container maxWidth="xl">
+              <RecruiterJobSortedList />
+            </Container>
+          </Box>
         </Box>
       </Box>
     </ThemeProvider>

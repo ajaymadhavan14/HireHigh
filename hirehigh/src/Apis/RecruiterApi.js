@@ -80,3 +80,12 @@ export const RecruiterComment = async (token, reData) => {
     return error;
   }
 };
+
+export const getUserSortedList = async (token) => {
+  try {
+    const { data } = await axios.get('/recruiter/get_sorted_user', { headers: { 'recruiter-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

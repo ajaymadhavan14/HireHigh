@@ -13,6 +13,7 @@ import FPNumber from '../pages/recruiter/Forgot-Password/FPNumber';
 import OtpPage from '../pages/recruiter/Forgot-Password/OtpPage';
 import NewPassword from '../pages/recruiter/Forgot-Password/NewPassword';
 import AppliedList from '../pages/recruiter/AppliedList';
+import SortedList from '../pages/recruiter/SortedList';
 
 function RecruiterRouter() {
   return (
@@ -45,6 +46,8 @@ function RecruiterRouter() {
         <Route path="/new_password" element={<NewPassword />} />
 
         <Route path="/applied_users" element={<AppliedList />} />
+
+        <Route path="/sorted_users" element={<SortedList />} />
 
       </Routes>
 

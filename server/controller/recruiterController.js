@@ -326,6 +326,16 @@ const updateJobComment = async (req, res, next) => {
   }
 };
 
+const getSortedList = async (req, res, next) => {
+  try {
+    const data = await jobPostModel.find({ 'users.comment': 'Good' }).populate('users.userId');
+    console.log(data);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   recruiterSignUpPost,
   recruiterSignInPost,
@@ -345,4 +355,5 @@ export default {
   setNewPassword,
   jobAppliedUsers,
   updateJobComment,
+  getSortedList,
 };

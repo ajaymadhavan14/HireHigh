@@ -22,5 +22,6 @@ router.post('/enter_number', recruiterController.NumberCheck);
 router.post('/new_password', recruiterController.setNewPassword);
 router.get('/applied_users', jwtAuth.jwtRecruiter, recruiterController.jobAppliedUsers);
 router.post('/job_comment', jwtAuth.jwtRecruiter, recruiterController.updateJobComment);
+router.get('/get_sorted_user', jwtAuth.jwtRecruiter, recruiterController.getSortedList);
 
 export default router;

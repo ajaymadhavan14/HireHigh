@@ -31,20 +31,19 @@ export default function JobCardSearch(props) {
   const token = localStorage.getItem('userToken');
   const user = props?.data;
   const newDatas = props?.newData;
-  console.log(props?.newData);
   setJobs(newDatas);
-  // useEffect(() => {
-  //   async function invoke() {
-  //   }
-  //   invoke();
-  // }, [refresh]);
   const apply = async (id) => {
-    await jobApply(id, user, token).then((response) => {
-      if (response.data.status === 'success') {
-        swal('success');
-        setRefresh(!refresh);
-      }
-    });
+    if (token) {
+      await jobApply(id, user, token).then((response) => {
+        if (response.data.status === 'success') {
+          swal('success');
+          setRefresh(!refresh);
+        }
+      });
+    } else {
+      swal('Please Login');
+      navigate('/login');
+    }
   };
 
   return (

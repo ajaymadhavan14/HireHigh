@@ -28,26 +28,34 @@ export default function JobCardApplied(props) {
   const navigate = useNavigate();
   const token = localStorage.getItem('userToken');
   useEffect(() => {
-    async function invoke() {
-      await applyedJobsSeeker(token).then((res) => {
-        console.log(res);
-        if (res.length === 0) {
-          navigate('/jobs');
-        } else {
-          setJobs(res);
-        }
-      });
+    if (token) {
+      (async function invoke() {
+        await applyedJobsSeeker(token).then((res) => {
+          if (res.length === 0) {
+            navigate('/jobs');
+          } else {
+            setJobs(res);
+          }
+        });
+      }());
+    } else {
+      swal('Please Login');
+      navigate('/login');
     }
-    invoke();
   }, [refresh]);
   const user = props?.data;
   const apply = async (id) => {
-    await jobApply(id, user, token).then((response) => {
-      if (response.data.status === 'success') {
-        swal('success');
-        setRefresh(!refresh);
-      }
-    });
+    if (token) {
+      await jobApply(id, user, token).then((response) => {
+        if (response.data.status === 'success') {
+          swal('success');
+          setRefresh(!refresh);
+        }
+      });
+    } else {
+      swal('Please Login');
+      navigate('/login');
+    }
   };
 
   return (

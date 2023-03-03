@@ -103,7 +103,6 @@ export default function AdminJobCategory() {
 
   const deleteCat = async (id) => {
     await CategoryDelete(id, token).then((response) => {
-      console.log(response);
       if (response.data.status === 'success') {
         swal('success');
         setRefresh(!refresh);

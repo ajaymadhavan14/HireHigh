@@ -92,7 +92,6 @@ export const AdminSideCategoryShow = async (token) => {
 };
 
 export const CategoryDelete = async (id, token) => {
-  console.log(token);
   try {
     const data = await axios.delete(`/admin/cat_dele?Id=${id}`, { headers: { 'admin-access-token': token } });
     return data;

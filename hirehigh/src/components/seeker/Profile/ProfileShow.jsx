@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
 import FormLabel from '@mui/material/FormLabel';
+import swal from 'sweetalert';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -27,16 +28,18 @@ export default function SeekerProfile() {
   const token = localStorage.getItem('userToken');
 
   useEffect(() => {
-    async function invoke() {
-      // eslint-disable-next-line max-len
-      // eslint-disable-next-line no-underscore-dangle, react/destructuring-assignment, react/prop-types
-      await getProfile(token).then((res) => {
-        setUser(res);
-        setExperiances(res.experiances);
-        setQualifications(res.qualifications);
-      });
+    if (token) {
+      (async function invoke() {
+        await getProfile(token).then((res) => {
+          setUser(res);
+          setExperiances(res.experiances);
+          setQualifications(res.qualifications);
+        });
+      }());
+    } else {
+      swal('Please Login');
+      navigate('/login');
     }
-    invoke();
   }, []);
 
   return (

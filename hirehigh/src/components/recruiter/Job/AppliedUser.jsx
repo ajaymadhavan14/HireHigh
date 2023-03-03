@@ -83,7 +83,6 @@ export default function RecruiterJobAppliedList() {
   const handleChangeComment = async (id, event) => {
     const comment = { comment: event.target.value, userId: id, jobId: state._id };
     await RecruiterComment(token, comment).then((response) => {
-      console.log(response);
       if (response.status === 'success') {
         toast.success('🦄 Wow so easy!', {
           position: 'top-center',

@@ -155,20 +155,25 @@ export default function SeekerSingleJobView() {
   const dispatch = useDispatch(userDetails);
   const [refresh, setRefresh] = useState(false);
   useEffect(() => {
-    axios.get('/isUserAuth', {
-      headers: { 'user-access-token': localStorage.getItem('userToken') },
-    }).then((response) => {
-      if (!response.data.auth) {
-        if (response.data.status === 'blocked') {
-          swal('Your profile blocked');
-          navigate('/');
+    const token = localStorage.getItem('userToken');
+    if (token) {
+      axios.get('/isUserAuth', {
+        headers: { 'user-access-token': token },
+      }).then((response) => {
+        if (!response.data.auth) {
+          if (response.data.status === 'blocked') {
+            swal('Your profile blocked');
+            navigate('/');
+          } else {
+            navigate('/login');
+          }
         } else {
-          navigate('/');
+          dispatch(userDetails(response.data));
         }
-      } else {
-        dispatch(userDetails(response.data));
-      }
-    });
+      }).catch((err) => console.log(err));
+    } else {
+      navigate('/login');
+    }
   }, [refresh]);
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);

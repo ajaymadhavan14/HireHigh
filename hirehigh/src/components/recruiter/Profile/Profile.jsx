@@ -20,8 +20,6 @@ export default function RecruiterProfile() {
 
   useEffect(() => {
     async function invoke() {
-      // eslint-disable-next-line max-len
-      // eslint-disable-next-line no-underscore-dangle, react/destructuring-assignment, react/prop-types
       await getProfile(token).then((response) => {
         setRecruiter(response);
       });

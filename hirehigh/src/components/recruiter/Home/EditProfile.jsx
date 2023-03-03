@@ -98,21 +98,25 @@ export default function RecruiterProfileEdit() {
   const navigate = useNavigate();
   const dispatch = useDispatch(recruiterDetails);
   useEffect(() => {
-    axios.get('/recruiter/isRecruiterAuth', {
-      headers: { 'recruiter-access-token': localStorage.getItem('recruiterToken') },
-    }).then((response) => {
-      console.log(response.data);
-      if (!response.data.auth) {
-        if (response.data.status === 'blocked') {
-          swal('Your profile blocked');
-          navigate('/');
+    const token = localStorage.getItem('recruiterToken');
+    if (token) {
+      axios.get('/recruiter/isRecruiterAuth', {
+        headers: { 'recruiter-access-token': token },
+      }).then((response) => {
+        if (!response.data.auth) {
+          if (response.data.status === 'blocked') {
+            swal('Your profile blocked');
+            navigate('/');
+          } else {
+            navigate('/recruiter/login');
+          }
         } else {
-          navigate('/');
+          dispatch(recruiterDetails(response.data));
         }
-      } else {
-        dispatch(recruiterDetails(response.data));
-      }
-    });
+      }).catch((err) => console.log(err));
+    } else {
+      navigate('/recruiter/login');
+    }
   }, []);
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);

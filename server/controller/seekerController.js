@@ -153,7 +153,6 @@ const getSingleView = async (req, res, next) => {
       $and: [{ jobCategory: catId },
         { _id: { $ne: req.query.id } }, { 'users.userId': { $ne: req.userId } }],
     });
-    console.log(fullData);
     res.json({ data: singleData, category: fullData });
   } catch (error) {
     next(error);
@@ -162,7 +161,6 @@ const getSingleView = async (req, res, next) => {
 
 const AddProfile = async (req, res, next) => {
   try {
-    console.log(req.body);
     const {
       headline, position, location, qualifications, discription, salaryRange, age, image,
       experiances, resume,
@@ -190,7 +188,6 @@ const AddProfile = async (req, res, next) => {
 const getProfileData = async (req, res, next) => {
   try {
     const data = await userModel.findById(req.userId);
-    console.log(data);
     res.json(data);
   } catch (error) {
     next(error);
@@ -221,7 +218,6 @@ const userDataEditGet = async (req, res, next) => {
 
 const editUserProfilePost = async (req, res, next) => {
   try {
-    console.log(req.body);
     const {
       experiances, age, salaryRange, discription, qualifications, location, position, headline,
       image, phoneNumber, email, firstName, lastName,
@@ -292,11 +288,9 @@ const getAppliedJobs = async (req, res, next) => {
 
 const jobSearch = async (req, res, next) => {
   try {
-    console.log(req.query.value);
     const searchdata = req.query.value.trim();
     const qData = new RegExp(searchdata, 'i');
     const data = await jobModel.find({ jobTitle: { $regex: qData } });
-    console.log(data);
     res.json(data);
   } catch (error) {
     next(error);
@@ -305,7 +299,6 @@ const jobSearch = async (req, res, next) => {
 
 const getFilterJob = async (req, res, next) => {
   try {
-    console.log(req.body);
     const data = await jobModel.find({
       $or: [
         { jobType: req.body.jobType }, { workPlace: req.body.workPlace },

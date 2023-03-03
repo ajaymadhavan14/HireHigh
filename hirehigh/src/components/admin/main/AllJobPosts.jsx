@@ -97,7 +97,6 @@ function AdminMain() {
     axios.get('/admin/isAdminAuth', {
       headers: { 'admin-access-token': localStorage.getItem('adminToken') },
     }).then((response) => {
-      console.log(response.data);
       if (!response.data.auth) {
         navigate('/admin/login');
       } else {

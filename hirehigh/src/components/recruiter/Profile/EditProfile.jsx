@@ -14,7 +14,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import swal from 'sweetalert';
 import { toast, ToastContainer } from 'react-toastify';
@@ -371,11 +370,7 @@ export default function RecruiterPrfileData() {
             <p style={{ color: 'red' }}>{totalRequired}</p>
           </Box>
           <Grid container spacing={2} py={2} sx={{ justifyContent: 'flex-end' }}>
-            {/* <Grid>
-              <Link onClick={() => { navigate('/recruiter/login'); }} component="button">
-                Already have an account? Sign in
-              </Link>
-            </Grid> */}
+
             <Grid pl={2}>
               <Button
                 type="submit"

@@ -87,41 +87,59 @@ export default function JobCard(props) {
   const token = localStorage.getItem('userToken');
   const [noData, setNoData] = useState(false);
   useEffect(() => {
-    async function invoke() {
-      await jobListSeekerSide(token).then((res) => {
-        setJobs(res);
-      });
+    if (token) {
+      (async function invoke() {
+        await jobListSeekerSide(token).then((res) => {
+          setJobs(res);
+        });
+      }());
+    } else {
+      swal('Please Login');
+      navigate('/login');
     }
-    invoke();
   }, [refresh]);
   const user = props?.data;
   const apply = async (id) => {
-    await jobApply(id, user, token).then((response) => {
-      if (response.data.status === 'success') {
-        swal('success');
-        setNoData(false);
-        setRefresh(!refresh);
-      }
-    });
+    if (token) {
+      await jobApply(id, user, token).then((response) => {
+        if (response.data.status === 'success') {
+          swal('success');
+          setNoData(false);
+          setRefresh(!refresh);
+        }
+      });
+    } else {
+      swal('Please Login');
+      navigate('/login');
+    }
   };
   const [cat, setCat] = useState([]);
   useEffect(() => {
-    async function invoke() {
-      const res = await getCategory(token);
-      setCat(res);
+    if (token) {
+      (async function invoke() {
+        const res = await getCategory(token);
+        setCat(res);
+      }());
+    } else {
+      swal('Please Login');
+      navigate('/login');
     }
-    invoke();
   }, []);
 
   const searchJob = async (value) => {
-    await getSerachJob(value, token).then((res) => {
-      if (res.length === 0) {
-        setNoData(true);
-      } else {
-        setNoData(false);
-        setJobs(res);
-      }
-    });
+    if (token) {
+      await getSerachJob(value, token).then((res) => {
+        if (res.length === 0) {
+          setNoData(true);
+        } else {
+          setNoData(false);
+          setJobs(res);
+        }
+      });
+    } else {
+      swal('Please Login');
+      navigate('/login');
+    }
   };
   const allData = {};
 
@@ -131,14 +149,19 @@ export default function JobCard(props) {
       setRefresh(!refresh);
     } else {
       allData.jobType = value;
-      await getFilterJob(allData, token).then((res) => {
-        if (res.length === 0) {
-          setNoData(true);
-        } else {
-          setNoData(false);
-          setJobs(res);
-        }
-      });
+      if (token) {
+        await getFilterJob(allData, token).then((res) => {
+          if (res.length === 0) {
+            setNoData(true);
+          } else {
+            setNoData(false);
+            setJobs(res);
+          }
+        });
+      } else {
+        swal('Please Login');
+        navigate('/login');
+      }
     }
   };
   const getWorkPlacetype = async (value) => {
@@ -147,14 +170,19 @@ export default function JobCard(props) {
       setRefresh(!refresh);
     } else {
       allData.workPlace = value;
-      await getFilterJob(allData, token).then((res) => {
-        if (res.length === 0) {
-          setNoData(true);
-        } else {
-          setNoData(false);
-          setJobs(res);
-        }
-      });
+      if (token) {
+        await getFilterJob(allData, token).then((res) => {
+          if (res.length === 0) {
+            setNoData(true);
+          } else {
+            setNoData(false);
+            setJobs(res);
+          }
+        });
+      } else {
+        swal('Please Login');
+        navigate('/login');
+      }
     }
   };
   const getCategoryFor = async (value) => {
@@ -163,14 +191,19 @@ export default function JobCard(props) {
       setRefresh(!refresh);
     } else {
       allData.jobCategory = value;
-      await getFilterJob(allData, token).then((res) => {
-        if (res.length === 0) {
-          setNoData(true);
-        } else {
-          setNoData(false);
-          setJobs(res);
-        }
-      });
+      if (token) {
+        await getFilterJob(allData, token).then((res) => {
+          if (res.length === 0) {
+            setNoData(true);
+          } else {
+            setNoData(false);
+            setJobs(res);
+          }
+        });
+      } else {
+        swal('Please Login');
+        navigate('/login');
+      }
     }
   };
 

@@ -97,7 +97,6 @@ export default function RecruiterJobList() {
   const usersList = async (id) => {
     await RecruiterSideJobAppliedList(id, token).then((res) => {
       navigate('/recruiter/applied_users', { state: res });
-      console.log(res);
     });
   };
 
@@ -116,9 +115,6 @@ export default function RecruiterJobList() {
               <StyledTableCell align="center">Edit</StyledTableCell>
               <StyledTableCell align="center">Users</StyledTableCell>
               <StyledTableCell align="center">Status</StyledTableCell>
-              {/* <StyledTableCell align="center">PHONE NO</StyledTableCell>
-              <StyledTableCell align="center">Website</StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -188,15 +184,6 @@ export default function RecruiterJobList() {
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      /> */}
     </Box>
   );
 }

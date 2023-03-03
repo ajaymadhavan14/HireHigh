@@ -123,14 +123,18 @@ export default function SeekerAddprofile() {
           } else {
             data.image = '';
           }
-          console.log(data);
-          axios.post('/add_profile', data, { headers: { 'user-access-token': token } }).then((response) => {
-            if (response.data.status === 'success') {
-              navigate('/home');
-            } else {
-              swal('OOPS', response.data.message, 'error');
-            }
-          });
+          if (token) {
+            axios.post('/add_profile', data, { headers: { 'user-access-token': token } }).then((response) => {
+              if (response.data.status === 'success') {
+                navigate('/home');
+              } else {
+                swal('OOPS', response.data.message, 'error');
+              }
+            });
+          } else {
+            swal('Please Login');
+            navigate('/login');
+          }
         } else {
           setPosition(true);
           setPositionError('Please enter valid Name');

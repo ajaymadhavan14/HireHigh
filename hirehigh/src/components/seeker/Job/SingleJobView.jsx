@@ -35,21 +35,30 @@ export default function SingleJobView(props) {
   const userData = props?.user;
 
   useEffect(() => {
-    async function invoke() {
-      await getSingleJobData(state, token).then((response) => {
-        setData(response.data);
-        setCat(response.category);
-      });
+    if (token) {
+      (async function invoke() {
+        await getSingleJobData(state, token).then((response) => {
+          setData(response.data);
+          setCat(response.category);
+        });
+      }());
+    } else {
+      swal('Please Login');
+      navigate('/login');
     }
-    invoke();
   }, [refresh]);
   const apply = async (id) => {
-    await jobApply(id, userData, token).then((response) => {
-      if (response.data.status === 'success') {
-        swal('success');
-        setRefresh(!refresh);
-      }
-    });
+    if (token) {
+      await jobApply(id, userData, token).then((response) => {
+        if (response.data.status === 'success') {
+          swal('success');
+          setRefresh(!refresh);
+        }
+      });
+    } else {
+      swal('Please Login');
+      navigate('/login');
+    }
   };
   return (
 

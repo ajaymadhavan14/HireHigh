@@ -71,14 +71,18 @@ export default function SeekerEditprofile() {
   // console.log(qualification);
 
   useEffect(() => {
-    async function invoke() {
-      await getProfileData(token).then((response) => {
-        setDatas(response);
-        setExperiances(response.experiances);
-        setQualifications(response.qualifications);
-      });
+    if (token) {
+      (async function invoke() {
+        await getProfileData(token).then((response) => {
+          setDatas(response);
+          setExperiances(response.experiances);
+          setQualifications(response.qualifications);
+        });
+      }());
+    } else {
+      swal('Please Login');
+      navigate('/login');
     }
-    invoke();
   }, []);
   // pdf converted to base64
   const toBase64 = (image) => new Promise((resolve, reject) => {
@@ -93,7 +97,6 @@ export default function SeekerEditprofile() {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
     const pdfBase = await toBase64(pdf);
-    console.log(experi);
     let experiance;
     let qualification;
     if (experi.length === 0) {
@@ -122,7 +125,7 @@ export default function SeekerEditprofile() {
       experiances: experiance,
       resume: pdfBase,
 
-    }; console.log(data);
+    };
     if (data.position && data.headline && data.qualifications && data.experiances && data.firstName
       && data.discription && data.age && data.location && data.lastName && data.email
       && data.phoneNumber && data.salaryRange) {
@@ -187,14 +190,18 @@ export default function SeekerEditprofile() {
                     } else {
                       data.image = datas.image;
                     }
-                    console.log(data);
-                    axios.post('/edit_profile_post', data, { headers: { 'user-access-token': token } }).then((response) => {
-                      if (response.data.status === 'success') {
-                        navigate('/profile');
-                      } else {
-                        swal('OOPS', response.data.message, 'error');
-                      }
-                    });
+                    if (token) {
+                      axios.post('/edit_profile_post', data, { headers: { 'user-access-token': token } }).then((response) => {
+                        if (response.data.status === 'success') {
+                          navigate('/profile');
+                        } else {
+                          swal('OOPS', response.data.message, 'error');
+                        }
+                      });
+                    } else {
+                      swal('Please Login');
+                      navigate('/login');
+                    }
                   } else {
                     setPosition(true);
                     setPositionError('Please enter valid Name');

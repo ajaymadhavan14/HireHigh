@@ -19,8 +19,6 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-// import Moment from 'react-moment';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
@@ -104,7 +102,6 @@ export default function RecruiterJobSortedList() {
   useEffect(() => {
     async function invoke() {
       await getUserSortedList(token).then((res) => {
-        console.log(res);
         setJob(res);
       });
     }
@@ -132,10 +129,6 @@ export default function RecruiterJobSortedList() {
               <StyledTableCell align="center">Phone NUmber</StyledTableCell>
               <StyledTableCell align="center">view</StyledTableCell>
               <StyledTableCell align="center">Comment</StyledTableCell>
-              {/* <StyledTableCell align="center">Status</StyledTableCell> */}
-              {/* <StyledTableCell align="center">PHONE NO</StyledTableCell>
-              <StyledTableCell align="center">Website</StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>

@@ -122,7 +122,7 @@ export default function RecruiterJobList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {job.map((el, index) => (
+            {job?.map((el, index) => (
               <StyledTableRow key={el?.id}>
                 <StyledTableCell align="center" component="th" scope="row">
                   {index + 1}
@@ -157,7 +157,7 @@ export default function RecruiterJobList() {
 
                 </StyledTableCell> */}
                 <StyledTableCell align="center">
-                  {el.isActive
+                  {el?.isActive
                     ? (
                       <Button
                         // eslint-disable-next-line no-underscore-dangle
@@ -182,33 +182,6 @@ export default function RecruiterJobList() {
                       </Button>
                     )}
                 </StyledTableCell>
-                {/* <StyledTableCell align="center">
-                  {el.isActive
-                    ? (
-                      <Button
-                        // eslint-disable-next-line no-underscore-dangle
-                        onClick={() => blocked(el._id)}
-                        sx={{
-                          backgroundColor: '#03a903', color: '#fff', fontWeight: '800',
-                           ':hover': { backgroundColor: 'blue' },
-                        }}
-                      >
-                        Active
-                      </Button>
-                    )
-                    : (
-                      <Button
-                        // eslint-disable-next-line no-underscore-dangle
-                        onClick={() => actived(el._id)}
-                        sx={{
-                          ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800',
-                           ':hover': { backgroundColor: 'blue' },
-                        }}
-                      >
-                        Block
-                      </Button>
-                    )}
-                </StyledTableCell> */}
 
               </StyledTableRow>
             ))}

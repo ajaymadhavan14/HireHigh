@@ -205,7 +205,7 @@ export default function RecruiterPrfileData() {
                 label="User Name"
                 error={userName}
                 helperText={userNameError}
-                defaultValue={datas.userName}
+                defaultValue={datas?.userName}
                 multiline
                 autoFocus
               />
@@ -221,7 +221,7 @@ export default function RecruiterPrfileData() {
                 label="Company Name"
                 error={companyName}
                 helperText={companyNameError}
-                defaultValue={datas.companyName}
+                defaultValue={datas?.companyName}
                 multiline
                 autoFocus
               />
@@ -241,7 +241,7 @@ export default function RecruiterPrfileData() {
                 autoComplete="phoneNumber"
                 error={phoneNumber}
                 helperText={phoneNumberError}
-                defaultValue={datas.phoneNumber}
+                defaultValue={datas?.phoneNumber}
                 multiline
               />
             </Grid>
@@ -255,7 +255,7 @@ export default function RecruiterPrfileData() {
                 autoComplete="email"
                 error={email}
                 helperText={emailError}
-                defaultValue={datas.email}
+                defaultValue={datas?.email}
                 multiline
 
               />
@@ -272,7 +272,7 @@ export default function RecruiterPrfileData() {
               autoComplete="tagLine"
               error={tagLine}
               helperText={tagLineError}
-              defaultValue={datas.tagLine}
+              defaultValue={datas?.tagLine}
               multiline
 
             />
@@ -292,7 +292,7 @@ export default function RecruiterPrfileData() {
               autoComplete="discription"
               error={discription}
               helperText={discriptionError}
-              defaultValue={datas.discription}
+              defaultValue={datas?.discription}
               multiline
 
             />
@@ -340,7 +340,7 @@ export default function RecruiterPrfileData() {
                 autoComplete="website"
                 error={website}
                 helperText={websiteError}
-                defaultValue={datas.website}
+                defaultValue={datas?.website}
                 multiline
               />
 
@@ -349,7 +349,7 @@ export default function RecruiterPrfileData() {
           <Grid container spacing={2} py={2}>
 
             <Grid item xs={12} sm={6}>
-              <img src={datas.image} alt="...loading" style={{ height: '30vh', width: '45vh' }} />
+              <img src={datas?.image} alt="...loading" style={{ height: '30vh', width: '45vh' }} />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField

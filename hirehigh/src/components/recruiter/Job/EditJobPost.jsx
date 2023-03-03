@@ -221,9 +221,9 @@ export default function RecruiterJobEdit() {
                   label="Category"
                   error={jobCategory}
                   helperText={jobCategoryError}
-                  defaultValue={state.jobCategory}
+                  defaultValue={state?.jobCategory}
                 >
-                  {cat.map((el) => (
+                  {cat?.map((el) => (
                     <MenuItem value={el?._id}>{el?.name}</MenuItem>
                   ))}
 
@@ -241,7 +241,7 @@ export default function RecruiterJobEdit() {
                 autoComplete="workPlace"
                 error={workPlace}
                 helperText={workPlaceError}
-                defaultValue={state.workPlace}
+                defaultValue={state?.workPlace}
 
               />
             </Grid>
@@ -261,7 +261,7 @@ export default function RecruiterJobEdit() {
               autoComplete="jobDiscription"
               error={jobDiscription}
               helperText={jobDiscriptionError}
-              defaultValue={state.jobDiscription}
+              defaultValue={state?.jobDiscription}
 
             />
           </Grid>
@@ -280,7 +280,7 @@ export default function RecruiterJobEdit() {
               autoComplete="jobQualification"
               error={jobQualification}
               helperText={jobQualificationError}
-              defaultValue={state.jobQualification}
+              defaultValue={state?.jobQualification}
 
             />
           </Grid>
@@ -299,7 +299,7 @@ export default function RecruiterJobEdit() {
               autoComplete="responsibilities"
               error={responsibilities}
               helperText={responsibilitiesError}
-              defaultValue={state.responsibilities}
+              defaultValue={state?.responsibilities}
 
             />
           </Grid>
@@ -315,7 +315,7 @@ export default function RecruiterJobEdit() {
                 autoComplete="jobType"
                 error={jobType}
                 helperText={jobTypeError}
-                defaultValue={state.jobType}
+                defaultValue={state?.jobType}
               />
             </Grid>
 
@@ -330,7 +330,7 @@ export default function RecruiterJobEdit() {
                 autoComplete="salaryRange"
                 error={salaryRange}
                 helperText={salaryRangeError}
-                defaultValue={state.salaryRange}
+                defaultValue={state?.salaryRange}
 
               />
             </Grid>
@@ -349,7 +349,7 @@ export default function RecruiterJobEdit() {
                 autoComplete="vaccancy"
                 error={vaccancy}
                 helperText={vaccancyError}
-                defaultValue={state.vaccancy}
+                defaultValue={state?.vaccancy}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -363,7 +363,7 @@ export default function RecruiterJobEdit() {
                 autoComplete="location"
                 error={location}
                 helperText={locationError}
-                defaultValue={state.location}
+                defaultValue={state?.location}
 
               />
             </Grid>
@@ -403,8 +403,8 @@ export default function RecruiterJobEdit() {
               />
             </Grid>
             <Grid item xs={12} sm={6} sx={{ marginTop: 'auto' }}>
-              { state.image
-                ? <img style={{ width: '30vh', height: '20vh' }} src={state.image} alt="loading" />
+              { state?.image
+                ? <img style={{ width: '30vh', height: '20vh' }} src={state?.image} alt="loading" />
                 : <FormLabel sx={{ marginTop: '50px', color: 'red' }}>No Photo</FormLabel> }
             </Grid>
           </Grid>

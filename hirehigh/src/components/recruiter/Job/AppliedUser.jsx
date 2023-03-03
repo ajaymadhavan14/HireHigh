@@ -133,7 +133,7 @@ export default function RecruiterJobAppliedList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {job.map((el, index) => (
+            {job?.map((el, index) => (
               <StyledTableRow key={el?.userId?.id}>
                 <StyledTableCell align="center" component="th" scope="row">
                   {index + 1}

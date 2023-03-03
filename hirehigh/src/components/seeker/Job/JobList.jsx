@@ -188,7 +188,7 @@ export default function JobCard(props) {
           <Grid item xs={12} md={8} lg={9}>
             {/* <JobCardSearch newData={jobData} data={user} /> */}
             <Box>
-              {jobs.map((el) => (
+              {jobs?.map((el) => (
                 <Card sx={{ minWidth: 275 }} key={el?.id}>
                   <CardContent sx={{ display: 'flex', flexDirection: 'row' }} key={el?.id}>
                     <img src={el?.image} alt="...loading" style={{ width: '20vh' }} />
@@ -206,7 +206,7 @@ export default function JobCard(props) {
                       </Box>
                     </Box>
                     <Box sx={{ alignSelf: 'center', ml: 'auto' }}>
-                      {user.job.some((element) => element.jobId === el._id)
+                      {user?.job?.some((element) => element?.jobId === el?._id)
                         ? (
                           <Button
                         // eslint-disable-next-line no-underscore-dangle
@@ -280,7 +280,7 @@ export default function JobCard(props) {
               >
                 <MenuItem value="none">none</MenuItem>
 
-                {cat.map((el) => (
+                {cat?.map((el) => (
                   <MenuItem value={el?._id}>{el?.name}</MenuItem>
                 ))}
               </Select>

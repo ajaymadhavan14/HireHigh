@@ -83,7 +83,6 @@ export default function RecruiterJobSortedList() {
   const handleChangeComment = async (id, event) => {
     const comment = { comment: event.target.value, userId: id, jobId: state._id };
     await RecruiterComment(token, comment).then((response) => {
-      console.log(response);
       if (response.status === 'success') {
         toast.success('🦄 Wow so easy!', {
           position: 'top-center',
@@ -141,13 +140,13 @@ export default function RecruiterJobSortedList() {
           </TableHead>
           <TableBody>
             {job?.map((ele) => (
-              ele.users.map((el, index) => (
+              ele?.users?.map((el, index) => (
                 <StyledTableRow key={el?.userId?.id}>
                   <StyledTableCell align="center" component="th" scope="row">
                     {index + 1}
                   </StyledTableCell>
                   <StyledTableCell align="center" component="th" scope="row">
-                    {ele.jobTitle}
+                    {ele?.jobTitle}
                   </StyledTableCell>
 
                   <StyledTableCell align="center" component="th" scope="row">
@@ -254,7 +253,7 @@ export default function RecruiterJobSortedList() {
                     </Modal>
 
                   </StyledTableCell>
-                  {el.comment
+                  {el?.comment
                     ? (
                       <StyledTableCell>
                         <Typography sx={{ marginLeft: '2rem' }}>{el?.comment}</Typography>

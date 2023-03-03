@@ -85,7 +85,7 @@ export default function AdminJobList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {job.map((el, index) => (
+            {job?.map((el, index) => (
               <StyledTableRow key={el?.id}>
                 <StyledTableCell align="center" component="th" scope="row">
                   {index + 1}

@@ -332,7 +332,7 @@ export default function SeekerEditprofile() {
                 autoFocus
                 error={firstName}
                 helperText={firstNameError}
-                defaultValue={datas.firstName}
+                defaultValue={datas?.firstName}
                 multiline
               />
             </Grid>
@@ -346,7 +346,7 @@ export default function SeekerEditprofile() {
                 autoComplete="family-name"
                 error={lastName}
                 helperText={lastNameError}
-                defaultValue={datas.lastName}
+                defaultValue={datas?.lastName}
                 multiline
               />
             </Grid>
@@ -363,7 +363,7 @@ export default function SeekerEditprofile() {
                 autoComplete="email"
                 error={email}
                 helperText={emailError}
-                defaultValue={datas.email}
+                defaultValue={datas?.email}
                 multiline
               />
             </Grid>
@@ -378,7 +378,7 @@ export default function SeekerEditprofile() {
                 autoComplete="phoneNumber"
                 error={phoneNumber}
                 helperText={phoneNumberError}
-                defaultValue={datas.phoneNumber}
+                defaultValue={datas?.phoneNumber}
                 multiline
               />
             </Grid>
@@ -397,7 +397,7 @@ export default function SeekerEditprofile() {
                 placeholder="a"
                 error={headline}
                 helperText={headlineError}
-                defaultValue={datas.headline}
+                defaultValue={datas?.headline}
                 autoFocus
                 multiline
               />
@@ -413,7 +413,7 @@ export default function SeekerEditprofile() {
                 label="Position"
                 error={position}
                 helperText={positionError}
-                defaultValue={datas.position}
+                defaultValue={datas?.position}
                 autoFocus
                 multiline
               />
@@ -433,7 +433,7 @@ export default function SeekerEditprofile() {
                 label="Expected Salary"
                 error={salaryRange}
                 helperText={salaryRangeError}
-                defaultValue={datas.salaryRange}
+                defaultValue={datas?.salaryRange}
                 multiline
               />
             </Grid>
@@ -447,12 +447,12 @@ export default function SeekerEditprofile() {
                 autoComplete="location"
                 error={location}
                 helperText={locationError}
-                defaultValue={datas.location}
+                defaultValue={datas?.location}
                 multiline
               />
             </Grid>
           </Grid>
-          {qualifications.map((el, index) => (
+          {qualifications?.map((el, index) => (
             <Grid item xs={12} py={2}>
               <TextField
                 required
@@ -525,7 +525,7 @@ export default function SeekerEditprofile() {
             AddMore Qualification
           </Button>
 
-          {experiances.map((el, index) => (
+          {experiances?.map((el, index) => (
             <Grid item xs={12} py={2}>
               <TextField
                 required
@@ -612,7 +612,7 @@ export default function SeekerEditprofile() {
               autoComplete="discription"
               error={discription}
               helperText={discriptionError}
-              defaultValue={datas.discription}
+              defaultValue={datas?.discription}
               multiline
               autoFocus
             />
@@ -681,7 +681,7 @@ export default function SeekerEditprofile() {
           <Grid container spacing={2}>
 
             <Grid item xs={12} sm={6} sx={{ marginTop: '10px' }}>
-              <img src={datas.image} alt="...loading" style={{ width: '30vh', height: '25vh' }} />
+              <img src={datas?.image} alt="...loading" style={{ width: '30vh', height: '25vh' }} />
             </Grid>
             <Grid item xs={12} sm={6} sx={{ display: 'flex', flexDirection: 'column', marginTop: '15px' }}>
               <FormLabel>Add New Resume</FormLabel>

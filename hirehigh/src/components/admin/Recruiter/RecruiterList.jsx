@@ -83,7 +83,7 @@ export default function RecruiterList() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {recruiter.map((el, index) => (
+              {recruiter?.map((el, index) => (
                 <StyledTableRow key={el?.id}>
                   <StyledTableCell align="center" component="th" scope="row">
                     {index + 1}
@@ -129,15 +129,6 @@ export default function RecruiterList() {
             </TableBody>
           </Table>
         </TableContainer>
-        {/* <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      /> */}
       </Box>
     </Container>
   );

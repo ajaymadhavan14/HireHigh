@@ -82,7 +82,7 @@ export default function SeekerList() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map((user, index) => (
+              {users?.map((user, index) => (
                 <StyledTableRow key={user?.id}>
                   <StyledTableCell align="center" component="th" scope="row">
                     {index + 1}
@@ -124,15 +124,6 @@ export default function SeekerList() {
             </TableBody>
           </Table>
         </TableContainer>
-        {/* <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      /> */}
       </Box>
     </Container>
   );

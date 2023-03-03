@@ -177,7 +177,7 @@ export default function SeekerProfile() {
               >
                 <Typography>Qualification</Typography>
               </AccordionSummary>
-              {qualifications.map((el, ind) => (
+              {qualifications?.map((el, ind) => (
                 <AccordionDetails>
                   <Typography>
                     {ind + 1}
@@ -196,7 +196,7 @@ export default function SeekerProfile() {
               >
                 <Typography>Experiance</Typography>
               </AccordionSummary>
-              {experiances.map((el, ind) => (
+              {experiances?.map((el, ind) => (
                 <AccordionDetails>
                   <Typography>
                     {ind + 1}

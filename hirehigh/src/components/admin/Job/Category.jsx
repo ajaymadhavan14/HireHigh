@@ -178,7 +178,7 @@ export default function AdminJobCategory() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {job.map((el, index) => (
+              {job?.map((el, index) => (
                 <StyledTableRow key={el?.id}>
                   <StyledTableCell align="center" component="th" scope="row">
                     {index + 1}
@@ -195,32 +195,6 @@ export default function AdminJobCategory() {
                     </Button>
 
                   </StyledTableCell>
-
-                  {/* <StyledTableCell align="center">
-                    {el.isActive
-                      ? (
-                        <Button
-                          onClick={() => blocked(el._id)}
-                          sx={{
-                            backgroundColor: '#03a903', color: '#fff',
-                            fontWeight: '800', ':hover': { backgroundColor: 'blue' },
-                          }}
-                        >
-                          Active
-                        </Button>
-                      )
-                      : (
-                        <Button
-                          onClick={() => actived(el._id)}
-                          sx={{
-                            ml: 1, backgroundColor: 'red', color: '#fff',
-                            fontWeight: '800', ':hover': { backgroundColor: 'blue' },
-                          }}
-                        >
-                          Block
-                        </Button>
-                      )}
-                  </StyledTableCell> */}
 
                 </StyledTableRow>
               ))}

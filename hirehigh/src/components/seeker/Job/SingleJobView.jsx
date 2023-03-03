@@ -131,7 +131,7 @@ export default function SingleJobView(props) {
               <Typography>Calicut</Typography>
             </Box>
           </Box>
-          {userData.job.some((element) => element.jobId === data._id)
+          {userData?.job?.some((element) => element?.jobId === data?._id)
             ? (
               <Button
                         // eslint-disable-next-line no-underscore-dangle
@@ -161,7 +161,7 @@ export default function SingleJobView(props) {
       <Grid item xs={12} md={8} lg={9}>
 
         <Box>
-          {cat && cat.map((el) => (
+          {cat && cat?.map((el) => (
             <Card sx={{ minWidth: 275 }} key={el?.id}>
               <CardContent sx={{ display: 'flex', flexDirection: 'row' }} key={el?.id}>
                 <img src={el?.image} alt="" style={{ width: '20vh' }} />
@@ -180,7 +180,7 @@ export default function SingleJobView(props) {
                 </Box>
 
                 <Box sx={{ alignSelf: 'center', ml: 'auto' }}>
-                  {userData.job.some((element) => element.jobId === el._id)
+                  {userData?.job?.some((element) => element?.jobId === el?._id)
                     ? (
                       <Button
                         // eslint-disable-next-line no-underscore-dangle

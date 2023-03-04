@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable no-sequences */
 import './App.css';
@@ -5,6 +7,7 @@ import './App.css';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import React, { useState } from 'react';
+import { io } from 'socket.io-client';
 import store from './redux/store';
 import AppContext from './context/AppContext';
 import AdminRouter from './routes/AdminRouter';
@@ -13,6 +16,7 @@ import SeekerRouter from './routes/SeekerRouter';
 import AllBest from './pages/tryPage';
 
 function App() {
+  const socket = io('http://localhost:8800');
   const [userDetails, setUserDetails] = useState({});
   const [recruiterDetails, setRecruiterDetails] = useState({});
   const [userOtpConf, setUserOtpConf] = useState({});

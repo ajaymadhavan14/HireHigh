@@ -298,13 +298,51 @@ const jobSearch = async (req, res, next) => {
 };
 
 const getFilterJob = async (req, res, next) => {
+  console.log(req.body);
   try {
-    const data = await jobModel.find({
-      $or: [
-        { jobType: req.body.jobType }, { workPlace: req.body.workPlace },
-        { jobCategory: req.body.jobCategory }],
-    });
-    res.json(data);
+    if (req.body.jobCategory && req.body.workPlace && req.body.jobType) {
+      const data = await jobModel.find({
+        $and: [
+          { jobType: req.body.jobType }, { workPlace: req.body.workPlace },
+          { jobCategory: req.body.jobCategory }],
+      });
+      res.json(data);
+    } else if (req.body.jobCategory && req.body.jobType) {
+      const data = await jobModel.find({
+        $and: [
+          { jobType: req.body.jobType },
+          { jobCategory: req.body.jobCategory }],
+      });
+      res.json(data);
+    } else if (req.body.jobCategory && req.body.workPlace) {
+      const data = await jobModel.find({
+        $and: [
+          { workPlace: req.body.workPlace },
+          { jobCategory: req.body.jobCategory }],
+      });
+      res.json(data);
+    } else if (req.body.jobCategory) {
+      const data = await jobModel.find({
+
+        jobCategory: req.body.jobCategory,
+      });
+      res.json(data);
+    } else if (req.body.workPlace) {
+      const data = await jobModel.find({
+
+        workPlace: req.body.workPlace,
+      });
+      res.json(data);
+    } else if (req.body.jobType) {
+      const data = await jobModel.find({
+
+        jobType: req.body.jobType,
+      });
+      res.json(data);
+    } else {
+      const data = [];
+      res.json(data);
+    }
   } catch (error) {
     next(error);
   }

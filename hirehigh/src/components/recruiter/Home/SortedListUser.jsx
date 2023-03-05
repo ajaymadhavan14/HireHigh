@@ -139,7 +139,7 @@ export default function RecruiterSideJobSortedList() {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem('recruierToken');
+        localStorage.removeItem('recruiterToken');
         // Swal.fire(
         //     'Deleted!',
         //     'Your file has been deleted.',

@@ -86,6 +86,10 @@ export default function JobCard(props) {
   const navigate = useNavigate();
   const token = localStorage.getItem('userToken');
   const [noData, setNoData] = useState(false);
+  const [jobCat, setJobCat] = useState('');
+  const [jobType, setJobType] = useState('');
+  const [jobWork, setJobWork] = useState('');
+
   useEffect(() => {
     if (token) {
       (async function invoke() {
@@ -141,14 +145,11 @@ export default function JobCard(props) {
       navigate('/login');
     }
   };
-  const allData = {};
+  const allData = { jobType, workPlace: jobWork, jobCategory: jobCat };
 
-  const getJobType = async (value) => {
-    if (value === 'none') {
-      setNoData(false);
-      setRefresh(!refresh);
-    } else {
-      allData.jobType = value;
+  useEffect(() => {
+    const getJobType = async () => {
+      allData.jobType = jobType;
       if (token) {
         await getFilterJob(allData, token).then((res) => {
           if (res.length === 0) {
@@ -162,51 +163,55 @@ export default function JobCard(props) {
         swal('Please Login');
         navigate('/login');
       }
+    };
+    if (jobType !== '') {
+      getJobType();
     }
-  };
-  const getWorkPlacetype = async (value) => {
-    if (value === 'none') {
-      setNoData(false);
-      setRefresh(!refresh);
-    } else {
-      allData.workPlace = value;
-      if (token) {
-        await getFilterJob(allData, token).then((res) => {
-          if (res.length === 0) {
-            setNoData(true);
-          } else {
-            setNoData(false);
-            setJobs(res);
-          }
-        });
-      } else {
-        swal('Please Login');
-        navigate('/login');
-      }
-    }
-  };
-  const getCategoryFor = async (value) => {
-    if (value === 'none') {
-      setNoData(false);
-      setRefresh(!refresh);
-    } else {
-      allData.jobCategory = value;
-      if (token) {
-        await getFilterJob(allData, token).then((res) => {
-          if (res.length === 0) {
-            setNoData(true);
-          } else {
-            setNoData(false);
-            setJobs(res);
-          }
-        });
-      } else {
-        swal('Please Login');
-        navigate('/login');
-      }
-    }
-  };
+  }, [jobType]);
 
+  useEffect(() => {
+    const getWorkPlacetype = async () => {
+      allData.workPlace = jobWork;
+      if (token) {
+        await getFilterJob(allData, token).then((res) => {
+          if (res.length === 0) {
+            setNoData(true);
+          } else {
+            setNoData(false);
+            setJobs(res);
+          }
+        });
+      } else {
+        swal('Please Login');
+        navigate('/login');
+      }
+    };
+    if (jobWork !== '') {
+      getWorkPlacetype();
+    }
+  }, [jobWork]);
+
+  useEffect(() => {
+    const getCategoryFor = async () => {
+      allData.jobCategory = jobCat;
+      if (token) {
+        await getFilterJob(allData, token).then((res) => {
+          if (res.length === 0) {
+            setNoData(true);
+          } else {
+            setNoData(false);
+            setJobs(res);
+          }
+        });
+      } else {
+        swal('Please Login');
+        navigate('/login');
+      }
+    };
+    if (jobCat !== '') {
+      getCategoryFor();
+    }
+  }, [jobCat]);
   return (
     <Grid container spacing={3}>
       {/* Chart */}
@@ -309,9 +314,10 @@ export default function JobCard(props) {
                 id="demo-simple-select"
                 label="Category"
                 name="category"
-                onChange={(e) => getCategoryFor(e.target.value)}
+                onChange={(e) => {
+                  setJobCat(e.target.value);
+                }}
               >
-                <MenuItem value="none">none</MenuItem>
 
                 {cat?.map((el) => (
                   <MenuItem value={el?._id}>{el?.name}</MenuItem>
@@ -327,9 +333,8 @@ export default function JobCard(props) {
                 id="jobType"
                 label="JobType"
                 name="jobType"
-                onChange={(e) => { getJobType(e.target.value); }}
+                onChange={(e) => setJobType(e.target.value)}
               >
-                <MenuItem value="none">none</MenuItem>
                 <MenuItem value="Full-time">Full-time</MenuItem>
                 <MenuItem value="Part-time">Part-time</MenuItem>
                 <MenuItem value="Internship">Internship</MenuItem>
@@ -345,9 +350,10 @@ export default function JobCard(props) {
                 id="workPlace"
                 label="WorkPlace Type"
                 name="workPlace"
-                onChange={(e) => getWorkPlacetype(e.target.value)}
+                onChange={(e) => {
+                  setJobWork(e.target.value);
+                }}
               >
-                <MenuItem value="none">none</MenuItem>
                 <MenuItem value="On-site">On-site</MenuItem>
                 <MenuItem value="Remote">Remote</MenuItem>
                 <MenuItem value="Hybrid">Hybrid</MenuItem>

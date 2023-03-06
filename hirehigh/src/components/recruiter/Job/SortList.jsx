@@ -22,7 +22,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 import { RecruiterComment, getUserSortedList } from '../../../apis/RecruiterApi';
@@ -77,6 +77,7 @@ export default function RecruiterJobSortedList() {
   const [job, setJob] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const token = localStorage.getItem('recruiterToken');
+  const navigate = useNavigate();
 
   const handleChangeComment = async (id, event) => {
     const comment = { comment: event.target.value, userId: id, jobId: state._id };
@@ -100,12 +101,15 @@ export default function RecruiterJobSortedList() {
   };
 
   useEffect(() => {
-    async function invoke() {
-      await getUserSortedList(token).then((res) => {
-        setJob(res);
-      });
+    if (token) {
+      (async function invoke() {
+        await getUserSortedList(token).then((res) => {
+          setJob(res);
+        });
+      }());
+    } else {
+      navigate('/recruiter/login');
     }
-    invoke();
   }, [refresh]);
 
   // const editJob = async (id) => {

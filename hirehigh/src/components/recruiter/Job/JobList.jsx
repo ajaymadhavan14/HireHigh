@@ -55,49 +55,64 @@ export default function RecruiterJobList() {
   const token = localStorage.getItem('recruiterToken');
 
   useEffect(() => {
-    async function invoke() {
+    if (token) {
+      (async function invoke() {
       // const id = props.id._id;
-      await RecruiterSideJobList(token).then((response) => {
-        if (response.status === 'failed') {
-          navigate('/recruiter/add_job');
-        } else {
-          setJob(response.data);
-        }
-      });
+        await RecruiterSideJobList(token).then((response) => {
+          if (response.status === 'failed') {
+            navigate('/recruiter/add_job');
+          } else {
+            setJob(response.data);
+          }
+        });
+      }());
+    } else {
+      navigate('/recruiter/login');
     }
-    invoke();
   }, [refresh]);
 
   const BlockJob = async (id) => {
-    await RecruiterJobDele(id, token).then((response) => {
-      if (response.data.status === 'success') {
-        toast.success('🦄 Wow so easy!', {
-          position: 'top-center',
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'colored',
-        });
-        setRefresh(!refresh);
-      } else {
-        swal('OOPS', response.data.message, 'error');
-      }
-    });
+    if (token) {
+      await RecruiterJobDele(id, token).then((response) => {
+        if (response.data.status === 'success') {
+          toast.success('🦄 Wow so easy!', {
+            position: 'top-center',
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          });
+          setRefresh(!refresh);
+        } else {
+          swal('OOPS', response.data.message, 'error');
+        }
+      });
+    } else {
+      navigate('/recruiter/login');
+    }
   };
 
   const editJob = async (id) => {
-    await RecruiterJobEdit(id, token).then((response) => {
-      navigate('/recruiter/edit_jobs', { state: response });
-    });
+    if (token) {
+      await RecruiterJobEdit(id, token).then((response) => {
+        navigate('/recruiter/edit_jobs', { state: response });
+      });
+    } else {
+      navigate('/recruiter/login');
+    }
   };
 
   const usersList = async (id) => {
-    await RecruiterSideJobAppliedList(id, token).then((res) => {
-      navigate('/recruiter/applied_users', { state: res });
-    });
+    if (token) {
+      await RecruiterSideJobAppliedList(id, token).then((res) => {
+        navigate('/recruiter/applied_users', { state: res });
+      });
+    } else {
+      navigate('/recruiter/login');
+    }
   };
 
   return (

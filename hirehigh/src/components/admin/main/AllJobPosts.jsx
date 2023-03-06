@@ -93,16 +93,21 @@ const mdTheme = createTheme();
 function AdminMain() {
   const navigate = useNavigate();
   const dispatch = useDispatch(adminDetails);
+  const token = localStorage.getItem('adminToken');
   useEffect(() => {
-    axios.get('/admin/isAdminAuth', {
-      headers: { 'admin-access-token': localStorage.getItem('adminToken') },
-    }).then((response) => {
-      if (!response.data.auth) {
-        navigate('/admin/login');
-      } else {
-        dispatch(adminDetails(response.data));
-      }
-    });
+    if (token) {
+      axios.get('/admin/isAdminAuth', {
+        headers: { 'admin-access-token': token },
+      }).then((response) => {
+        if (!response.data.auth) {
+          navigate('/admin/login');
+        } else {
+          dispatch(adminDetails(response.data));
+        }
+      });
+    } else {
+      navigate('/admin/login');
+    }
   }, []);
   const { admin } = useSelector((state) => state.adminInfo);
 

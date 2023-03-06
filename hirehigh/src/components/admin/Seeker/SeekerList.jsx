@@ -11,6 +11,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Container from '@mui/material/Container';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AdminGetUsers, seekerActivated, seekerBlocked } from '../../../apis/AdminApi';
 
 export default function SeekerList() {
@@ -47,25 +48,37 @@ export default function SeekerList() {
 
   const [users, setUsers] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const navigate = useNavigate();
   const token = localStorage.getItem('adminToken');
 
   useEffect(() => {
-    async function invoke() {
-      await AdminGetUsers(token).then((response) => {
-        setUsers(response);
-      });
+    if (token) {
+      (async function invoke() {
+        await AdminGetUsers(token).then((response) => {
+          setUsers(response);
+        });
+      }());
+    } else {
+      navigate('/admin/login');
     }
-    invoke();
   }, [refresh]);
 
   const blocked = async (userId) => {
-    await seekerBlocked(userId, token);
-    setRefresh(!refresh);
+    if (token) {
+      await seekerBlocked(userId, token);
+      setRefresh(!refresh);
+    } else {
+      navigate('/admin/login');
+    }
   };
 
   const actived = async (userId) => {
-    await seekerActivated(userId, token);
-    setRefresh(!refresh);
+    if (token) {
+      await seekerActivated(userId, token);
+      setRefresh(!refresh);
+    } else {
+      navigate('/admin/login');
+    }
   };
   return (
     <Container component="main" maxWidth="xl" sx={{ marginTop: '3vh' }}>

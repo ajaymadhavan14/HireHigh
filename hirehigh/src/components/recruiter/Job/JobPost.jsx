@@ -120,13 +120,17 @@ export default function RecruiterJobPost() {
           } else {
             data.image = '';
           }
-          axios.post('/recruiter/add_job', data, { headers: { 'recruiter-access-token': token } }).then((response) => {
-            if (response.data.status === 'success') {
-              navigate('/recruiter/jobs');
-            } else {
-              swal('OOPS', response.data.message, 'error');
-            }
-          });
+          if (token) {
+            axios.post('/recruiter/add_job', data, { headers: { 'recruiter-access-token': token } }).then((response) => {
+              if (response.data.status === 'success') {
+                navigate('/recruiter/jobs');
+              } else {
+                swal('OOPS', response.data.message, 'error');
+              }
+            });
+          } else {
+            navigate('/recruiter/login');
+          }
         } else {
           setCompanyName(true);
           setCompanyNameError('Please enter valid Name');
@@ -142,11 +146,14 @@ export default function RecruiterJobPost() {
   const [cat, setCat] = useState([]);
 
   useEffect(() => {
-    async function invoke() {
-      const res = await getCategory(token);
-      setCat(res);
+    if (token) {
+      (async function invoke() {
+        const res = await getCategory(token);
+        setCat(res);
+      }());
+    } else {
+      navigate('/recruiter/login');
     }
-    invoke();
   }, []);
 
   return (

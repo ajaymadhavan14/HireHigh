@@ -14,6 +14,7 @@ import OtpPage from '../pages/recruiter/Forgot-Password/OtpPage';
 import NewPassword from '../pages/recruiter/Forgot-Password/NewPassword';
 import AppliedList from '../pages/recruiter/AppliedList';
 import SortedList from '../pages/recruiter/SortedList';
+import Messages from '../pages/recruiter/Messages';
 
 function RecruiterRouter() {
   return (
@@ -48,6 +49,8 @@ function RecruiterRouter() {
         <Route path="/applied_users" element={<AppliedList />} />
 
         <Route path="/sorted_users" element={<SortedList />} />
+
+        <Route path="/messages" element={<Messages />} />
 
       </Routes>
 

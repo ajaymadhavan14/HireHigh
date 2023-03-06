@@ -50,12 +50,15 @@ export default function RecruiterPrfileData() {
   //   console.log(recruiter, '111111111111111111');
 
   useEffect(() => {
-    async function invoke() {
-      await getProfileData(token).then((response) => {
-        setDatas(response);
-      });
+    if (token) {
+      (async function invoke() {
+        await getProfileData(token).then((response) => {
+          setDatas(response);
+        });
+      }());
+    } else {
+      navigate('/recruiter/login');
     }
-    invoke();
   }, []);
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -129,13 +132,17 @@ export default function RecruiterPrfileData() {
                 } else {
                   data.image = datas.image;
                 }
-                axios.post('/recruiter/profile_edit_post', data, { headers: { 'recruiter-access-token': token } }).then((response) => {
-                  if (response.data.status === 'success') {
-                    navigate('/recruiter/profile');
-                  } else {
-                    swal('OOPS', response.data.message, 'error');
-                  }
-                });
+                if (token) {
+                  axios.post('/recruiter/profile_edit_post', data, { headers: { 'recruiter-access-token': token } }).then((response) => {
+                    if (response.data.status === 'success') {
+                      navigate('/recruiter/profile');
+                    } else {
+                      swal('OOPS', response.data.message, 'error');
+                    }
+                  });
+                } else {
+                  navigate('/recruiter/login');
+                }
               } else {
                 setPhoneNumber(true);
                 setPhoneNumberError('Please enter 10 digit');

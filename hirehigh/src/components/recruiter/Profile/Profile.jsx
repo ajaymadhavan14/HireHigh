@@ -19,12 +19,15 @@ export default function RecruiterProfile() {
   const token = localStorage.getItem('recruiterToken');
 
   useEffect(() => {
-    async function invoke() {
-      await getProfile(token).then((response) => {
-        setRecruiter(response);
-      });
+    if (token) {
+      (async function invoke() {
+        await getProfile(token).then((response) => {
+          setRecruiter(response);
+        });
+      }());
+    } else {
+      navigate('/recruiter/login');
     }
-    invoke();
   }, []);
 
   return (

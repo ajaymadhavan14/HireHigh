@@ -10,6 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import Container from '@mui/material/Container';
 import TableRow from '@mui/material/TableRow';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AdminGetRecruiters, recruiterActivated, recruiterBlocked } from '../../../apis/AdminApi';
 
@@ -45,25 +46,37 @@ export default function RecruiterList() {
 
   const [recruiter, setRecruiter] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const navigate = useNavigate();
   const token = localStorage.getItem('adminToken');
 
   useEffect(() => {
-    async function invoke() {
-      await AdminGetRecruiters(token).then((response) => {
-        setRecruiter(response);
-      });
+    if (token) {
+      (async function invoke() {
+        await AdminGetRecruiters(token).then((response) => {
+          setRecruiter(response);
+        });
+      }());
+    } else {
+      navigate('/admin/login');
     }
-    invoke();
   }, [refresh]);
 
   const blocked = async (recruiterId) => {
-    await recruiterBlocked(recruiterId, token);
-    setRefresh(!refresh);
+    if (token) {
+      await recruiterBlocked(recruiterId, token);
+      setRefresh(!refresh);
+    } else {
+      navigate('/admin/login');
+    }
   };
 
   const actived = async (recruiterId) => {
-    await recruiterActivated(recruiterId, token);
-    setRefresh(!refresh);
+    if (token) {
+      await recruiterActivated(recruiterId, token);
+      setRefresh(!refresh);
+    } else {
+      navigate('/admin/login');
+    }
   };
 
   return (

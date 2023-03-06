@@ -123,13 +123,17 @@ export default function RecruiterJobEdit() {
           } else {
             data.image = state.image;
           }
-          axios.post(`/recruiter/edit_job?jobid=${id}`, data, { headers: { 'recruiter-access-token': token } }).then((response) => {
-            if (response.data.status === 'success') {
-              navigate('/recruiter/jobs');
-            } else {
-              swal('OOPS', response.data.message, 'error');
-            }
-          });
+          if (token) {
+            axios.post(`/recruiter/edit_job?jobid=${id}`, data, { headers: { 'recruiter-access-token': token } }).then((response) => {
+              if (response.data.status === 'success') {
+                navigate('/recruiter/jobs');
+              } else {
+                swal('OOPS', response.data.message, 'error');
+              }
+            });
+          } else {
+            navigate('/recruiter/login');
+          }
         } else {
           setCompanyName(true);
           setCompanyNameError('Please enter valid Name');
@@ -144,11 +148,14 @@ export default function RecruiterJobEdit() {
   };
   const [cat, setCat] = useState([]);
   useEffect(() => {
-    async function invoke() {
-      const res = await getCategory(token);
-      setCat(res);
+    if (token) {
+      (async function invoke() {
+        const res = await getCategory(token);
+        setCat(res);
+      }());
+    } else {
+      navigate('/recruiter/login');
     }
-    invoke();
   }, []);
 
   return (

@@ -298,7 +298,6 @@ const jobSearch = async (req, res, next) => {
 };
 
 const getFilterJob = async (req, res, next) => {
-  console.log(req.body);
   try {
     if (req.body.jobCategory && req.body.workPlace && req.body.jobType) {
       const data = await jobModel.find({

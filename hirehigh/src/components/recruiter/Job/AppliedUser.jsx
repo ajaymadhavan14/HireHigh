@@ -24,7 +24,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 import { RecruiterComment } from '../../../apis/RecruiterApi';
@@ -80,34 +80,43 @@ export default function RecruiterJobAppliedList() {
   const [refresh, setRefresh] = useState(false);
   const [noData, setNoData] = useState(false);
   const token = localStorage.getItem('recruiterToken');
+  const navigate = useNavigate();
 
   const handleChangeComment = async (id, event) => {
     const comment = { comment: event.target.value, userId: id, jobId: state._id };
-    await RecruiterComment(token, comment).then((response) => {
-      if (response.status === 'success') {
-        toast.success('🦄 Wow so easy!', {
-          position: 'top-center',
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'colored',
-        });
-        setRefresh(!refresh);
-      } else {
-        swal('OOPS', response.message, 'error');
-      }
-    });
+    if (token) {
+      await RecruiterComment(token, comment).then((response) => {
+        if (response.status === 'success') {
+          toast.success('🦄 Wow so easy!', {
+            position: 'top-center',
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          });
+          setRefresh(!refresh);
+        } else {
+          swal('OOPS', response.message, 'error');
+        }
+      });
+    } else {
+      navigate('/recruiter/login');
+    }
   };
 
   useEffect(() => {
-    if (state?.users.length !== 0) {
-      setNoData(false);
-      setJob(state?.users);
+    if (token) {
+      if (state?.users.length !== 0) {
+        setNoData(false);
+        setJob(state?.users);
+      } else {
+        setNoData(true);
+      }
     } else {
-      setNoData(true);
+      navigate('/recruiter/login');
     }
   }, [refresh]);
 

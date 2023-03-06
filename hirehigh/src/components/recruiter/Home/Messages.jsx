@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import {
   styled, createTheme, ThemeProvider, useTheme,
@@ -11,27 +12,33 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import Badge from '@mui/material/Badge';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import CategoryIcon from '@mui/icons-material/Category';
 import BusinessIcon from '@mui/icons-material/Business';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import TaskIcon from '@mui/icons-material/Task';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import MessageIcon from '@mui/icons-material/Message';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import FolderIcon from '@mui/icons-material/Folder';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal2 from 'sweetalert2';
+import swal from 'sweetalert';
 import axios from '../../../axios/axios';
-import { adminDetails } from '../../../redux/admin';
-import RecruiterList from '../Recruiter/RecruiterList';
+import { recruiterDetails } from '../../../redux/recruiter';
+import RecruiterSideMessage from '../Messages/Messages';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -90,27 +97,36 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function AdminHome() {
+export default function RecruiterMessages() {
   const navigate = useNavigate();
-  const dispatch = useDispatch(adminDetails);
-  const token = localStorage.getItem('adminToken');
-
+  const dispatch = useDispatch(recruiterDetails);
   useEffect(() => {
+    const token = localStorage.getItem('recruiterToken');
     if (token) {
-      axios.get('/admin/isAdminAuth', {
-        headers: { 'admin-access-token': token },
+      axios.get('/recruiter/isRecruiterAuth', {
+        headers: { 'recruiter-access-token': token },
       }).then((response) => {
         if (!response.data.auth) {
-          navigate('/admin/login');
+          if (response.data.status === 'blocked') {
+            swal('Your profile blocked');
+            navigate('/');
+          } else {
+            navigate('/recruiter/login');
+          }
         } else {
-          dispatch(adminDetails(response.data));
+          dispatch(recruiterDetails(response.data));
         }
-      });
+      }).catch((err) => console.log(err));
     } else {
-      navigate('/admin/login');
+      navigate('/recruiter/login');
     }
   }, []);
-  const { admin } = useSelector((state) => state.adminInfo);
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(true);
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
+  const { recruiter } = useSelector((state) => state.recruiterInfo);
 
   const LogOut = () => {
     Swal2.fire({
@@ -123,21 +139,15 @@ function AdminHome() {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem('adminToken');
+        localStorage.removeItem('recruiterToken');
         // Swal.fire(
         //     'Deleted!',
         //     'Your file has been deleted.',
         //     'success'
         // )
-        navigate('/admin/login');
+        navigate('/recruiter/login');
       }
     });
-  };
-
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
-  const toggleDrawer = () => {
-    setOpen(!open);
   };
 
   return (
@@ -148,7 +158,6 @@ function AdminHome() {
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
-              bgcolor: '#6096B4',
             }}
           >
             <IconButton
@@ -172,9 +181,11 @@ function AdminHome() {
             >
               HIREHIGH
             </Typography>
-            <Typography variant="h6" noWrap component="div">
-              {admin?.username}
-            </Typography>
+            <IconButton color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -193,31 +204,7 @@ function AdminHome() {
                   justifyContent: open ? 'initial' : 'last',
                   px: 2.5,
                 }}
-                onClick={() => navigate('/admin/home')}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-
-                  }}
-
-                >
-                  <DashboardIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Dashboard</ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'last',
-                  px: 2.5,
-                }}
-                onClick={() => navigate('/admin/seeker')}
-
+                onClick={() => navigate('/recruiter/jobs')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -226,71 +213,8 @@ function AdminHome() {
 
                 }}
                 >
-                  <AccountBoxIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Seekers</ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'last',
-                  px: 2.5,
-                }}
-
-              >
-                <ListItemIcon sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-
-                }}
-                >
-                  <BusinessIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Recruiters</ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'last',
-                  px: 2.5,
-                }}
-                onClick={() => navigate('/admin/category')}
-              >
-                <ListItemIcon sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-
-                }}
-                >
-                  <CategoryIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Categorys</ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'last',
-                  px: 2.5,
-                }}
-                onClick={() => navigate('/admin/jobs')}
-              >
-                <ListItemIcon sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-
-                }}
-                >
-                  <FolderIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>All Jobs</ListItemText>
+                  <InboxIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>My Jobs</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
@@ -308,8 +232,96 @@ function AdminHome() {
 
                 }}
                 >
-                  <NotificationsIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Notification</ListItemText>
+                  <TaskIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Hire Candidates</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/sorted_users')}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <NoteAddIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Short List</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'last',
+                px: 2.5,
+              }}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <MessageIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Masseages</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+          </List>
+          <Divider />
+          <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/home')}
+
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <BusinessIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>
+                    {recruiter?.username}
+                  </ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/profile')}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <AccountBoxIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Profile</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
@@ -335,8 +347,6 @@ function AdminHome() {
               </ListItemButton>
             </ListItem>
           </List>
-          <Divider />
-
         </Drawer>
         <Box
           component="main"
@@ -347,17 +357,14 @@ function AdminHome() {
             flexGrow: 1,
             height: '100vh',
             overflow: 'auto',
-
           }}
         >
           <Toolbar />
-          <RecruiterList />
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <RecruiterSideMessage />
+          </Container>
         </Box>
       </Box>
     </ThemeProvider>
   );
-}
-
-export default function AdminRecruiterList() {
-  return <AdminHome />;
 }

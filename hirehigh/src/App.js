@@ -16,11 +16,11 @@ import SeekerRouter from './routes/SeekerRouter';
 import AllBest from './pages/tryPage';
 
 function App() {
-  const socket = io('http://localhost:8800');
   const [userDetails, setUserDetails] = useState({});
   const [recruiterDetails, setRecruiterDetails] = useState({});
   const [userOtpConf, setUserOtpConf] = useState({});
   const [recruiterOtpConf, setRecruiterOtpConf] = useState([]);
+  const [socket, setSocket] = useState(io('http://localhost:8800'));
 
   return (
     <Provider store={store}>
@@ -33,6 +33,7 @@ function App() {
         setUserOtpConf,
         recruiterOtpConf,
         setRecruiterOtpConf,
+        socket,
       }}
       >
         <BrowserRouter>

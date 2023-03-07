@@ -1,6 +1,7 @@
 import express from 'express';
 import seekerController from '../controller/seekerController.js';
 import jwtAuth from '../middlewares/jwtAuth.js';
+import chatContollers from '../controller/chatContollers.js';
 
 const router = express.Router();
 
@@ -22,5 +23,8 @@ router.post('/new_password', seekerController.setNewPassword);
 router.get('/applied_jobs', jwtAuth.jwtSeeker, seekerController.getAppliedJobs);
 router.get('/search_job', jwtAuth.jwtSeeker, seekerController.jobSearch);
 router.post('/get_jobfilter', jwtAuth.jwtSeeker, seekerController.getFilterJob);
+
+router.post('/chat', chatContollers.createChat);
+router.get('/chat', chatContollers.userChats);
 
 export default router;

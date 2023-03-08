@@ -27,6 +27,10 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TaskIcon from '@mui/icons-material/Task';
 import MessageIcon from '@mui/icons-material/Message';
 import SearchIcon from '@mui/icons-material/Search';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
@@ -41,6 +45,7 @@ import Swal2 from 'sweetalert2';
 import axios from '../../../axios/axios';
 import { userDetails } from '../../../redux/seeker';
 import { searchProfileData } from '../../../apis/SeekerApi';
+import SeekerHomeCard from '../Main/Home';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -427,35 +432,7 @@ export default function SeekerHome() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                />
-              </Grid>
-              {/* Recent Deposits */}
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
-              </Grid>
-            </Grid>
+            <SeekerHomeCard />
           </Container>
         </Box>
       </Box>

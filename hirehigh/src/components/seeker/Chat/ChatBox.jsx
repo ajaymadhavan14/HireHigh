@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { format } from 'timeago';
+import { format } from 'timeago.js';
 import InputEmoji from 'react-input-emoji';
 import { Button } from '@mui/material';
 import { addMessage, getMessages, getUser } from '../../../apis/SeekerApi';
@@ -53,7 +53,7 @@ function ChatBox({
 
   // Send Message
   const handleSend = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     const message = {
       senderId: currentUser,
       text: newMessage,
@@ -129,7 +129,8 @@ function ChatBox({
               >
                 <span>{message.text}</span>
                 {' '}
-                <span>{message.createdAt}</span>
+                {/* <span>{moment(message.createdAt).format('LT')}</span> */}
+                <span>{format(message.createdAt)}</span>
               </div>
             ))}
           </div>
@@ -139,6 +140,11 @@ function ChatBox({
             <InputEmoji
               value={newMessage}
               onChange={handleChange}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSend();
+                }
+              }}
             />
             <Button className="send-button button" onClick={handleSend} variant="contained">Send</Button>
             <input

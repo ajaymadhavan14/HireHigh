@@ -31,9 +31,9 @@ import { userChats } from '../../../apis/SeekerApi';
 
 export default function SeekerChat() {
   const dispatch = useDispatch();
-  const socket = useRef();
+  // const socket = useRef();
   const { user } = useSelector((state) => state.userInfo);
-  //   const { socket } = useContext(AppContext);
+  const { socket } = useContext(AppContext);
   console.log(user);
 
   const [chats, setChats] = useState([]);
@@ -56,9 +56,9 @@ export default function SeekerChat() {
 
   // Connect to Socket.io
   useEffect(() => {
-    socket.current = io('ws://localhost:8800');
-    socket.current.emit('new-user-add', user.id);
-    socket.current.on('get-users', (users) => {
+    // socket.current = io('ws://localhost:8800');
+    socket.emit('new-user-add', user.id);
+    socket.on('get-users', (users) => {
       setOnlineUsers(users);
     });
   }, [user]);
@@ -66,21 +66,20 @@ export default function SeekerChat() {
   // Send Message to socket server
   useEffect(() => {
     if (sendMessage !== null) {
-      socket.current.emit('send-message', sendMessage);
+      socket.emit('send-message', sendMessage);
     }
   }, [sendMessage]);
 
   // Get the message from socket server
   useEffect(() => {
-    socket.current.on('recieve-message', (data) => {
-      console.log(data);
+    socket.on('recieve-message', (data) => {
       setReceivedMessage(data);
     });
   }, []);
 
   const checkOnlineStatus = (chat) => {
     const chatMember = chat.members.find((member) => member !== user.id);
-    const online = onlineUsers.find((user) => user.userId === chatMember);
+    const online = onlineUsers.find((el) => el.userId === chatMember);
     return !!online;
   };
 

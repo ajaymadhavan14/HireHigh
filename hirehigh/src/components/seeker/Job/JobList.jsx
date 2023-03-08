@@ -300,7 +300,9 @@ export default function JobCard(props) {
                 // onKeyUp={() => {
                 //   setOpenBox(true);
                 // }}
-               
+                onFocus={() => {
+                  setRefresh(!refresh);
+                }}
               />
             </Search>
           </Box>

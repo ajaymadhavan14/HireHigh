@@ -1,14 +1,9 @@
 import { Schema, model } from 'mongoose';
 
 const ChatSchema = new Schema({
-  members: [{
-    senderId: {
-      type: String,
-    },
-    receiverId: {
-      type: String,
-    },
-  }],
+  members: {
+    type: Array,
+  },
 
 }, {
   timestamps: true,

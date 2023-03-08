@@ -14,12 +14,13 @@ const addMessage = async (req, res, next) => {
   }
 };
 
-const getMessage = async (res, req, next) => {
+const getMessage = async (req, res, next) => {
   try {
-    const result = await MessageModel.find({ chatId: req.query.chatId });
+    const result = await MessageModel.find({ chatId: req.params.chatId });
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json(error);
+    console.log(error);
     next(error);
   }
 };

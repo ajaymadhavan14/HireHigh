@@ -346,6 +346,16 @@ const getFilterJob = async (req, res, next) => {
     next(error);
   }
 };
+
+const getUser = async (req, res, next) => {
+  try {
+    const data = await userModel.findById(req.params.id);
+    res.json(data);
+  } catch (error) {
+    next(error);
+    console.log(error);
+  }
+};
 export default {
   signupPost,
   signinPost,
@@ -365,4 +375,5 @@ export default {
   getAppliedJobs,
   jobSearch,
   getFilterJob,
+  getUser,
 };

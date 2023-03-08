@@ -89,3 +89,15 @@ export const getFilterJob = async (getData, token) => {
     return error;
   }
 };
+
+export const createChat = (data) => axios.post('/chat/', data);
+
+export const userChats = (id) => axios.get(`/chat/${id}`);
+
+export const findChat = (firstId, secondId) => axios.get(`/chat/find/${firstId}/${secondId}`);
+
+export const getMessages = (id) => axios.get(`/message/${id}`);
+
+export const addMessage = (data) => axios.post('/message/', data);
+
+export const getUser = (userId) => axios.get(`/user/${userId}`);

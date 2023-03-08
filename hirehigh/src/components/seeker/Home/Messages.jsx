@@ -41,7 +41,7 @@ import Swal2 from 'sweetalert2';
 import axios from '../../../axios/axios';
 import { userDetails } from '../../../redux/seeker';
 import { searchProfileData } from '../../../apis/SeekerApi';
-import SeekerSideMessage from '../Messages/Messages';
+import SeekerChat from '../Chat/Chat';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -426,7 +426,7 @@ export default function SeekerMessages() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <SeekerSideMessage />
+            <SeekerChat />
           </Container>
         </Box>
       </Box>

@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 import * as React from 'react';
@@ -34,7 +36,6 @@ export default function SeekerChat() {
   // const socket = useRef();
   const { user } = useSelector((state) => state.userInfo);
   const { socket } = useContext(AppContext);
-  console.log(user);
 
   const [chats, setChats] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);

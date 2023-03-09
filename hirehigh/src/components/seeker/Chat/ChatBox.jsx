@@ -1,3 +1,8 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-use-before-define */
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState, useRef } from 'react';
 import { format } from 'timeago.js';
 import InputEmoji from 'react-input-emoji';
@@ -12,8 +17,8 @@ function ChatBox({
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
 
-  const handleChange = (newMessage) => {
-    setNewMessage(newMessage);
+  const handleChange = (value) => {
+    setNewMessage(value);
   };
   console.log(chat);
 
@@ -52,7 +57,7 @@ function ChatBox({
   }, [messages]);
 
   // Send Message
-  const handleSend = async (e) => {
+  const handleSend = async () => {
     // e.preventDefault();
     const message = {
       senderId: currentUser,

@@ -24,6 +24,7 @@ router.post('/new_password', seekerController.setNewPassword);
 router.get('/applied_jobs', jwtAuth.jwtSeeker, seekerController.getAppliedJobs);
 router.get('/search_job', jwtAuth.jwtSeeker, seekerController.jobSearch);
 router.post('/get_jobfilter', jwtAuth.jwtSeeker, seekerController.getFilterJob);
+router.get('/allDatas', seekerController.getAllDatasSeekerSide);
 
 router.post('/chat', chatContollers.createChat);
 router.get('/chat/:userId', chatContollers.userChats);

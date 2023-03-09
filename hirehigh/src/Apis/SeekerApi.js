@@ -90,7 +90,23 @@ export const getFilterJob = async (getData, token) => {
   }
 };
 
-export const createChat = (data) => axios.post('/chat/', data);
+export const allData = async () => {
+  try {
+    const { data } = await axios.get('/allDatas');
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const createChat = async (datas) => {
+  try {
+    const { data } = await axios.post('/chat/', datas);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const userChats = (id) => axios.get(`/chat/${id}`);
 

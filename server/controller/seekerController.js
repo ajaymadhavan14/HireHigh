@@ -353,7 +353,15 @@ const getUser = async (req, res, next) => {
     res.json(data);
   } catch (error) {
     next(error);
-    console.log(error);
+  }
+};
+
+const getAllDatasSeekerSide = async (req, res, next) => {
+  try {
+    const data = await userModel.find({});
+    res.json(data);
+  } catch (error) {
+    next(error);
   }
 };
 export default {
@@ -376,4 +384,5 @@ export default {
   jobSearch,
   getFilterJob,
   getUser,
+  getAllDatasSeekerSide,
 };

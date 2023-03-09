@@ -1,13 +1,20 @@
+/* eslint-disable no-underscore-dangle */
 import ChatModel from '../model/chatSchema.js';
 
 const createChat = async (req, res, next) => {
-  const newChat = new ChatModel({
-    members: [req.body.senderId, req.body.receiverId],
-  });
-
   try {
-    const result = await newChat.save();
-    res.status(200).json(result);
+    const findData = await ChatModel.findOne({
+      members: { $in: [req.body.receiverId] },
+    });
+    if (findData.length !== 0) {
+      res.json({ status: 'success', Id: findData._id });
+    } else {
+      const newChat = new ChatModel({
+        members: [req.body.senderId, req.body.receiverId],
+      });
+      await newChat.save();
+      res.status(200).json({ status: 'success', Id: newChat._id });
+    }
   } catch (error) {
     res.status(500).json(error);
     next(error);

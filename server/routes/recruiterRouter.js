@@ -23,5 +23,8 @@ router.post('/new_password', recruiterController.setNewPassword);
 router.get('/applied_users', jwtAuth.jwtRecruiter, recruiterController.jobAppliedUsers);
 router.post('/job_comment', jwtAuth.jwtRecruiter, recruiterController.updateJobComment);
 router.get('/get_sorted_user', jwtAuth.jwtRecruiter, recruiterController.getSortedList);
+router.get('/allDatas', jwtAuth.jwtRecruiter, recruiterController.getAllDatasRecruiterSide);
+
+router.get('/user/:id', recruiterController.getUserForChat);
 
 export default router;

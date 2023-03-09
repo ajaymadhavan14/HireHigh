@@ -24,6 +24,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import HomeIcon from '@mui/icons-material/Home';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TaskIcon from '@mui/icons-material/Task';
@@ -39,6 +40,7 @@ import swal from 'sweetalert';
 import axios from '../../../axios/axios';
 import { recruiterDetails } from '../../../redux/recruiter';
 import RecruiterSideMessage from '../Messages/Messages';
+import RecruiterChat from '../Chat/Chat';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -181,11 +183,17 @@ export default function RecruiterMessages() {
             >
               HIREHIGH
             </Typography>
-            <IconButton color="inherit">
+            <Box mr={3}>
+              <Typography>
+                {recruiter?.username}
+
+              </Typography>
+            </Box>
+            {/* <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -196,7 +204,27 @@ export default function RecruiterMessages() {
           </DrawerHeader>
           <Divider />
           <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/home')}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
 
+                }}
+                >
+                  <HomeIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Home</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -219,11 +247,14 @@ export default function RecruiterMessages() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/sorted_users')}
+
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -237,27 +268,7 @@ export default function RecruiterMessages() {
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'last',
-                  px: 2.5,
-                }}
-                onClick={() => navigate('/recruiter/sorted_users')}
-              >
-                <ListItemIcon sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
 
-                }}
-                >
-                  <NoteAddIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Short List</ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton sx={{
                 minHeight: 48,
@@ -280,7 +291,7 @@ export default function RecruiterMessages() {
           </List>
           <Divider />
           <List>
-            <ListItem disablePadding sx={{ display: 'block' }}>
+            {/* <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -303,7 +314,7 @@ export default function RecruiterMessages() {
                   </ListItemText>
                 </ListItemIcon>
               </ListItemButton>
-            </ListItem>
+            </ListItem> */}
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -361,7 +372,7 @@ export default function RecruiterMessages() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <RecruiterSideMessage />
+            <RecruiterChat />
           </Container>
         </Box>
       </Box>

@@ -13,8 +13,9 @@ function Conversation({ data, currentUser, online }) {
     const userId = data?.members?.find((id) => id !== currentUser);
     const getUserData = async () => {
       try {
-        const { data } = await getUser(userId);
-        setUserData(data);
+        await getUser(userId).then((res) => {
+          setUserData(res);
+        });
         dispatch({ type: 'SAVE_USER', data });
       } catch (error) {
         console.log(error);
@@ -38,10 +39,7 @@ function Conversation({ data, currentUser, online }) {
           />
           <div className="name" style={{ fontSize: '0.8rem' }}>
             <span>
-              {userData?.firstName}
-              {' '}
-              {userData?.lastName}
-              {'  '}
+              {userData?.userName}
             </span>
             <span style={{ color: online ? '#51e200' : '' }}>{online ? 'Online' : 'Offline'}</span>
           </div>

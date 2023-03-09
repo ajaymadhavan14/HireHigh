@@ -44,7 +44,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 import Swal2 from 'sweetalert2';
-import { allData, createChat } from '../../../apis/SeekerApi';
+import { allData } from '../../../apis/SeekerApi';
+import { createChat } from '../../../apis/ChatApi';
 
 const Item = styleds(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -57,15 +58,20 @@ const Item = styleds(Paper)(({ theme }) => ({
 export default function SeekerHomeCard() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+  const token = localStorage.getItem('userToken');
   useEffect(() => {
     async function invoke() {
-      await allData().then((res) => {
-        setData(res);
-      });
+      if (token) {
+        await allData(token).then((res) => {
+          setData(res);
+        });
+      } else {
+        swal('Please Login');
+        navigate('/login');
+      }
     }
     invoke();
   }, []);
-  console.log(data);
 
   const { user } = useSelector((state) => state.userInfo);
 
@@ -78,73 +84,29 @@ export default function SeekerHomeCard() {
     });
   };
   return (
-  // <Grid container spacing={3}>
-  //   {/* Chart */}
-
-  //   <Grid item xs={12} md={8} lg={9} minWidth={'100%'}>
-
-  //     <Box sx={{ display:'flex' , width:'100%' }} columnGap={5}>
-  //       {data.map((el) => (
-  //         <Card sx={{ width: '30%', minHeight: 340 }}>
-  //           <CardMedia
-  //             sx={{ height: 170, width: 300 }}
-  //             image={el?.image}
-  //             title="green iguana"
-  //           />
-  //           <CardContent>
-  //             <Typography gutterBottom variant="h5" component="div">
-  //               {`${el.firstName} ${el.lastName}`}
-  //             </Typography>
-  //             <Typography variant="body2" color="text.secondary">
-  //               {el.headline}
-  //             </Typography>
-  //           </CardContent>
-  //           <CardActions>
-  //             <Button size="small">view</Button>
-  //             <Button variant="contained">Message</Button>
-  //           </CardActions>
-  //         </Card>
-
-  //       ))}
-  //     </Box>
-  //   </Grid>
-  //   {/* <Grid item xs={12} md={4} lg={3}>
-  //     <Paper
-  //       sx={{
-  //         p: 2,
-  //         display: 'flex',
-  //         flexDirection: 'column',
-  //         height: 240,
-  //       }}
-  //     />
-  //   </Grid> */}
-  //   {/* Recent Deposits */}
-  //   {/* Recent Orders */}
-  //   <Grid item xs={12}>
-  //     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
-  //   </Grid>
-  // </Grid>
 
     <Box sx={{ flexGrow: 1, marginLeft: '5rem' }}>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {data.map((el) => (
-          <Card sx={{ m: 3, minWidth: 300, minHeight: 340 }}>
+          <Card sx={{
+            m: 3, minWidth: 300, minHeight: 340, maxWidth: 310,
+          }}
+          >
             <CardMedia
               sx={{ height: 170, width: 300 }}
               image={el?.image}
-              title="green iguana"
             />
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
-                {`${el.firstName} ${el.lastName}`}
+                {el?.userName}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {el.headline}
+                {el?.tagLine}
               </Typography>
             </CardContent>
             <CardActions>
               <Button size="small">view</Button>
-              <Button variant="contained" onClick={() => sendMessage(el._id)}>Message</Button>
+              <Button variant="contained" onClick={() => sendMessage(el?._id)}>Message</Button>
             </CardActions>
           </Card>
 

@@ -124,7 +124,7 @@ export default function RetSingnUP() {
                         const dirs = Date.now();
                         const rand = Math.random();
                         const { image } = data;
-                        const imageRef = ref(storage, `/seekerImages/${dirs}${rand}_${image?.name}`);
+                        const imageRef = ref(storage, `/recruiterImages/${dirs}${rand}_${image?.name}`);
                         const toBase64 = (image) => new Promise((resolve, reject) => {
                           const reader = new FileReader();
                           reader.readAsDataURL(image);

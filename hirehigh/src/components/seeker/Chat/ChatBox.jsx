@@ -7,7 +7,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { format } from 'timeago.js';
 import InputEmoji from 'react-input-emoji';
 import { Button } from '@mui/material';
-import { addMessage, getMessages, getUser } from '../../../apis/SeekerApi';
+import { addMessage, getMessages } from '../../../apis/ChatApi';
+import { getUser } from '../../../apis/SeekerApi';
 import './ChatBox.css';
 
 function ChatBox({
@@ -20,15 +21,15 @@ function ChatBox({
   const handleChange = (value) => {
     setNewMessage(value);
   };
-  console.log(chat);
 
   // fetching data for header
   useEffect(() => {
     const userId = chat?.members?.find((id) => id !== currentUser);
     const getUserData = async () => {
       try {
-        const { data } = await getUser(userId);
-        setUserData(data);
+        await getUser(userId).then((res) => {
+          setUserData(res);
+        });
       } catch (error) {
         console.log(error);
       }
@@ -107,9 +108,7 @@ function ChatBox({
                 />
                 <div className="name" style={{ fontSize: '0.9rem' }}>
                   <span>
-                    {userData?.firstName}
-                    {' '}
-                    {userData?.lastName}
+                    {userData?.userName}
                   </span>
                 </div>
               </div>

@@ -146,7 +146,7 @@ export default function RecruiterJobAppliedList() {
                     <StyledTableCell align="center">Email</StyledTableCell>
                     <StyledTableCell align="center">Phone NUmber</StyledTableCell>
                     <StyledTableCell align="center">view</StyledTableCell>
-                    <StyledTableCell align="center">Comment</StyledTableCell>
+                    <StyledTableCell align="center">Status</StyledTableCell>
                     {/* <StyledTableCell align="center">Status</StyledTableCell> */}
                     {/* <StyledTableCell align="center">PHONE NO</StyledTableCell>
               <StyledTableCell align="center">Website</StyledTableCell>

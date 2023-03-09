@@ -362,11 +362,9 @@ export default function JobCard(props) {
           </Box>
         </Paper>
       </Grid>
-      {/* Recent Deposits */}
-      {/* Recent Orders */}
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
-      </Grid>
+      </Grid> */}
     </Grid>
 
   );

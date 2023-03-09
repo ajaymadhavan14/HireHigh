@@ -31,11 +31,14 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import LogoutIcon from '@mui/icons-material/Logout';
 import Menu from '@mui/material/Menu';
+import WorkIcon from '@mui/icons-material/Work';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import WorkIcon from '@mui/icons-material/Work';
+import HomeIcon from '@mui/icons-material/Home';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
@@ -263,8 +266,11 @@ export default function SeekerHome() {
                 />
               </Search>
             </Box> */}
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip>
+            <Box sx={{ flexGrow: 0, marginRight: '3rem' }}>
+              <Typography>
+                {user?.username}
+              </Typography>
+              {/* <Tooltip>
                 <Button
                   id="demo-customized-button"
                   aria-controls={open ? 'demo-customized-menu' : undefined}
@@ -302,7 +308,7 @@ export default function SeekerHome() {
                   <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
 
-              </Menu>
+              </Menu> */}
             </Box>
           </Toolbar>
         </AppBar>
@@ -330,7 +336,7 @@ export default function SeekerHome() {
 
                 }}
                 >
-                  <WorkIcon />
+                  <HomeIcon />
                   <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Home</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
@@ -414,6 +420,51 @@ export default function SeekerHome() {
                 >
                   <MessageIcon />
                   <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Masseages</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+          </List>
+          <Divider />
+          <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={getSearchProfile}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <AccountBoxIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Profile</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={LogOut}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <LogoutIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Logout</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>

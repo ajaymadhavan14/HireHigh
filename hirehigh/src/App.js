@@ -14,12 +14,15 @@ import AdminRouter from './routes/AdminRouter';
 import RecruiterRouter from './routes/RecruiterRouter';
 import SeekerRouter from './routes/SeekerRouter';
 import AllBest from './pages/tryPage';
+import CompanyRouter from './routes/CompanyRouter';
 
 function App() {
   const [userDetails, setUserDetails] = useState({});
   const [recruiterDetails, setRecruiterDetails] = useState({});
   const [userOtpConf, setUserOtpConf] = useState({});
   const [recruiterOtpConf, setRecruiterOtpConf] = useState([]);
+  const [companyDetails, setCompanyDetails] = useState([]);
+  const [companyOtpConf, setCompanyOtpConf] = useState([]);
   const [socket, setSocket] = useState(io('http://localhost:8800'));
 
   return (
@@ -33,6 +36,10 @@ function App() {
         setUserOtpConf,
         recruiterOtpConf,
         setRecruiterOtpConf,
+        companyDetails,
+        setCompanyDetails,
+        companyOtpConf,
+        setCompanyOtpConf,
         socket,
       }}
       >
@@ -41,6 +48,7 @@ function App() {
             <Route exact path="/*" element={<SeekerRouter />} />
             <Route path="/admin/*" element={<AdminRouter />} />
             <Route path="/recruiter/*" element={<RecruiterRouter />} />
+            <Route path="/company/*" element={<CompanyRouter />} />
 
             <Route path="/try" element={<AllBest />} />
 

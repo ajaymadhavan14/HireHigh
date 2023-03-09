@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import recruiterModel from '../model/recruiterSchema.js';
@@ -89,8 +90,7 @@ const isRecruiterAuth = async (req, res, next) => {
     if (recruiterDetails.isActive === true) {
       recruiterDetails.auth = true;
       res.json({
-      // eslint-disable-next-line no-underscore-dangle
-        _id: recruiterDetails._id,
+        id: recruiterDetails._id,
         username: recruiterDetails.userName,
         email: recruiterDetails.email,
         auth: true,
@@ -334,6 +334,24 @@ const getSortedList = async (req, res, next) => {
   }
 };
 
+const getAllDatasRecruiterSide = async (req, res, next) => {
+  try {
+    const data = await userModel.find({});
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getUserForChat = async (req, res, next) => {
+  try {
+    const data = await userModel.findById(req.params.id);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   recruiterSignUpPost,
   recruiterSignInPost,
@@ -354,4 +372,6 @@ export default {
   jobAppliedUsers,
   updateJobComment,
   getSortedList,
+  getAllDatasRecruiterSide,
+  getUserForChat,
 };

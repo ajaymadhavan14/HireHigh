@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import userModel from '../model/userSchema.js';
 import jobModel from '../model/jobPostSchema.js';
+import recruiterModel from '../model/recruiterSchema.js';
 
 const signupPost = async (req, res, next) => {
   try {
@@ -349,7 +350,7 @@ const getFilterJob = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
   try {
-    const data = await userModel.findById(req.params.id);
+    const data = await recruiterModel.findById(req.params.id);
     res.json(data);
   } catch (error) {
     next(error);
@@ -358,7 +359,7 @@ const getUser = async (req, res, next) => {
 
 const getAllDatasSeekerSide = async (req, res, next) => {
   try {
-    const data = await userModel.find({});
+    const data = await recruiterModel.find({});
     res.json(data);
   } catch (error) {
     next(error);

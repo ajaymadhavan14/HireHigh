@@ -90,30 +90,20 @@ export const getFilterJob = async (getData, token) => {
   }
 };
 
-export const allData = async () => {
+export const allData = async (token) => {
   try {
-    const { data } = await axios.get('/allDatas');
+    const { data } = await axios.get('/allDatas', { headers: { 'user-access-token': token } });
     return data;
   } catch (error) {
     return error;
   }
 };
 
-export const createChat = async (datas) => {
+export const getUser = async (userId) => {
   try {
-    const { data } = await axios.post('/chat/', datas);
+    const { data } = await axios.get(`/user/${userId}`);
     return data;
   } catch (error) {
     return error;
   }
 };
-
-export const userChats = (id) => axios.get(`/chat/${id}`);
-
-export const findChat = (firstId, secondId) => axios.get(`/chat/find/${firstId}/${secondId}`);
-
-export const getMessages = (id) => axios.get(`/message/${id}`);
-
-export const addMessage = (data) => axios.post('/message/', data);
-
-export const getUser = (userId) => axios.get(`/user/${userId}`);

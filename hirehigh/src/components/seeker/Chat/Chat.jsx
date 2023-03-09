@@ -29,7 +29,7 @@ import AppContext from '../../../context/AppContext';
 import './Chat.css';
 import ChatBox from './ChatBox';
 import Conversation from './Conversation';
-import { userChats } from '../../../apis/SeekerApi';
+import { userChats } from '../../../apis/ChatApi';
 
 export default function SeekerChat() {
   const dispatch = useDispatch();

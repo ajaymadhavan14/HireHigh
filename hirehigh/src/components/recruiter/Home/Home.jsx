@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import {
   styled, createTheme, ThemeProvider, useTheme,
@@ -26,6 +27,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TaskIcon from '@mui/icons-material/Task';
+import HomeIcon from '@mui/icons-material/Home';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import MessageIcon from '@mui/icons-material/Message';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
@@ -37,6 +39,7 @@ import Swal2 from 'sweetalert2';
 import swal from 'sweetalert';
 import axios from '../../../axios/axios';
 import { recruiterDetails } from '../../../redux/recruiter';
+import RecruiterHomeCard from '../Main/Home';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -179,11 +182,17 @@ function DashboardContent() {
             >
               HIREHIGH
             </Typography>
-            <IconButton color="inherit">
+            <Box mr={3}>
+              <Typography>
+                {recruiter?.username}
+
+              </Typography>
+            </Box>
+            {/* <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -194,7 +203,27 @@ function DashboardContent() {
           </DrawerHeader>
           <Divider />
           <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/home')}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
 
+                }}
+                >
+                  <HomeIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Home</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -217,11 +246,14 @@ function DashboardContent() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/sorted_users')}
+
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -235,7 +267,7 @@ function DashboardContent() {
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
+            {/* <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -255,7 +287,7 @@ function DashboardContent() {
                   <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Short List</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
-            </ListItem>
+            </ListItem> */}
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -281,7 +313,7 @@ function DashboardContent() {
           </List>
           <Divider />
           <List>
-            <ListItem disablePadding sx={{ display: 'block' }}>
+            {/* <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -304,7 +336,7 @@ function DashboardContent() {
                   </ListItemText>
                 </ListItemIcon>
               </ListItemButton>
-            </ListItem>
+            </ListItem> */}
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -362,34 +394,7 @@ function DashboardContent() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                />
-              </Grid>
-              {/* Recent Deposits */}
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
-              </Grid>
-            </Grid>
+            <RecruiterHomeCard />
           </Container>
         </Box>
       </Box>

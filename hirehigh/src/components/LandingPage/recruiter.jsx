@@ -34,8 +34,12 @@ export default function RecruiterContainer() {
           </Typography>
 
           <Typography sx={{ mt: 3 }}>
-            <Button variant="contained" onClick={() => navigate('/recruiter/login')}>Click Here</Button>
+            <Button variant="contained" onClick={() => navigate('/recruiter/login')}>HR Login</Button>
           </Typography>
+          <Typography sx={{ mt: 3 }}>
+            <Button variant="contained" onClick={() => navigate('/company/login')}>Company Login</Button>
+          </Typography>
+
         </Box>
 
       </Box>

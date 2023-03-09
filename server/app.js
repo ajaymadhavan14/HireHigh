@@ -11,6 +11,7 @@ import dbconnection from './config/connection.js';
 import seekerRouter from './routes/seekerRouter.js';
 import recruiterRouter from './routes/recruiterRouter.js';
 import adminRouter from './routes/adminRouter.js';
+import companyRouter from './routes/companyRouter.js';
 
 config();
 
@@ -42,6 +43,7 @@ app.use(logger('dev'));
 app.use('/', seekerRouter);
 app.use('/recruiter', recruiterRouter);
 app.use('/admin', adminRouter);
+app.use('/company', companyRouter);
 
 app.use(dbconnection);
 

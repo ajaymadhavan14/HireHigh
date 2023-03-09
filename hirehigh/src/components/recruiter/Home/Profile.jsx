@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import {
   styled, createTheme, ThemeProvider, useTheme,
@@ -17,6 +18,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import BusinessIcon from '@mui/icons-material/Business';
 import ListItem from '@mui/material/ListItem';
+import HomeIcon from '@mui/icons-material/Home';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -180,11 +182,17 @@ export default function DashboardContent() {
             >
               HIREHIGH
             </Typography>
-            <IconButton color="inherit">
+            <Box mr={3}>
+              <Typography>
+                {recruiter?.username}
+
+              </Typography>
+            </Box>
+            {/* <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -195,7 +203,27 @@ export default function DashboardContent() {
           </DrawerHeader>
           <Divider />
           <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/home')}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
 
+                }}
+                >
+                  <HomeIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Home</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -218,26 +246,6 @@ export default function DashboardContent() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-
-                }}
-                >
-
-                  <TaskIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Hire Candidates</ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -254,11 +262,13 @@ export default function DashboardContent() {
 
                 }}
                 >
-                  <NoteAddIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Short List</ListItemText>
+
+                  <TaskIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Hire Candidates</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
+
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton sx={{
                 minHeight: 48,
@@ -281,7 +291,7 @@ export default function DashboardContent() {
           </List>
           <Divider />
           <List>
-            <ListItem disablePadding sx={{ display: 'block' }}>
+            {/* <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -303,7 +313,7 @@ export default function DashboardContent() {
                   </ListItemText>
                 </ListItemIcon>
               </ListItemButton>
-            </ListItem>
+            </ListItem> */}
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton sx={{
                 minHeight: 48,

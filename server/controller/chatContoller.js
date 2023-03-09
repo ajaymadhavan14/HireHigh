@@ -6,7 +6,7 @@ const createChat = async (req, res, next) => {
     const findData = await ChatModel.findOne({
       members: { $in: [req.body.receiverId] },
     });
-    if (findData.length !== 0) {
+    if (findData) {
       res.json({ status: 'success', Id: findData._id });
     } else {
       const newChat = new ChatModel({

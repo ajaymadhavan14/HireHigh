@@ -60,4 +60,26 @@ const jwtAdmin = async (req, res, next) => {
   }
 };
 
-export default { jwtSeeker, jwtRecruiter, jwtAdmin };
+const jwtCompany = async (req, res, next) => {
+  try {
+    const token = req.headers['company-access-token'];
+    if (!token) {
+      res.send({ status: 'failed', message: 'You need token' });
+    } else {
+      jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
+        if (err) {
+          res.json({ auth: false, status: 'failed', message: 'failed to authenticate' });
+        } else {
+          req.companyId = decoded.companyId;
+          next();
+        }
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default {
+  jwtSeeker, jwtRecruiter, jwtAdmin, jwtCompany,
+};

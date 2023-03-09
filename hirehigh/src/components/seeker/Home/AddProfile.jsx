@@ -29,6 +29,8 @@ import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import LogoutIcon from '@mui/icons-material/Logout';
 import WorkIcon from '@mui/icons-material/Work';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useSelector, useDispatch } from 'react-redux';
@@ -256,8 +258,11 @@ export default function SeekerAddProfileData() {
                 />
               </Search>
             </Box> */}
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip>
+            <Box sx={{ flexGrow: 0, marginRight: '3rem' }}>
+              <Typography>
+                {user?.username}
+              </Typography>
+              {/* <Tooltip>
                 <Button
                   id="demo-customized-button"
                   aria-controls={open ? 'demo-customized-menu' : undefined}
@@ -271,9 +276,6 @@ export default function SeekerAddProfileData() {
                   {user?.username}
                 </Button>
 
-                {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton> */}
               </Tooltip>
               <Menu
                 sx={{ mt: '45px' }}
@@ -299,7 +301,7 @@ export default function SeekerAddProfileData() {
                   <Typography textAlign="center" onClick={LogOut}>Logout</Typography>
                 </MenuItem>
 
-              </Menu>
+              </Menu> */}
             </Box>
           </Toolbar>
         </AppBar>
@@ -395,11 +397,14 @@ export default function SeekerAddProfileData() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/messages')}
+
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -410,6 +415,51 @@ export default function SeekerAddProfileData() {
                 >
                   <MessageIcon />
                   <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Masseages</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+          </List>
+          <Divider />
+          <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={getSearchProfile}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <AccountBoxIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Profile</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={LogOut}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <LogoutIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Logout</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>

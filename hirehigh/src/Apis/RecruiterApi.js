@@ -89,3 +89,21 @@ export const getUserSortedList = async (token) => {
     return error;
   }
 };
+
+export const allData = async (token) => {
+  try {
+    const { data } = await axios.get('/recruiter/allDatas', { headers: { 'recruiter-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getUser = async (userId) => {
+  try {
+    const { data } = await axios.get(`/recruiter/user/${userId}`);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

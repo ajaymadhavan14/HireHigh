@@ -56,6 +56,10 @@ const jobPosts = new Schema(
       type: Boolean,
       default: true,
     },
+    companyOk: {
+      type: Boolean,
+      default: false,
+    },
     applied: {
       type: Boolean,
       default: false,

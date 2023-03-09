@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import {
   styled, createTheme, ThemeProvider, useTheme,
@@ -25,6 +26,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TaskIcon from '@mui/icons-material/Task';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import HomeIcon from '@mui/icons-material/Home';
 import MessageIcon from '@mui/icons-material/Message';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -178,11 +180,17 @@ export default function RecruiterProfileEdit() {
             >
               HIREHIGH
             </Typography>
-            <IconButton color="inherit">
+            <Box mr={3}>
+              <Typography>
+                {recruiter?.username}
+
+              </Typography>
+            </Box>
+            {/* <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -193,7 +201,27 @@ export default function RecruiterProfileEdit() {
           </DrawerHeader>
           <Divider />
           <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/home')}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
 
+                }}
+                >
+                  <HomeIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Home</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -216,25 +244,6 @@ export default function RecruiterProfileEdit() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-
-                }}
-                >
-                  <TaskIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Hire Candidates</ListItemText>
-                </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -251,11 +260,12 @@ export default function RecruiterProfileEdit() {
 
                 }}
                 >
-                  <NoteAddIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Short List</ListItemText>
+                  <TaskIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Hire Candidates</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
+
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton sx={{
                 minHeight: 48,
@@ -278,7 +288,7 @@ export default function RecruiterProfileEdit() {
           </List>
           <Divider />
           <List>
-            <ListItem disablePadding sx={{ display: 'block' }}>
+            {/* <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -300,7 +310,7 @@ export default function RecruiterProfileEdit() {
                   </ListItemText>
                 </ListItemIcon>
               </ListItemButton>
-            </ListItem>
+            </ListItem> */}
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{

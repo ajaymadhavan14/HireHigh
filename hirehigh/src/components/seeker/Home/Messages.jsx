@@ -35,6 +35,7 @@ import WorkIcon from '@mui/icons-material/Work';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -154,7 +155,6 @@ export default function SeekerMessages() {
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-
   const navigate = useNavigate();
   const dispatch = useDispatch(userDetails);
   useEffect(() => {
@@ -218,7 +218,7 @@ export default function SeekerMessages() {
       }
     });
   };
-
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>

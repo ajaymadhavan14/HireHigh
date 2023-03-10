@@ -236,7 +236,7 @@ export default function JobCard(props) {
                           {el?.jobTitle}
                         </Typography>
                         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                          {el?.companyName}
+                          {el?.companyName?.companyName}
                         </Typography>
                         <Typography variant="body2">
                           {el?.jobType}

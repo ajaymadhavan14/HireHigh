@@ -36,3 +36,12 @@ export const jobPostApproval = async (id, token) => {
     return error;
   }
 };
+
+export const jobPostBlock = async (id, token) => {
+  try {
+    const { data } = await axios.patch(`/company/job_block?jobId=${id}`, {}, { headers: { 'company-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

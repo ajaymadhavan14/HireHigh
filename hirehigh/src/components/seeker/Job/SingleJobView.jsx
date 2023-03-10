@@ -79,6 +79,10 @@ export default function SingleJobView(props) {
             <Box sx={{ marginLeft: '5vh' }}>
               <Typography component="h1" variant="h5">{data?.jobTitle}</Typography>
               <Typography color="text.secondary" mt={1}>
+                Company :
+                {data?.companyName?.companyName}
+              </Typography>
+              <Typography color="text.secondary" mt={1}>
                 Location :
                 {data?.location}
               </Typography>
@@ -180,7 +184,7 @@ export default function SingleJobView(props) {
                       {el?.jobTitle}
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                      {el?.companyName}
+                      {el?.companyName?.companyName}
                     </Typography>
                     <Typography variant="body2">
                       {el?.jobType}

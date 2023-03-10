@@ -269,6 +269,7 @@ export default function RecruiterJobPost() {
             </Grid>
           </Grid>
           <Grid item xs={12} py={2} maxWidth="md">
+            <FormLabel>Job Discription</FormLabel>
 
             <TextareaAutosize
               style={{ resize: 'vertical', width: '100%' }}
@@ -286,6 +287,7 @@ export default function RecruiterJobPost() {
             />
           </Grid>
           <Grid item xs={12} py={2} maxWidth="md">
+            <FormLabel>Job Qualification</FormLabel>
 
             <TextareaAutosize
               style={{ resize: 'vertical', width: '100%' }}
@@ -303,6 +305,7 @@ export default function RecruiterJobPost() {
             />
           </Grid>
           <Grid item xs={12} py={2} maxWidth="md">
+            <FormLabel>Responsibilities</FormLabel>
 
             <TextareaAutosize
               style={{ resize: 'vertical', width: '100%' }}

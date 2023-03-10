@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable no-shadow */
@@ -64,7 +65,6 @@ export default function RecruiterPrfileData() {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
     data = {
-      companyName: data.get('companyName'),
       email: data.get('email'),
       userName: data.get('userName'),
       tagLine: data.get('tagLine'),
@@ -73,95 +73,90 @@ export default function RecruiterPrfileData() {
       phoneNumber: data.get('phoneNumber'),
       image: data.get('image'),
       location: data.get('location'),
+      companyName: datas?.companyName?._id,
 
     };
     if (data.companyName && data.email && data.userName && data.location
          && data.phoneNumber && data.tagLine && data.website && data.discription) {
-      const regName = /^[a-zA-Z]+$/;
+      const regName = /^[a-zA-Z ]+$/;
       const regEmail = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
       const regPhone = /^[0-9]+$/;
       setTotalRequired('');
       if (regName.test(data.userName)) {
         setUserName(false);
         setUserNameError('');
-        if (regName.test(data.companyName)) {
-          setCompanyName(false);
-          setCompanyNameError('');
-          if (regEmail.test(data.email)) {
-            setEmail(false);
-            setEmailError('');
-            if (regPhone.test(data.phoneNumber)) {
+
+        if (regEmail.test(data.email)) {
+          setEmail(false);
+          setEmailError('');
+          if (regPhone.test(data.phoneNumber)) {
+            setPhoneNumber(false);
+            setPhoneNumberError('');
+            if (data.phoneNumber.length === 10) {
               setPhoneNumber(false);
               setPhoneNumberError('');
-              if (data.phoneNumber.length === 10) {
-                setPhoneNumber(false);
-                setPhoneNumberError('');
 
-                if (data.image.name) {
-                  const allowedFormats = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-                  if (!allowedFormats.exec(data.image.name)) {
-                    toast.error('Invalid file type!', {
-                      position: 'top-right',
-                      autoClose: 4000,
-                      hideProgressBar: false,
-                      closeOnClick: true,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
-                      theme: 'colored',
-                    });
-                  } else {
-                    const dirs = Date.now();
-                    const rand = Math.random();
-                    const { image } = data;
-                    const imageRef = ref(storage, `/seekerImages/${dirs}${rand}_${image?.name}`);
-                    const toBase64 = (image) => new Promise((resolve, reject) => {
-                      const reader = new FileReader();
-                      reader.readAsDataURL(image);
-                      reader.onload = () => resolve(reader.result);
-                      reader.onerror = (error) => reject(error);
-                    }).catch((err) => {
-                      console.log(err);
-                    });
-                    const imgBase = await toBase64(image);
-                    await uploadString(imageRef, imgBase, 'data_url').then(async () => {
-                      const downloadURL = await getDownloadURL(imageRef);
-                      data.image = downloadURL;
-                    });
-                  }
-                } else {
-                  data.image = datas.image;
-                }
-                if (token) {
-                  axios.post('/recruiter/profile_edit_post', data, { headers: { 'recruiter-access-token': token } }).then((response) => {
-                    if (response.data.status === 'success') {
-                      navigate('/recruiter/profile');
-                    } else {
-                      swal('OOPS', response.data.message, 'error');
-                    }
+              if (data.image.name) {
+                const allowedFormats = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+                if (!allowedFormats.exec(data.image.name)) {
+                  toast.error('Invalid file type!', {
+                    position: 'top-right',
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'colored',
                   });
                 } else {
-                  navigate('/recruiter/login');
+                  const dirs = Date.now();
+                  const rand = Math.random();
+                  const { image } = data;
+                  const imageRef = ref(storage, `/seekerImages/${dirs}${rand}_${image?.name}`);
+                  const toBase64 = (image) => new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(image);
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = (error) => reject(error);
+                  }).catch((err) => {
+                    console.log(err);
+                  });
+                  const imgBase = await toBase64(image);
+                  await uploadString(imageRef, imgBase, 'data_url').then(async () => {
+                    const downloadURL = await getDownloadURL(imageRef);
+                    data.image = downloadURL;
+                  });
                 }
               } else {
-                setPhoneNumber(true);
-                setPhoneNumberError('Please enter 10 digit');
+                data.image = datas.image;
+              }
+              if (token) {
+                axios.post('/recruiter/profile_edit_post', data, { headers: { 'recruiter-access-token': token } }).then((response) => {
+                  if (response.data.status === 'success') {
+                    navigate('/recruiter/profile');
+                  } else {
+                    swal('OOPS', response.data.message, 'error');
+                  }
+                });
+              } else {
+                navigate('/recruiter/login');
               }
             } else {
               setPhoneNumber(true);
-              setPhoneNumberError('Please Enter valid Phone no');
+              setPhoneNumberError('Please enter 10 digit');
             }
           } else {
-            setEmail(true);
-            setEmailError('Please enter valid Email');
+            setPhoneNumber(true);
+            setPhoneNumberError('Please Enter valid Phone no');
           }
         } else {
-          setCompanyName(true);
-          setCompanyNameError('Please enter valid Name');
+          setEmail(true);
+          setEmailError('Please enter valid Email');
         }
       } else {
-        setCompanyName(true);
-        setCompanyNameError('Please enter valid Name');
+        setUserName(true);
+        setUserNameError('Please enter valid Name');
       }
     } else {
       setTotalRequired('Please enter your Details');
@@ -227,8 +222,7 @@ export default function RecruiterPrfileData() {
                 label="Company Name"
                 error={companyName}
                 helperText={companyNameError}
-                defaultValue={datas?.companyName}
-                multiline
+                value={datas?.companyName?.companyName}
                 autoFocus
               />
             </Grid>

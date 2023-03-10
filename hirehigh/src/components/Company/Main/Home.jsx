@@ -97,7 +97,6 @@ const mdTheme = createTheme();
 export default function CompanyHome() {
   const navigate = useNavigate();
   const dispatch = useDispatch(companyDetails);
-  console.log('2222222222222222222222222');
   useEffect(() => {
     const token = localStorage.getItem('companyToken');
     if (token) {

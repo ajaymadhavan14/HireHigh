@@ -137,6 +137,26 @@ const jobApproval = async (req, res, next) => {
   }
 };
 
+const jobBlock = async (req, res, next) => {
+  try {
+    if (req.companyId && req.query.jobId) {
+      await companyModel.findOneAndUpdate({ _id: req.companyId, 'job.jobId': req.query.jobId }, { $set: { 'job.$.isActive': false } });
+      await jobPostModel.findByIdAndUpdate(req.query.jobId, { $set: { companyOk: false } });
+      res.json({ status: 'success' });
+    } else {
+      res.json({ message: 'Not Approved' });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
-  companySignUpPost, companySignInPost, isCompanyAuth, getProfile, jobList, jobApproval,
+  companySignUpPost,
+  companySignInPost,
+  isCompanyAuth,
+  getProfile,
+  jobList,
+  jobApproval,
+  jobBlock,
 };

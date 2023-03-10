@@ -18,7 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { CompanyJobs, jobPostApproval } from '../../../apis/CompanyApi';
+import { CompanyJobs, jobPostApproval, jobPostBlock } from '../../../apis/CompanyApi';
 
 export default function CompanyJobList() {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -52,25 +52,54 @@ export default function CompanyJobList() {
   const navigate = useNavigate();
   const [job, setJob] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [noData, setNoData] = useState(false);
   const token = localStorage.getItem('companyToken');
 
   useEffect(() => {
     if (token) {
       (async function invoke() {
         await CompanyJobs(token).then((response) => {
-          console.log(response);
-          setJob(response?.job);
+          if (response?.job?.length === 0) {
+            setNoData(true);
+          } else {
+            setNoData(false);
+            setJob(response?.job);
+          }
         });
       }());
     } else {
       navigate('/company/login');
     }
-  }, []);
-  const Activateed = async (id) => {
+  }, [refresh]);
+  const Activated = async (id) => {
     if (token) {
       await jobPostApproval(id, token).then((response) => {
         if (response.status === 'success') {
-          toast.success('🦄 Wow so easy!', {
+          toast.success('Job Post Approved!', {
+            position: 'top-center',
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          });
+          setRefresh(!refresh);
+        } else {
+          swal('OOPS', response.message, 'error');
+        }
+      });
+    } else {
+      navigate('/recruiter/login');
+    }
+  };
+
+  const Blocked = async (id) => {
+    if (token) {
+      await jobPostBlock(id, token).then((response) => {
+        if (response.status === 'success') {
+          toast.success('Job Post Blocked!', {
             position: 'top-center',
             autoClose: 1500,
             hideProgressBar: false,
@@ -92,93 +121,101 @@ export default function CompanyJobList() {
 
   return (
     <Box>
-      <ToastContainer />
-      <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell align="center">NO</StyledTableCell>
-              <StyledTableCell align="center">Job Title</StyledTableCell>
-              <StyledTableCell align="center">Hr Name</StyledTableCell>
-              <StyledTableCell align="center">Posted On</StyledTableCell>
-              <StyledTableCell align="center">Salary</StyledTableCell>
-              <StyledTableCell align="center">JobType</StyledTableCell>
-              <StyledTableCell align="center">WorkPlace</StyledTableCell>
-              <StyledTableCell align="center">Company Approval</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {job?.map((el, index) => (
-              <StyledTableRow key={el?.jobId.id}>
-                <StyledTableCell align="center" component="th" scope="row">
-                  {index + 1}
-                </StyledTableCell>
-                <StyledTableCell align="center" component="th" scope="row">
-                  {el?.jobId.jobTitle}
-                </StyledTableCell>
-                <StyledTableCell align="center" component="th" scope="row">
-                  {el?.name}
-                </StyledTableCell>
-                <StyledTableCell align="center" component="th" scope="row">
+      {noData
+        ? (
+          <Box>
+            <img src="/nodata.jpg" alt="...loading" />
+          </Box>
+        )
+        : (
+          <Box>
+            <ToastContainer />
+            <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="center">NO</StyledTableCell>
+                    <StyledTableCell align="center">Job Title</StyledTableCell>
+                    <StyledTableCell align="center">Hr Name</StyledTableCell>
+                    <StyledTableCell align="center">Posted On</StyledTableCell>
+                    <StyledTableCell align="center">Salary</StyledTableCell>
+                    <StyledTableCell align="center">JobType</StyledTableCell>
+                    <StyledTableCell align="center">WorkPlace</StyledTableCell>
+                    <StyledTableCell align="center">Company Approval</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {job?.map((el, index) => (
+                    <StyledTableRow key={el?.jobId?.id}>
+                      <StyledTableCell align="center" component="th" scope="row">
+                        {index + 1}
+                      </StyledTableCell>
+                      <StyledTableCell align="center" component="th" scope="row">
+                        {el?.jobId?.jobTitle}
+                      </StyledTableCell>
+                      <StyledTableCell align="center" component="th" scope="row">
+                        {el?.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="center" component="th" scope="row">
 
-                  <Moment format="DD/MM/YYYY" date={el?.jobId.createdAt} />
+                        <Moment format="DD/MM/YYYY" date={el?.jobId?.createdAt} />
 
-                </StyledTableCell>
-                <StyledTableCell align="center">{el?.jobId.salaryRange}</StyledTableCell>
-                <StyledTableCell align="center">{el?.jobId.jobType}</StyledTableCell>
-                <StyledTableCell align="center">{el?.jobId.workPlace}</StyledTableCell>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">{el?.jobId?.salaryRange}</StyledTableCell>
+                      <StyledTableCell align="center">{el?.jobId?.jobType}</StyledTableCell>
+                      <StyledTableCell align="center">{el?.jobId?.workPlace}</StyledTableCell>
 
-                <StyledTableCell align="center">
-                  {el?.jobId.companyOk
-                    ? (
-                      <Button
-                        sx={{
-                          backgroundColor: 'red',
-                          color: '#fff',
-                          fontWeight: '800',
-                          ':hover': { backgroundColor: 'darkred' },
-                        }}
-                      >
-                        Disable
-                      </Button>
-                    )
-                    : (
-                      <Button
-                        variant="contained"
-                        sx={{
-                          ml: 1, backgroundColor: 'blue', fontWeight: '800', ':hover': { backgroundColor: 'green' },
+                      <StyledTableCell align="center">
+                        {el?.jobId?.companyOk
+                          ? (
+                            <Button
+                              sx={{
+                                backgroundColor: 'red',
+                                color: '#fff',
+                                fontWeight: '800',
+                                ':hover': { backgroundColor: 'darkred' },
+                              }}
+                              onClick={() => Blocked(el?.jobId?._id)}
+                            >
+                              Disable
+                            </Button>
+                          )
+                          : (
+                            <Button
+                              variant="contained"
+                              sx={{
+                                ml: 1, backgroundColor: 'blue', fontWeight: '800', ':hover': { backgroundColor: 'green' },
 
-                        }}
-                        onClick={() => Activateed(el?.jobId._id)}
+                              }}
+                              onClick={() => Activated(el?.jobId?._id)}
+                            >
+                              Approved
+                            </Button>
+                          )}
+                      </StyledTableCell>
 
-                      >
-                        Approved
-                      </Button>
-                    )}
-                </StyledTableCell>
-
-                {/* <StyledTableCell align="center">
+                      {/* <StyledTableCell align="center">
                   <Button variant="contained" sx={{ bgcolor: 'blue' }}
                    onClick={() => editJob(el?._id)}>
                     Edit
                   </Button>
 
                 </StyledTableCell> */}
-                {/* <StyledTableCell align="center">
+                      {/* <StyledTableCell align="center">
                   <Button variant="contained" sx={{ bgcolor: 'blue' }}
                    onClick={() => usersList(el?._id)}>
                     view
                   </Button>
 
                 </StyledTableCell> */}
-                {/* <StyledTableCell align="center">
+                      {/* <StyledTableCell align="center">
                   <Button variant="contained" sx={{ bgcolor: 'red' }}
                   onClick={() => deleteJob(el?._id)}>
                     Dele
                   </Button>
 
                 </StyledTableCell> */}
-                {/* <StyledTableCell align="center">
+                      {/* <StyledTableCell align="center">
                   {el?.isActive
                     ? (
                       <Button
@@ -203,11 +240,14 @@ export default function CompanyJobList() {
                     )}
                 </StyledTableCell> */}
 
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        )}
     </Box>
+
   );
 }

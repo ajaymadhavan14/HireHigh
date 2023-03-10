@@ -74,7 +74,7 @@ export default function RecruiterProfile() {
                     <FormLabel>Company Name</FormLabel>
                     <Typography pt={1}>
 
-                      {recruiter?.companyName}
+                      {recruiter?.companyName?.companyName}
 
                     </Typography>
                   </Box>

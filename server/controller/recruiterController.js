@@ -168,7 +168,7 @@ const jobPost = async (req, res, next) => {
 
 const getProfile = async (req, res, next) => {
   try {
-    const data = await recruiterModel.findById(req.recruiterId);
+    const data = await recruiterModel.findById(req.recruiterId).populate('companyName');
     res.json(data);
   } catch (error) {
     next(error);
@@ -248,7 +248,7 @@ const EditJobPostData = async (req, res, next) => {
 
 const getProfileData = async (req, res, next) => {
   try {
-    const data = await recruiterModel.findById(req.recruiterId);
+    const data = await recruiterModel.findById(req.recruiterId).populate('companyName');
     res.json(data);
   } catch (error) {
     next(error);

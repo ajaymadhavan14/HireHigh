@@ -76,6 +76,7 @@ export default function RecruiterJobSortedList() {
   // const navigate = useNavigate();
   const [job, setJob] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [noData, setNoData] = useState(false);
   const token = localStorage.getItem('recruiterToken');
   const navigate = useNavigate();
 
@@ -104,7 +105,12 @@ export default function RecruiterJobSortedList() {
     if (token) {
       (async function invoke() {
         await getUserSortedList(token).then((res) => {
-          setJob(res);
+          if (res.length === 0) {
+            setNoData(true);
+          } else {
+            setNoData(false);
+            setJob(res);
+          }
         });
       }());
     } else {
@@ -119,169 +125,176 @@ export default function RecruiterJobSortedList() {
   // };
 
   return (
-
     <Box>
-      <ToastContainer />
-      <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell align="center">NO</StyledTableCell>
-              <StyledTableCell align="center">Job Name</StyledTableCell>
-              <StyledTableCell align="center">Name</StyledTableCell>
-              <StyledTableCell align="center">Email</StyledTableCell>
-              <StyledTableCell align="center">Phone NUmber</StyledTableCell>
-              <StyledTableCell align="center">view</StyledTableCell>
-              <StyledTableCell align="center">Comment</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {job?.map((ele) => (
-              ele?.users?.map((el, index) => (
-                <StyledTableRow key={el?.userId?.id}>
-                  <StyledTableCell align="center" component="th" scope="row">
-                    {index + 1}
-                  </StyledTableCell>
-                  <StyledTableCell align="center" component="th" scope="row">
-                    {ele?.jobTitle}
-                  </StyledTableCell>
+      {noData ? (
+        <Box>
+          <img src="/nodata.jpg" alt="...loading" />
+        </Box>
+      )
+        : (
+          <Box>
+            <ToastContainer />
+            <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="center">NO</StyledTableCell>
+                    <StyledTableCell align="center">Job Name</StyledTableCell>
+                    <StyledTableCell align="center">Name</StyledTableCell>
+                    <StyledTableCell align="center">Email</StyledTableCell>
+                    <StyledTableCell align="center">Phone NUmber</StyledTableCell>
+                    <StyledTableCell align="center">view</StyledTableCell>
+                    <StyledTableCell align="center">Comment</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {job?.map((ele) => (
+                    ele?.users?.map((el, index) => (
+                      <StyledTableRow key={el?.userId?.id}>
+                        <StyledTableCell align="center" component="th" scope="row">
+                          {index + 1}
+                        </StyledTableCell>
+                        <StyledTableCell align="center" component="th" scope="row">
+                          {ele?.jobTitle}
+                        </StyledTableCell>
 
-                  <StyledTableCell align="center" component="th" scope="row">
-                    {`${el?.userId?.firstName} ${el?.userId?.lastName}`}
-                  </StyledTableCell>
+                        <StyledTableCell align="center" component="th" scope="row">
+                          {`${el?.userId?.firstName} ${el?.userId?.lastName}`}
+                        </StyledTableCell>
 
-                  <StyledTableCell align="center">{el?.userId?.email}</StyledTableCell>
-                  <StyledTableCell align="center">{el?.userId?.phoneNumber}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    <Button onClick={handleOpen} variant="contained">Details</Button>
-                    <Modal
-                      open={open}
-                      onClose={handleClose}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
-                    >
-                      <Box sx={style}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                          Full details
-                        </Typography>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }}>
-                          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                            <Typography>Full Name :</Typography>
-                            <Typography>{`${el?.userId?.firstName} ${el?.userId?.lastName}`}</Typography>
-                          </Box>
-                          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                            <Typography>Email :</Typography>
-                            <Typography>{el?.userId?.email}</Typography>
-                          </Box>
-                          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                            <Typography>PhoneNumnber :</Typography>
-                            <Typography>{el?.userId?.phoneNumber}</Typography>
-                          </Box>
-                          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                            <Typography>Location :</Typography>
-                            <Typography>{el?.userId?.location}</Typography>
-                          </Box>
-                          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                            <Typography>Position :</Typography>
-                            <Typography>{el?.userId?.position}</Typography>
-                          </Box>
-                          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                            <Typography>HeadLine :</Typography>
-                            <Typography>{el?.userId?.headline}</Typography>
-                          </Box>
-                          <Box>
-                            <Accordion>
-                              <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header"
-                              >
-                                <Typography>Qualification</Typography>
-                              </AccordionSummary>
-                              {el?.userId?.qualifications?.map((element, ind) => (
-                                <AccordionDetails>
-                                  <Typography>
-                                    {ind + 1}
-                                    {' : '}
-                                    {element?.text}
-                                  </Typography>
-                                </AccordionDetails>
-                              ))}
-                            </Accordion>
-                          </Box>
-                          <Box>
-                            <Accordion>
-                              <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header"
-                              >
-                                <Typography>Experience</Typography>
-                              </AccordionSummary>
-                              {el?.userId?.experiances?.map((element, ind) => (
-                                <AccordionDetails>
-                                  <Typography>
-                                    {ind + 1}
-                                    {' : '}
-                                    {element?.text}
-                                  </Typography>
-                                </AccordionDetails>
-                              ))}
-                            </Accordion>
-                          </Box>
-                          <Box>
-                            <Accordion>
-                              <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header"
-                              >
-                                <Typography>Description</Typography>
-                              </AccordionSummary>
-                              <AccordionDetails>
-                                <Typography>
-                                  {el?.userId?.discription}
-                                </Typography>
-                              </AccordionDetails>
-                            </Accordion>
-                          </Box>
-                        </Box>
-                      </Box>
-                    </Modal>
-
-                  </StyledTableCell>
-                  {el?.comment
-                    ? (
-                      <StyledTableCell>
-                        <Typography sx={{ marginLeft: '2rem' }}>{el?.comment}</Typography>
-                      </StyledTableCell>
-                    )
-                    : (
-                      <StyledTableCell>
-
-                        <FormControl variant="standard" fullWidth>
-                          <InputLabel id="demo-simple-select-label">Comment</InputLabel>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            onChange={(e) => handleChangeComment(el?.userId?._id, e)}
+                        <StyledTableCell align="center">{el?.userId?.email}</StyledTableCell>
+                        <StyledTableCell align="center">{el?.userId?.phoneNumber}</StyledTableCell>
+                        <StyledTableCell align="center">
+                          <Button onClick={handleOpen} variant="contained">Details</Button>
+                          <Modal
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
                           >
-                            <MenuItem value="Good">Good</MenuItem>
-                            <MenuItem value="Maybe">Maybe</MenuItem>
-                            <MenuItem value="Notfit">NotFit</MenuItem>
-                          </Select>
-                        </FormControl>
+                            <Box sx={style}>
+                              <Typography id="modal-modal-title" variant="h6" component="h2">
+                                Full details
+                              </Typography>
+                              <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }}>
+                                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                                  <Typography>Full Name :</Typography>
+                                  <Typography>{`${el?.userId?.firstName} ${el?.userId?.lastName}`}</Typography>
+                                </Box>
+                                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                                  <Typography>Email :</Typography>
+                                  <Typography>{el?.userId?.email}</Typography>
+                                </Box>
+                                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                                  <Typography>PhoneNumnber :</Typography>
+                                  <Typography>{el?.userId?.phoneNumber}</Typography>
+                                </Box>
+                                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                                  <Typography>Location :</Typography>
+                                  <Typography>{el?.userId?.location}</Typography>
+                                </Box>
+                                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                                  <Typography>Position :</Typography>
+                                  <Typography>{el?.userId?.position}</Typography>
+                                </Box>
+                                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                                  <Typography>HeadLine :</Typography>
+                                  <Typography>{el?.userId?.headline}</Typography>
+                                </Box>
+                                <Box>
+                                  <Accordion>
+                                    <AccordionSummary
+                                      expandIcon={<ExpandMoreIcon />}
+                                      aria-controls="panel1a-content"
+                                      id="panel1a-header"
+                                    >
+                                      <Typography>Qualification</Typography>
+                                    </AccordionSummary>
+                                    {el?.userId?.qualifications?.map((element, ind) => (
+                                      <AccordionDetails>
+                                        <Typography>
+                                          {ind + 1}
+                                          {' : '}
+                                          {element?.text}
+                                        </Typography>
+                                      </AccordionDetails>
+                                    ))}
+                                  </Accordion>
+                                </Box>
+                                <Box>
+                                  <Accordion>
+                                    <AccordionSummary
+                                      expandIcon={<ExpandMoreIcon />}
+                                      aria-controls="panel1a-content"
+                                      id="panel1a-header"
+                                    >
+                                      <Typography>Experience</Typography>
+                                    </AccordionSummary>
+                                    {el?.userId?.experiances?.map((element, ind) => (
+                                      <AccordionDetails>
+                                        <Typography>
+                                          {ind + 1}
+                                          {' : '}
+                                          {element?.text}
+                                        </Typography>
+                                      </AccordionDetails>
+                                    ))}
+                                  </Accordion>
+                                </Box>
+                                <Box>
+                                  <Accordion>
+                                    <AccordionSummary
+                                      expandIcon={<ExpandMoreIcon />}
+                                      aria-controls="panel1a-content"
+                                      id="panel1a-header"
+                                    >
+                                      <Typography>Description</Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                      <Typography>
+                                        {el?.userId?.discription}
+                                      </Typography>
+                                    </AccordionDetails>
+                                  </Accordion>
+                                </Box>
+                              </Box>
+                            </Box>
+                          </Modal>
 
-                      </StyledTableCell>
-                    ) }
+                        </StyledTableCell>
+                        {el?.comment
+                          ? (
+                            <StyledTableCell>
+                              <Typography sx={{ marginLeft: '2rem' }}>{el?.comment}</Typography>
+                            </StyledTableCell>
+                          )
+                          : (
+                            <StyledTableCell>
 
-                </StyledTableRow>
-              ))
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                              <FormControl variant="standard" fullWidth>
+                                <InputLabel id="demo-simple-select-label">Comment</InputLabel>
+                                <Select
+                                  labelId="demo-simple-select-label"
+                                  id="demo-simple-select"
+                                  onChange={(e) => handleChangeComment(el?.userId?._id, e)}
+                                >
+                                  <MenuItem value="Good">Good</MenuItem>
+                                  <MenuItem value="Maybe">Maybe</MenuItem>
+                                  <MenuItem value="Notfit">NotFit</MenuItem>
+                                </Select>
+                              </FormControl>
+
+                            </StyledTableCell>
+                          ) }
+
+                      </StyledTableRow>
+                    ))
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        )}
     </Box>
-
   );
 }

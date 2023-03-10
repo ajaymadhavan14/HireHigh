@@ -98,7 +98,6 @@ const mdTheme = createTheme();
 export default function CompanyJobShow() {
   const navigate = useNavigate();
   const dispatch = useDispatch(companyDetails);
-  console.log('1111111111111111111111111');
   useEffect(() => {
     const token = localStorage.getItem('companyToken');
     if (token) {

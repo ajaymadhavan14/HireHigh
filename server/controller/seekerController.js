@@ -125,8 +125,7 @@ const userActive = async (req, res, next) => {
 
 const JobListShow = async (req, res, next) => {
   try {
-    const data = await jobModel.find({ $and: [{ 'users.userId': { $ne: req.userId } }, { companyOk: true }] });
-    console.log(data);
+    const data = await jobModel.find({ $and: [{ 'users.userId': { $ne: req.userId } }, { companyOk: true }] }).populate('companyName');
     res.json(data);
   } catch (error) {
     next(error);
@@ -149,12 +148,12 @@ const jobApply = async (req, res, next) => {
 
 const getSingleView = async (req, res, next) => {
   try {
-    const singleData = await jobModel.findById(req.query.id);
+    const singleData = await jobModel.findById(req.query.id).populate('companyName');
     const catId = singleData.jobCategory;
     const fullData = await jobModel.find({
       $and: [{ jobCategory: catId },
-        { _id: { $ne: req.query.id } }, { 'users.userId': { $ne: req.userId } }],
-    });
+        { _id: { $ne: req.query.id } }, { 'users.userId': { $ne: req.userId } }, { companyOk: true }],
+    }).populate('companyName');
     res.json({ data: singleData, category: fullData });
   } catch (error) {
     next(error);
@@ -281,7 +280,13 @@ const setNewPassword = async (req, res, next) => {
 
 const getAppliedJobs = async (req, res, next) => {
   try {
-    const data = await userModel.findById(req.userId).populate('job.jobId');
+    const data = await userModel.findById(req.userId).populate({
+      path: 'job.jobId',
+      populate: {
+        path: 'companyName',
+        model: 'company',
+      },
+    });
     res.json(data.job);
   } catch (error) {
     next(error);

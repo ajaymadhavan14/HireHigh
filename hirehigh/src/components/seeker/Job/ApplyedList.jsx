@@ -25,6 +25,7 @@ const bull = (
 export default function JobCardApplied(props) {
   const [jobs, setJobs] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [noData, setNoData] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem('userToken');
   useEffect(() => {
@@ -32,8 +33,10 @@ export default function JobCardApplied(props) {
       (async function invoke() {
         await applyedJobsSeeker(token).then((res) => {
           if (res.length === 0) {
-            navigate('/jobs');
+            setNoData(true);
+            // navigate('/jobs');
           } else {
+            setNoData(false);
             setJobs(res);
           }
         });
@@ -60,24 +63,31 @@ export default function JobCardApplied(props) {
 
   return (
     <Box>
-      {jobs.map((el) => (
-        <Card sx={{ minWidth: 275 }} key={el?.id}>
-          <CardContent sx={{ display: 'flex', flexDirection: 'row' }} key={el?.id}>
-            <img src={el?.jobId?.image} alt="...loading" style={{ width: '20vh' }} />
-            <Box sx={{ marginLeft: '8vh', alignSelf: 'center' }}>
-              <Box sx={{ justifyContent: 'space-between' }}>
-                <Typography variant="h5" component="div">
-                  {el?.jobId?.jobTitle}
-                </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                  {el?.jobId?.companyName}
-                </Typography>
-                <Typography variant="body2">
-                  {el?.jobId?.jobType}
-                </Typography>
-              </Box>
-            </Box>
-            {el?.comment
+      {noData ? (
+        <Box>
+          <img src="/nodata.jpg" alt="...loading" />
+        </Box>
+      )
+        : (
+          <Box>
+            {jobs.map((el) => (
+              <Card sx={{ minWidth: 275 }} key={el?.id}>
+                <CardContent sx={{ display: 'flex', flexDirection: 'row' }} key={el?.id}>
+                  <img src={el?.jobId?.image} alt="...loading" style={{ width: '20vh' }} />
+                  <Box sx={{ marginLeft: '8vh', alignSelf: 'center' }}>
+                    <Box sx={{ justifyContent: 'space-between' }}>
+                      <Typography variant="h5" component="div">
+                        {el?.jobId?.jobTitle}
+                      </Typography>
+                      <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                        {el?.jobId?.companyName?.companyName}
+                      </Typography>
+                      <Typography variant="body2">
+                        {el?.jobId?.jobType}
+                      </Typography>
+                    </Box>
+                  </Box>
+                  {el?.comment
             && (
             <Box sx={{ marginLeft: '15vh' }}>
               <Typography component="h1" variant="h5" sx={{ fontWeight: 600 }}>Replay</Typography>
@@ -87,39 +97,41 @@ export default function JobCardApplied(props) {
               </Typography>
             </Box>
             )}
-            <Box sx={{ alignSelf: 'center', ml: 'auto' }}>
-              {user.job.some((element) => element.jobId === el.jobId?._id)
-                ? (
-                  <Button
+                  <Box sx={{ alignSelf: 'center', ml: 'auto' }}>
+                    {user.job.some((element) => element.jobId === el.jobId?._id)
+                      ? (
+                        <Button
                         // eslint-disable-next-line no-underscore-dangle
                     // onClick={() => apply(el?._id)}
-                    variant="contained"
-                    sx={{
-                      backgroundColor: 'green', color: '#fff', fontWeight: '800', pointerEvents: 'none',
-                    }}
-                  >
-                    Applied
-                  </Button>
-                )
+                          variant="contained"
+                          sx={{
+                            backgroundColor: 'green', color: '#fff', fontWeight: '800', pointerEvents: 'none',
+                          }}
+                        >
+                          Applied
+                        </Button>
+                      )
 
-                : (
-                  <Button
+                      : (
+                        <Button
                         // eslint-disable-next-line no-underscore-dangle
                     // onClick={() => apply(el?._id)}
-                    sx={{
-                      ml: 1, backgroundColor: 'blue', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'green' },
-                    }}
-                  >
-                    Apply
-                  </Button>
-                )}
-            </Box>
-          </CardContent>
-          <CardActions>
-            <Button size="small" onClick={() => navigate('/job_view', { state: el?.jobId?._id })}>full details</Button>
-          </CardActions>
-        </Card>
-      ))}
+                          sx={{
+                            ml: 1, backgroundColor: 'blue', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'green' },
+                          }}
+                        >
+                          Apply
+                        </Button>
+                      )}
+                  </Box>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" onClick={() => navigate('/job_view', { state: el?.jobId?._id })}>full details</Button>
+                </CardActions>
+              </Card>
+            ))}
+          </Box>
+        )}
     </Box>
   );
 }

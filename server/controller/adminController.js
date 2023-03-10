@@ -70,7 +70,7 @@ const getUsersList = async (req, res, next) => {
 
 const getRecruitersList = async (req, res, next) => {
   try {
-    const data = await recruiterModel.find({});
+    const data = await recruiterModel.find({}).populate('companyName');
     res.json(data);
   } catch (error) {
     next(error);
@@ -79,7 +79,7 @@ const getRecruitersList = async (req, res, next) => {
 
 const getAllJobs = async (req, res, next) => {
   try {
-    const data = await jobPostModel.find().populate('jobCategory');
+    const data = await jobPostModel.find().populate('jobCategory').populate('companyName');
     res.json(data);
   } catch (error) {
     next(error);

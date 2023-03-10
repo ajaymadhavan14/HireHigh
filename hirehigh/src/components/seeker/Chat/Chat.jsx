@@ -89,7 +89,7 @@ export default function SeekerChat() {
 
       <Grid container>
         {/* Left Side */}
-        <Grid item xs={2} md={3} lg={4}>
+        <Grid item xs={5} sm={4} md={4} lg={4}>
           <div className="Left-side-chat">
             <Paper
               sx={{
@@ -119,7 +119,7 @@ export default function SeekerChat() {
           </div>
         </Grid>
         {/* Right Side */}
-        <Grid item xs={10} md={9} lg={8}>
+        <Grid item xs={7} sm={8} md={8} lg={8}>
           <div className="Right-side-chat">
             <Paper
               sx={{

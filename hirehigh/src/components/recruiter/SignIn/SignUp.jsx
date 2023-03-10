@@ -154,7 +154,6 @@ export default function RetSingnUP() {
                   //     swal('OOPS', response.data.message, 'error');
                   //   }
                   // });
-                  console.log(data);
                   setRecruiterDetails(data);
                   try {
                     await setUpRecaptcha(`+91${data.phoneNumber}`).then((res) => {

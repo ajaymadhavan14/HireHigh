@@ -105,7 +105,7 @@ export default function RecruiterList() {
                     {el?.userName}
                   </StyledTableCell>
                   <StyledTableCell align="center" component="th" scope="row">
-                    {el?.companyName}
+                    {el?.companyName?.companyName}
                   </StyledTableCell>
                   <StyledTableCell align="center">{el?.email}</StyledTableCell>
 

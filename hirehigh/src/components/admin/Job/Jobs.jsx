@@ -91,7 +91,7 @@ export default function AdminJobList() {
                   {index + 1}
                 </StyledTableCell>
                 <StyledTableCell align="center" component="th" scope="row">
-                  {el?.companyName}
+                  {el?.companyName?.companyName}
                 </StyledTableCell>
                 <StyledTableCell align="center" component="th" scope="row">
                   {el?.jobTitle}

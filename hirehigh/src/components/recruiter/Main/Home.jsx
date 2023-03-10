@@ -39,6 +39,13 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import WorkIcon from '@mui/icons-material/Work';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Modal from '@mui/material/Modal';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -46,6 +53,7 @@ import swal from 'sweetalert';
 import Swal2 from 'sweetalert2';
 import { allData } from '../../../apis/RecruiterApi';
 import { createChat } from '../../../apis/ChatApi';
+import RecruiterSideModal from './Modal';
 
 const Item = styleds(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -55,8 +63,25 @@ const Item = styleds(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  width: 500,
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 4,
+  p: 5,
+};
+
 export default function RecruiterHomeCard() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const [data, setData] = useState([]);
+  const [modalDatas, setModalDatas] = useState({});
+  const [modal, setModal] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem('recruiterToken');
   useEffect(() => {
@@ -86,6 +111,14 @@ export default function RecruiterHomeCard() {
   return (
 
     <Box sx={{ flexGrow: 1, marginLeft: '5rem' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'start', padding: '3vh' }}>
+        <Typography
+          component="h1"
+          variant="h5"
+        >
+          Job Seekers
+        </Typography>
+      </Box>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {data.map((el) => (
           <Card sx={{ m: 3, minWidth: 300, minHeight: 340 }}>
@@ -103,12 +136,20 @@ export default function RecruiterHomeCard() {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small">view</Button>
+              <Button onClick={() => {
+                setModalDatas(el);
+                setModal(true);
+              }}
+              >
+                view
+              </Button>
+
               <Button variant="contained" onClick={() => sendMessage(el._id)}>Message</Button>
             </CardActions>
           </Card>
 
         ))}
+        {modal && <RecruiterSideModal state={modalDatas} setModal={setModal} />}
       </Grid>
     </Box>
   );

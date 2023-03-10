@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-shadow */
@@ -14,7 +15,12 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
-import { useState, useContext } from 'react';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import Select from '@mui/material/Select';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { toast, ToastContainer } from 'react-toastify';
@@ -22,6 +28,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { auth, storage } from '../../../firebase/Config';
 import AuthContext from '../../../context/AppContext';
+import { getCompany } from '../../../apis/RecruiterApi';
 
 const theme = createTheme();
 export default function RetSingnUP() {
@@ -50,6 +57,7 @@ export default function RetSingnUP() {
   const [confPasswordError, setConfPasswordError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
   const [flag, setFlag] = useState(false);
+  const [company, setCompany] = useState([]);
 
   const navigate = useNavigate();
 
@@ -80,86 +88,36 @@ export default function RetSingnUP() {
     };
     if (data.companyName && data.email && data.password && data.confPassword && data.userName
          && data.phoneNumber && data.tagLine && data.website && data.discription && data.image) {
-      const regName = /^[a-zA-Z]+$/;
+      const regName = /^[a-zA-Z ]+$/;
       const regEmail = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
       const regPhone = /^[0-9]+$/;
       setTotalRequired('');
       if (regName.test(data.userName)) {
         setUserName(false);
         setUserNameError('');
-        if (regName.test(data.companyName)) {
-          setCompanyName(false);
-          setCompanyNameError('');
-          if (regEmail.test(data.email)) {
-            setEmail(false);
-            setEmailError('');
-            if (regPhone.test(data.phoneNumber)) {
+        if (regEmail.test(data.email)) {
+          setEmail(false);
+          setEmailError('');
+          if (regPhone.test(data.phoneNumber)) {
+            setPhoneNumber(false);
+            setPhoneNumberError('');
+            if (data.phoneNumber.length === 10) {
               setPhoneNumber(false);
               setPhoneNumberError('');
-              if (data.phoneNumber.length === 10) {
-                setPhoneNumber(false);
-                setPhoneNumberError('');
-                if (data.password.length >= 6) {
+              if (data.password.length >= 6) {
+                setPassword(false);
+                setPasswordError('');
+                if (data.password === data.confPassword) {
                   setPassword(false);
+                  setConfPassword(false);
                   setPasswordError('');
-                  if (data.password === data.confPassword) {
-                    setPassword(false);
-                    setConfPassword(false);
-                    setPasswordError('');
-                    setConfPasswordError('');
-                    if (data.image.name) {
-                      const allowedFormats = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-                      if (!allowedFormats.exec(data.image.name)) {
-                        toast.error('Invalid file type!', {
-                          position: 'top-right',
-                          autoClose: 4000,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                          theme: 'colored',
-                        });
-                      } else {
-                        const dirs = Date.now();
-                        const rand = Math.random();
-                        const { image } = data;
-                        const imageRef = ref(storage, `/recruiterImages/${dirs}${rand}_${image?.name}`);
-                        const toBase64 = (image) => new Promise((resolve, reject) => {
-                          const reader = new FileReader();
-                          reader.readAsDataURL(image);
-                          reader.onload = () => resolve(reader.result);
-                          reader.onerror = (error) => reject(error);
-                        }).catch((err) => {
-                          console.log(err);
-                        });
-                        const imgBase = await toBase64(image);
-                        await uploadString(imageRef, imgBase, 'data_url').then(async () => {
-                          const downloadURL = await getDownloadURL(imageRef);
-                          data.image = downloadURL;
-                        });
-                      }
-                    } else {
-                      data.image = '';
-                    }
-                    // axios.post('/recruiter/signup', data).then((response) => {
-                    //   if (response.data.status === 'success') {
-                    //     navigate('/recruiter/login');
-                    //   } else {
-                    //     swal('OOPS', response.data.message, 'error');
-                    //   }
-                    // });
-                    setRecruiterDetails(data);
-                    try {
-                      await setUpRecaptcha(`+91${data.phoneNumber}`).then((res) => {
-                        setFlag(true);
-                        setRecruiterOtpConf(res);
-                        navigate('/recruiter/otp');
-                      });
-                    } catch (error) {
-                      toast.warning(`${error.message}`, {
+                  setConfPasswordError('');
+                  if (data.image.name) {
+                    const allowedFormats = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+                    if (!allowedFormats.exec(data.image.name)) {
+                      toast.error('Invalid file type!', {
                         position: 'top-right',
-                        autoClose: 3000,
+                        autoClose: 4000,
                         hideProgressBar: false,
                         closeOnClick: true,
                         pauseOnHover: true,
@@ -167,42 +125,94 @@ export default function RetSingnUP() {
                         progress: undefined,
                         theme: 'colored',
                       });
+                    } else {
+                      const dirs = Date.now();
+                      const rand = Math.random();
+                      const { image } = data;
+                      const imageRef = ref(storage, `/recruiterImages/${dirs}${rand}_${image?.name}`);
+                      const toBase64 = (image) => new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(image);
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = (error) => reject(error);
+                      }).catch((err) => {
+                        console.log(err);
+                      });
+                      const imgBase = await toBase64(image);
+                      await uploadString(imageRef, imgBase, 'data_url').then(async () => {
+                        const downloadURL = await getDownloadURL(imageRef);
+                        data.image = downloadURL;
+                      });
                     }
                   } else {
-                    setPassword(true);
-                    setConfPassword(true);
-                    setPasswordError('Password is not match');
-                    setConfPasswordError('Password is not match');
+                    data.image = '';
+                  }
+                  // axios.post('/recruiter/signup', data).then((response) => {
+                  //   if (response.data.status === 'success') {
+                  //     navigate('/recruiter/login');
+                  //   } else {
+                  //     swal('OOPS', response.data.message, 'error');
+                  //   }
+                  // });
+                  console.log(data);
+                  setRecruiterDetails(data);
+                  try {
+                    await setUpRecaptcha(`+91${data.phoneNumber}`).then((res) => {
+                      setFlag(true);
+                      setRecruiterOtpConf(res);
+                      navigate('/recruiter/otp');
+                    });
+                  } catch (error) {
+                    toast.warning(`${error.message}`, {
+                      position: 'top-right',
+                      autoClose: 3000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: 'colored',
+                    });
                   }
                 } else {
                   setPassword(true);
-                  setPasswordError('Minimum 6 character');
+                  setConfPassword(true);
+                  setPasswordError('Password is not match');
+                  setConfPasswordError('Password is not match');
                 }
               } else {
-                setPhoneNumber(true);
-                setPhoneNumberError('Please enter 10 digit');
+                setPassword(true);
+                setPasswordError('Minimum 6 character');
               }
             } else {
               setPhoneNumber(true);
-              setPhoneNumberError('Please Enter valid Phone no');
+              setPhoneNumberError('Please enter 10 digit');
             }
           } else {
-            setEmail(true);
-            setEmailError('Please enter valid Email');
+            setPhoneNumber(true);
+            setPhoneNumberError('Please Enter valid Phone no');
           }
         } else {
-          setCompanyName(true);
-          setCompanyNameError('Please enter valid Name');
+          setEmail(true);
+          setEmailError('Please enter valid Email');
         }
       } else {
-        setCompanyName(true);
-        setCompanyNameError('Please enter valid Name');
+        setUserName(true);
+        setUserNameError('Please enter valid Name');
       }
     } else {
       setTotalRequired('Please enter your Details');
     }
   };
 
+  useEffect(() => {
+    async function invoke() {
+      await getCompany().then((res) => {
+        setCompany(res);
+      });
+    }
+    invoke();
+  }, []);
   return (
     <ThemeProvider theme={theme}>
       <Typography sx={{
@@ -250,18 +260,25 @@ export default function RetSingnUP() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="given-name"
-                name="companyName"
-                type="text"
-                required
-                fullWidth
-                id="companyName"
-                label="Company Name"
-                error={companyName}
-                helperText={companyNameError}
-                autoFocus
-              />
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Company Name</InputLabel>
+
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="companyName"
+                  label="Company Name"
+                  error={companyName}
+                  helperText={companyNameError}
+                >
+                  {company.map((el) => (
+                    <MenuItem value={el?._id}>{el?.userName}</MenuItem>
+                  ))}
+
+                </Select>
+
+              </FormControl>
+
             </Grid>
           </Grid>
 
@@ -299,7 +316,7 @@ export default function RetSingnUP() {
               fullWidth
               id="tagLine"
               type="text"
-              label="Tag Line"
+              label="Position"
               name="tagLine"
               autoComplete="tagLine"
               error={tagLine}

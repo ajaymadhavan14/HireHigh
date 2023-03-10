@@ -18,3 +18,21 @@ export const getProfile = async (token) => {
     return error;
   }
 };
+
+export const CompanyJobs = async (token) => {
+  try {
+    const { data } = await axios.get('/company/list_jobs', { headers: { 'company-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const jobPostApproval = async (id, token) => {
+  try {
+    const { data } = await axios.patch(`/company/job_approval?jobId=${id}`, {}, { headers: { 'company-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

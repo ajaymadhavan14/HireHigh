@@ -13,7 +13,8 @@ const jobPosts = new Schema(
 
     },
     companyName: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'company',
       required: true,
 
     },

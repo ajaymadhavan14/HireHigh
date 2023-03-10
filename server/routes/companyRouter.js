@@ -8,5 +8,7 @@ router.post('/signup', companyController.companySignUpPost);
 router.post('/login', companyController.companySignInPost);
 router.get('/isCompanyAuth', jwtAuth.jwtCompany, companyController.isCompanyAuth);
 router.get('/get_profile', jwtAuth.jwtCompany, companyController.getProfile);
+router.get('/list_jobs', jwtAuth.jwtCompany, companyController.jobList);
+router.patch('/job_approval', jwtAuth.jwtCompany, companyController.jobApproval);
 
 export default router;

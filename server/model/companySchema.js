@@ -54,6 +54,21 @@ const companySignup = new Schema(
     image: {
       type: String,
     },
+    job: [
+      {
+        jobId: {
+          type: Schema.Types.ObjectId,
+          ref: 'jobPost',
+        },
+        name: {
+          type: String,
+        },
+        isActive: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
   },
   { timestamps: true },
 );

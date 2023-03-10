@@ -95,9 +95,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-export default function CompanyJob() {
+export default function CompanyJobShow() {
   const navigate = useNavigate();
   const dispatch = useDispatch(companyDetails);
+  console.log('1111111111111111111111111');
   useEffect(() => {
     const token = localStorage.getItem('companyToken');
     if (token) {
@@ -223,7 +224,7 @@ export default function CompanyJob() {
                   justifyContent: open ? 'initial' : 'last',
                   px: 2.5,
                 }}
-                onClick={() => navigate('/comapny/jobs')}
+                onClick={() => navigate('/comapny/jobs_list')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,

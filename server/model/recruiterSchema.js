@@ -8,9 +8,9 @@ const recruiterSignup = new Schema(
       trim: true,
     },
     companyName: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'company',
       required: true,
-      trim: true,
     },
     phoneNumber: {
       required: true,

@@ -5,6 +5,7 @@ import recruiterModel from '../model/recruiterSchema.js';
 import jobPostModel from '../model/jobPostSchema.js';
 import categoryModel from '../model/jobCategorySchema.js';
 import userModel from '../model/userSchema.js';
+import companyModel from '../model/companySchema.js';
 
 const recruiterSignUpPost = async (req, res, next) => {
   try {
@@ -135,8 +136,9 @@ const jobPost = async (req, res, next) => {
       jobTitle, companyName, jobCategory, jobQualification, jobDiscription,
       responsibilities, workPlace, salaryRange, jobType, image, location, vaccancy,
     } = req.body;
+    const data = await recruiterModel.findById(req.recruiterId);
     const Id = req.recruiterId;
-    await jobPostModel.create({
+    const jobData = await jobPostModel.create({
       jobTitle,
       jobCategory,
       jobDiscription,
@@ -152,6 +154,13 @@ const jobPost = async (req, res, next) => {
       recruiterId: Id,
     });
     res.json({ status: 'success' });
+    await companyModel.findByIdAndUpdate(companyName, {
+      $push: {
+        job: {
+          jobId: jobData._id, name: data.userName,
+        },
+      },
+    });
   } catch (error) {
     next(error);
   }
@@ -201,7 +210,7 @@ const DeleteJob = async (req, res, next) => {
 
 const getDataForEdit = async (req, res, next) => {
   try {
-    const data = await jobPostModel.findById(req.query.id);
+    const data = await jobPostModel.findById(req.query.id).populate('companyName');
     res.json(data);
   } catch (error) {
     next(error);
@@ -352,6 +361,23 @@ const getUserForChat = async (req, res, next) => {
   }
 };
 
+const getCompanyDetails = async (req, res, next) => {
+  try {
+    const data = await companyModel.find({});
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getCompanyDataForJob = async (req, res, next) => {
+  try {
+    const data = await recruiterModel.findById(req.recruiterId).populate('companyName');
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
 export default {
   recruiterSignUpPost,
   recruiterSignInPost,
@@ -374,4 +400,6 @@ export default {
   getSortedList,
   getAllDatasRecruiterSide,
   getUserForChat,
+  getCompanyDetails,
+  getCompanyDataForJob,
 };

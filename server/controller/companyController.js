@@ -2,6 +2,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import companyModel from '../model/companySchema.js';
+import jobPostModel from '../model/jobPostSchema.js';
 
 const companySignUpPost = async (req, res, next) => {
   try {
@@ -113,6 +114,29 @@ const getProfile = async (req, res, next) => {
   }
 };
 
+const jobList = async (req, res, next) => {
+  try {
+    const data = await companyModel.findById(req.companyId).populate('job.jobId');
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const jobApproval = async (req, res, next) => {
+  try {
+    if (req.companyId && req.query.jobId) {
+      await companyModel.findOneAndUpdate({ _id: req.companyId, 'job.jobId': req.query.jobId }, { $set: { 'job.$.isActive': true } });
+      await jobPostModel.findByIdAndUpdate(req.query.jobId, { $set: { companyOk: true } });
+      res.json({ status: 'success' });
+    } else {
+      res.json({ message: 'Not Approved' });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
-  companySignUpPost, companySignInPost, isCompanyAuth, getProfile,
+  companySignUpPost, companySignInPost, isCompanyAuth, getProfile, jobList, jobApproval,
 };

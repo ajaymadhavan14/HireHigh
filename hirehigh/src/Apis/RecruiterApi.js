@@ -107,3 +107,21 @@ export const getUser = async (userId) => {
     return error;
   }
 };
+
+export const getCompany = async () => {
+  try {
+    const { data } = await axios.get('/recruiter/get_company');
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getCompanyData = async (token) => {
+  try {
+    const { data } = await axios.get('/recruiter/get_companyData', { headers: { 'recruiter-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

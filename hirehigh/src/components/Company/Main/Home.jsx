@@ -97,6 +97,7 @@ const mdTheme = createTheme();
 export default function CompanyHome() {
   const navigate = useNavigate();
   const dispatch = useDispatch(companyDetails);
+  console.log('2222222222222222222222222');
   useEffect(() => {
     const token = localStorage.getItem('companyToken');
     if (token) {
@@ -222,7 +223,7 @@ export default function CompanyHome() {
                   justifyContent: open ? 'initial' : 'last',
                   px: 2.5,
                 }}
-                onClick={() => navigate('/comapny/jobs')}
+                onClick={() => navigate('/company/jobs')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -326,7 +327,12 @@ export default function CompanyHome() {
                     height: 240,
                   }}
                 >
-                  <h1>Welcome Brototype</h1>
+                  <h1>
+                    Welcome to
+                    {' '}
+                    {company?.username}
+
+                  </h1>
                 </Paper>
               </Grid>
               {/* <Grid item xs={12} md={8} lg={9}>

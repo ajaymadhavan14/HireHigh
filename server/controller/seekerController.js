@@ -125,7 +125,8 @@ const userActive = async (req, res, next) => {
 
 const JobListShow = async (req, res, next) => {
   try {
-    const data = await jobModel.find({ 'users.userId': { $ne: req.userId } });
+    const data = await jobModel.find({ $and: [{ 'users.userId': { $ne: req.userId } }, { companyOk: true }] });
+    console.log(data);
     res.json(data);
   } catch (error) {
     next(error);

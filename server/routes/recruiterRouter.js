@@ -24,6 +24,8 @@ router.get('/applied_users', jwtAuth.jwtRecruiter, recruiterController.jobApplie
 router.post('/job_comment', jwtAuth.jwtRecruiter, recruiterController.updateJobComment);
 router.get('/get_sorted_user', jwtAuth.jwtRecruiter, recruiterController.getSortedList);
 router.get('/allDatas', jwtAuth.jwtRecruiter, recruiterController.getAllDatasRecruiterSide);
+router.get('/get_companyData', jwtAuth.jwtRecruiter, recruiterController.getCompanyDataForJob);
+router.get('/get_company', recruiterController.getCompanyDetails);
 
 router.get('/user/:id', recruiterController.getUserForChat);
 

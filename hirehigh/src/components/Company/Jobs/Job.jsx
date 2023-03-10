@@ -1,5 +1,6 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -17,9 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import {
-  RecruiterSideJobList, RecruiterJobDele, RecruiterJobEdit, RecruiterSideJobAppliedList,
-} from '../../../apis/RecruiterApi';
+import { CompanyJobs, jobPostApproval } from '../../../apis/CompanyApi';
 
 export default function CompanyJobList() {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -58,24 +57,19 @@ export default function CompanyJobList() {
   useEffect(() => {
     if (token) {
       (async function invoke() {
-      // const id = props.id._id;
-        await RecruiterSideJobList(token).then((response) => {
-          if (response.status === 'failed') {
-            navigate('/recruiter/add_job');
-          } else {
-            setJob(response.data);
-          }
+        await CompanyJobs(token).then((response) => {
+          console.log(response);
+          setJob(response?.job);
         });
       }());
     } else {
-      navigate('/recruiter/login');
+      navigate('/company/login');
     }
-  }, [refresh]);
-
-  const BlockJob = async (id) => {
+  }, []);
+  const Activateed = async (id) => {
     if (token) {
-      await RecruiterJobDele(id, token).then((response) => {
-        if (response.data.status === 'success') {
+      await jobPostApproval(id, token).then((response) => {
+        if (response.status === 'success') {
           toast.success('🦄 Wow so easy!', {
             position: 'top-center',
             autoClose: 1500,
@@ -88,28 +82,8 @@ export default function CompanyJobList() {
           });
           setRefresh(!refresh);
         } else {
-          swal('OOPS', response.data.message, 'error');
+          swal('OOPS', response.message, 'error');
         }
-      });
-    } else {
-      navigate('/company/login');
-    }
-  };
-
-  const editJob = async (id) => {
-    if (token) {
-      await RecruiterJobEdit(id, token).then((response) => {
-        navigate('/recruiter/edit_jobs', { state: response });
-      });
-    } else {
-      navigate('/recruiter/login');
-    }
-  };
-
-  const usersList = async (id) => {
-    if (token) {
-      await RecruiterSideJobAppliedList(id, token).then((res) => {
-        navigate('/recruiter/applied_users', { state: res });
       });
     } else {
       navigate('/recruiter/login');
@@ -125,30 +99,64 @@ export default function CompanyJobList() {
             <TableRow>
               <StyledTableCell align="center">NO</StyledTableCell>
               <StyledTableCell align="center">Job Title</StyledTableCell>
+              <StyledTableCell align="center">Hr Name</StyledTableCell>
               <StyledTableCell align="center">Posted On</StyledTableCell>
-              <StyledTableCell align="center">Category</StyledTableCell>
               <StyledTableCell align="center">Salary</StyledTableCell>
-              <StyledTableCell align="center">Edit</StyledTableCell>
-              <StyledTableCell align="center">Users</StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell>
+              <StyledTableCell align="center">JobType</StyledTableCell>
+              <StyledTableCell align="center">WorkPlace</StyledTableCell>
+              <StyledTableCell align="center">Company Approval</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {job?.map((el, index) => (
-              <StyledTableRow key={el?.id}>
+              <StyledTableRow key={el?.jobId.id}>
                 <StyledTableCell align="center" component="th" scope="row">
                   {index + 1}
                 </StyledTableCell>
                 <StyledTableCell align="center" component="th" scope="row">
-                  {el?.jobTitle}
+                  {el?.jobId.jobTitle}
+                </StyledTableCell>
+                <StyledTableCell align="center" component="th" scope="row">
+                  {el?.name}
                 </StyledTableCell>
                 <StyledTableCell align="center" component="th" scope="row">
 
-                  <Moment format="DD/MM/YYYY" date={el?.createdAt} />
+                  <Moment format="DD/MM/YYYY" date={el?.jobId.createdAt} />
 
                 </StyledTableCell>
-                <StyledTableCell align="center">{el?.jobCategory?.name}</StyledTableCell>
-                <StyledTableCell align="center">{el?.salaryRange}</StyledTableCell>
+                <StyledTableCell align="center">{el?.jobId.salaryRange}</StyledTableCell>
+                <StyledTableCell align="center">{el?.jobId.jobType}</StyledTableCell>
+                <StyledTableCell align="center">{el?.jobId.workPlace}</StyledTableCell>
+
+                <StyledTableCell align="center">
+                  {el?.jobId.companyOk
+                    ? (
+                      <Button
+                        sx={{
+                          backgroundColor: 'red',
+                          color: '#fff',
+                          fontWeight: '800',
+                          ':hover': { backgroundColor: 'darkred' },
+                        }}
+                      >
+                        Disable
+                      </Button>
+                    )
+                    : (
+                      <Button
+                        variant="contained"
+                        sx={{
+                          ml: 1, backgroundColor: 'blue', fontWeight: '800', ':hover': { backgroundColor: 'green' },
+
+                        }}
+                        onClick={() => Activateed(el?.jobId._id)}
+
+                      >
+                        Approved
+                      </Button>
+                    )}
+                </StyledTableCell>
+
                 {/* <StyledTableCell align="center">
                   <Button variant="contained" sx={{ bgcolor: 'blue' }}
                    onClick={() => editJob(el?._id)}>

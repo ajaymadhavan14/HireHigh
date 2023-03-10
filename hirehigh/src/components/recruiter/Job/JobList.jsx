@@ -126,6 +126,7 @@ export default function RecruiterJobList() {
               <StyledTableCell align="center">Job Title</StyledTableCell>
               <StyledTableCell align="center">Posted On</StyledTableCell>
               <StyledTableCell align="center">Category</StyledTableCell>
+              <StyledTableCell align="center">Company Status</StyledTableCell>
               <StyledTableCell align="center">Salary</StyledTableCell>
               <StyledTableCell align="center">Edit</StyledTableCell>
               <StyledTableCell align="center">Users</StyledTableCell>
@@ -147,6 +148,7 @@ export default function RecruiterJobList() {
 
                 </StyledTableCell>
                 <StyledTableCell align="center">{el?.jobCategory?.name}</StyledTableCell>
+                <StyledTableCell align="center">{el?.companyOk ? 'Approved' : 'NotApproved'}</StyledTableCell>
                 <StyledTableCell align="center">{el?.salaryRange}</StyledTableCell>
                 <StyledTableCell align="center">
                   <Button variant="contained" sx={{ bgcolor: 'blue' }} onClick={() => editJob(el?._id)}>

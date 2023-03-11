@@ -9,6 +9,7 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Container from '@mui/material/Container';
 import Moment from 'react-moment';
 import { useEffect, useState } from 'react';
 import { AdminSideJobList, JobActivated, JobBlocked } from '../../../apis/AdminApi';
@@ -67,77 +68,78 @@ export default function AdminJobList() {
   };
 
   return (
-    <Box>
-      <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell align="center">NO</StyledTableCell>
-              <StyledTableCell align="center">Company Name</StyledTableCell>
-              <StyledTableCell align="center">Job Title</StyledTableCell>
-              <StyledTableCell align="center">Posted On</StyledTableCell>
-              <StyledTableCell align="center">Category</StyledTableCell>
-              <StyledTableCell align="center">Salary Range</StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell>
-              {/* <StyledTableCell align="center">PHONE NO</StyledTableCell>
+    <Container component="main" maxWidth="xl" sx={{ marginTop: '3vh' }}>
+      <Box>
+        <TableContainer sx={{ maxHeight: 700 }} component={Paper}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell align="center">NO</StyledTableCell>
+                <StyledTableCell align="center">Company Name</StyledTableCell>
+                <StyledTableCell align="center">Job Title</StyledTableCell>
+                <StyledTableCell align="center">Posted On</StyledTableCell>
+                <StyledTableCell align="center">Category</StyledTableCell>
+                <StyledTableCell align="center">Salary Range</StyledTableCell>
+                <StyledTableCell align="center">Status</StyledTableCell>
+                {/* <StyledTableCell align="center">PHONE NO</StyledTableCell>
               <StyledTableCell align="center">Website</StyledTableCell>
               <StyledTableCell align="center">Status</StyledTableCell> */}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {job?.map((el, index) => (
-              <StyledTableRow key={el?.id}>
-                <StyledTableCell align="center" component="th" scope="row">
-                  {index + 1}
-                </StyledTableCell>
-                <StyledTableCell align="center" component="th" scope="row">
-                  {el?.companyName?.companyName}
-                </StyledTableCell>
-                <StyledTableCell align="center" component="th" scope="row">
-                  {el?.jobTitle}
-                </StyledTableCell>
-                <StyledTableCell align="center" component="th" scope="row">
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {job?.map((el, index) => (
+                <StyledTableRow key={el?.id}>
+                  <StyledTableCell align="center" component="th" scope="row">
+                    {index + 1}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" component="th" scope="row">
+                    {el?.companyName?.companyName}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" component="th" scope="row">
+                    {el?.jobTitle}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" component="th" scope="row">
 
-                  <Moment format="DD/MM/YYYY" date={el?.createdAt} />
+                    <Moment format="DD/MM/YYYY" date={el?.createdAt} />
 
-                </StyledTableCell>
-                <StyledTableCell align="center">{el?.jobCategory.name}</StyledTableCell>
-                <StyledTableCell align="center">{el?.salaryRange}</StyledTableCell>
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{el?.jobCategory.name}</StyledTableCell>
+                  <StyledTableCell align="center">{el?.salaryRange}</StyledTableCell>
 
-                {/* <StyledTableCell align="center">{el?.phoneNumber}</StyledTableCell>
+                  {/* <StyledTableCell align="center">{el?.phoneNumber}</StyledTableCell>
                 <StyledTableCell align="center">{el?.website}</StyledTableCell> */}
-                <StyledTableCell align="center">
-                  {el.isActive
-                    ? (
-                      <Button
+                  <StyledTableCell align="center">
+                    {el.isActive
+                      ? (
+                        <Button
                         // eslint-disable-next-line no-underscore-dangle
-                        onClick={() => blocked(el?._id)}
-                        sx={{
-                          backgroundColor: '#03a903', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
-                        }}
-                      >
-                        Active
-                      </Button>
-                    )
-                    : (
-                      <Button
+                          onClick={() => blocked(el?._id)}
+                          sx={{
+                            backgroundColor: '#03a903', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
+                          }}
+                        >
+                          Active
+                        </Button>
+                      )
+                      : (
+                        <Button
                         // eslint-disable-next-line no-underscore-dangle
-                        onClick={() => actived(el?._id)}
-                        sx={{
-                          ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
-                        }}
-                      >
-                        Block
-                      </Button>
-                    )}
-                </StyledTableCell>
+                          onClick={() => actived(el?._id)}
+                          sx={{
+                            ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
+                          }}
+                        >
+                          Block
+                        </Button>
+                      )}
+                  </StyledTableCell>
 
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {/* <TablePagination
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {/* <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={rows.length}
@@ -146,6 +148,7 @@ export default function AdminJobList() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       /> */}
-    </Box>
+      </Box>
+    </Container>
   );
 }

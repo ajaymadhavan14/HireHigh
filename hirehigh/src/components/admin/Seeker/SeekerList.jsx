@@ -80,11 +80,13 @@ export default function SeekerList() {
       navigate('/admin/login');
     }
   };
+
   return (
     <Container component="main" maxWidth="xl" sx={{ marginTop: '3vh' }}>
       <Box>
-        <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
+        <TableContainer sx={{ maxHeight: 700 }} component={Paper}>
           <Table stickyHeader aria-label="sticky table">
+
             <TableHead>
               <TableRow>
                 <StyledTableCell align="center">NO</StyledTableCell>
@@ -136,6 +138,7 @@ export default function SeekerList() {
               ))}
             </TableBody>
           </Table>
+
         </TableContainer>
       </Box>
     </Container>

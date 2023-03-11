@@ -13,7 +13,6 @@ import AppContext from './context/AppContext';
 import AdminRouter from './routes/AdminRouter';
 import RecruiterRouter from './routes/RecruiterRouter';
 import SeekerRouter from './routes/SeekerRouter';
-import AllBest from './pages/tryPage';
 import CompanyRouter from './routes/CompanyRouter';
 
 function App() {
@@ -49,8 +48,6 @@ function App() {
             <Route path="/admin/*" element={<AdminRouter />} />
             <Route path="/recruiter/*" element={<RecruiterRouter />} />
             <Route path="/company/*" element={<CompanyRouter />} />
-
-            <Route path="/try" element={<AllBest />} />
 
           </Routes>
         </BrowserRouter>

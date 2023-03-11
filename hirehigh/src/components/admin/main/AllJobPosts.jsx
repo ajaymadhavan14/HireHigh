@@ -14,7 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import CategoryIcon from '@mui/icons-material/Category';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import BusinessIcon from '@mui/icons-material/Business';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -291,11 +291,13 @@ function AdminMain() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'last',
-                px: 2.5,
-              }}
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/admin/company')}
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -304,8 +306,8 @@ function AdminMain() {
 
                 }}
                 >
-                  <NotificationsIcon />
-                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Notification</ListItemText>
+                  <CorporateFareIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Companys</ListItemText>
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>

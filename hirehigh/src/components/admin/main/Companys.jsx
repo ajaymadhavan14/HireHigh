@@ -31,7 +31,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal2 from 'sweetalert2';
 import axios from '../../../axios/axios';
 import { adminDetails } from '../../../redux/admin';
-import RecruiterList from '../Recruiter/RecruiterList';
+import CompanyList from '../Company/Company';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -90,7 +90,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function AdminHome() {
+export default function AdminCompanySide() {
   const navigate = useNavigate();
   const dispatch = useDispatch(adminDetails);
   const token = localStorage.getItem('adminToken');
@@ -353,13 +353,10 @@ function AdminHome() {
           }}
         >
           <Toolbar />
-          <RecruiterList />
+          <CompanyList />
+
         </Box>
       </Box>
     </ThemeProvider>
   );
-}
-
-export default function AdminRecruiterList() {
-  return <AdminHome />;
 }

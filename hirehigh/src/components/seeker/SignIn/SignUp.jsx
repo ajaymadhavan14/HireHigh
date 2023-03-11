@@ -255,7 +255,7 @@ export default function SeekerSignUp() {
                   required
                   fullWidth
                   name="confPassword"
-                  label="Cofirm Password"
+                  label="Confirm Password"
                   type="password"
                   id="confPassword"
                   autoComplete="new-password"

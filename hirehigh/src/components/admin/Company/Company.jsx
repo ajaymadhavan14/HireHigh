@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -12,9 +13,9 @@ import Container from '@mui/material/Container';
 import TableRow from '@mui/material/TableRow';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { AdminGetRecruiters, recruiterActivated, recruiterBlocked } from '../../../apis/AdminApi';
+import { AdminGetCompanys } from '../../../apis/AdminApi';
 
-export default function RecruiterList() {
+export default function CompanyList() {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.white,
@@ -44,7 +45,7 @@ export default function RecruiterList() {
   //   setPage(0);
   // };
 
-  const [recruiter, setRecruiter] = useState([]);
+  const [company, setCompany] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem('adminToken');
@@ -52,8 +53,8 @@ export default function RecruiterList() {
   useEffect(() => {
     if (token) {
       (async function invoke() {
-        await AdminGetRecruiters(token).then((response) => {
-          setRecruiter(response);
+        await AdminGetCompanys(token).then((response) => {
+          setCompany(response);
         });
       }());
     } else {
@@ -61,23 +62,23 @@ export default function RecruiterList() {
     }
   }, [refresh]);
 
-  const blocked = async (recruiterId) => {
-    if (token) {
-      await recruiterBlocked(recruiterId, token);
-      setRefresh(!refresh);
-    } else {
-      navigate('/admin/login');
-    }
-  };
+  //   const blocked = async (recruiterId) => {
+  //     if (token) {
+  //       await recruiterBlocked(recruiterId, token);
+  //       setRefresh(!refresh);
+  //     } else {
+  //       navigate('/admin/login');
+  //     }
+  //   };
 
-  const actived = async (recruiterId) => {
-    if (token) {
-      await recruiterActivated(recruiterId, token);
-      setRefresh(!refresh);
-    } else {
-      navigate('/admin/login');
-    }
-  };
+  //   const actived = async (recruiterId) => {
+  //     if (token) {
+  //       await recruiterActivated(recruiterId, token);
+  //       setRefresh(!refresh);
+  //     } else {
+  //       navigate('/admin/login');
+  //     }
+  //   };
 
   return (
     <Container component="main" maxWidth="xl" sx={{ marginTop: '3vh' }}>
@@ -92,11 +93,10 @@ export default function RecruiterList() {
                 <StyledTableCell align="center">E-MAIL</StyledTableCell>
                 <StyledTableCell align="center">PHONE NO</StyledTableCell>
                 <StyledTableCell align="center">Website</StyledTableCell>
-                <StyledTableCell align="center">Status</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {recruiter?.map((el, index) => (
+              {company?.map((el, index) => (
                 <StyledTableRow key={el?.id}>
                   <StyledTableCell align="center" component="th" scope="row">
                     {index + 1}
@@ -105,20 +105,20 @@ export default function RecruiterList() {
                     {el?.userName}
                   </StyledTableCell>
                   <StyledTableCell align="center" component="th" scope="row">
-                    {el?.companyName?.companyName}
+                    {el?.companyName}
                   </StyledTableCell>
                   <StyledTableCell align="center">{el?.email}</StyledTableCell>
 
                   <StyledTableCell align="center">{el?.phoneNumber}</StyledTableCell>
                   <StyledTableCell align="center">{el?.website}</StyledTableCell>
-                  <StyledTableCell align="center">
+                  {/* <StyledTableCell align="center">
                     {el?.isActive
                       ? (
                         <Button
-                        // eslint-disable-next-line no-underscore-dangle
                           onClick={() => blocked(el?._id)}
                           sx={{
-                            backgroundColor: '#03a903', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
+                            backgroundColor: '#03a903', color: '#fff', fontWeight: '800', ':hover':
+                            { backgroundColor: 'blue' },
                           }}
                         >
                           Active
@@ -126,16 +126,17 @@ export default function RecruiterList() {
                       )
                       : (
                         <Button
-                        // eslint-disable-next-line no-underscore-dangle
                           onClick={() => actived(el?._id)}
                           sx={{
-                            ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'blue' },
+                            ml: 1, backgroundColor: 'red', color: '#fff', fontWeight: '800',
+                            ':hover':
+                             { backgroundColor: 'blue' },
                           }}
                         >
                           Block
                         </Button>
                       )}
-                  </StyledTableCell>
+                  </StyledTableCell> */}
 
                 </StyledTableRow>
               ))}

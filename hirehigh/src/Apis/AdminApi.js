@@ -99,3 +99,12 @@ export const CategoryDelete = async (id, token) => {
     return error;
   }
 };
+
+export const AdminGetCompanys = async (token) => {
+  try {
+    const { data } = await axios.get('/admin/companys', { headers: { 'admin-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

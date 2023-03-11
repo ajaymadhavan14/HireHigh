@@ -5,6 +5,7 @@ import userModel from '../model/userSchema.js';
 import recruiterModel from '../model/recruiterSchema.js';
 import jobPostModel from '../model/jobPostSchema.js';
 import categoryModel from '../model/jobCategorySchema.js';
+import companyModel from '../model/companySchema.js';
 
 const signInPost = async (req, res, next) => {
   try {
@@ -136,6 +137,15 @@ const DeleteCategory = async (req, res, next) => {
   }
 };
 
+const getCompanys = async (req, res, next) => {
+  try {
+    const data = await companyModel.find({});
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   signInPost,
   isAdminAuth,
@@ -147,4 +157,5 @@ export default {
   AddCategory,
   ShowCategory,
   DeleteCategory,
+  getCompanys,
 };

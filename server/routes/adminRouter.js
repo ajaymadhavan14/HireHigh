@@ -14,5 +14,6 @@ router.patch('/job_actived', jwtAuth.jwtAdmin, adminController.jobPostActive);
 router.post('/add_category', jwtAuth.jwtAdmin, adminController.AddCategory);
 router.get('/job_category', jwtAuth.jwtAdmin, adminController.ShowCategory);
 router.delete('/cat_dele', jwtAuth.jwtAdmin, adminController.DeleteCategory);
+router.get('/companys', jwtAuth.jwtAdmin, adminController.getCompanys);
 
 export default router;

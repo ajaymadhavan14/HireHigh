@@ -9,10 +9,38 @@ export const createChat = async (datas) => {
   }
 };
 
-export const userChats = (id) => axios.get(`/chat/${id}`);
+export const userChats = async (id) => {
+  try {
+    const data = axios.get(`/chat/${id}`);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
 
-export const findChat = (firstId, secondId) => axios.get(`/chat/find/${firstId}/${secondId}`);
+export const findChat = async (firstId, secondId) => {
+  try {
+    const data = axios.get(`/chat/find/${firstId}/${secondId}`);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
 
-export const getMessages = (id) => axios.get(`/message/${id}`);
+export const getMessages = async (id) => {
+  try {
+    const data = axios.get(`/message/${id}`);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
 
-export const addMessage = (data) => axios.post('/message/', data);
+export const addMessage = async (data) => {
+  try {
+    const datas = await axios.post('/message/', data);
+    return datas;
+  } catch (error) {
+    return error;
+  }
+};

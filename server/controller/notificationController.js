@@ -16,12 +16,7 @@ const AddNotification = async (req, res, next) => {
 
 const GetNotification = async (req, res, next) => {
   try {
-    console.log(req.userId);
-    console.log('11111111111111111');
-    // const data = await notificationModel.find({}).sort({ createdAt: -1 });
-    // console.log(data);
     if (req.userId) {
-      console.log('222222222222222222');
       const data = await notificationModel.find({ recieverId: req.userId })
         .sort({ createdAt: -1 }).populate('jobId');
       if (data) {
@@ -30,7 +25,6 @@ const GetNotification = async (req, res, next) => {
         res.json({ status: 'failed' });
       }
     } else {
-      console.log('3333333333333');
       const data = await notificationModel.find({ recieverId: req.recruiterId })
         .sort({ createdAt: -1 });
       if (data) {

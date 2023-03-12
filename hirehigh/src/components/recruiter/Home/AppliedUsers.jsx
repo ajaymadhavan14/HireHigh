@@ -292,6 +292,27 @@ export default function RecruiterSideJobAppliedList() {
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/notification')}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+
+                }}
+                >
+                  <NotificationsIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Notification</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
           </List>
           <Divider />
           <List>

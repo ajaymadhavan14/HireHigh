@@ -83,8 +83,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function NotificationCard() {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.userInfo);
   const token = localStorage.getItem('userToken');
+  const { recruiter } = useSelector((state) => state.recruiterInfo);
+
   const [datas, setDatas] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
@@ -106,13 +107,13 @@ export default function NotificationCard() {
 
   useEffect(() => {
     if (socket.current == null) {
-      socket.emit('new-user-add', user?._id);
+      socket.emit('new-user-add', recruiter?._id);
     }
 
     socket.on('get-users', (users) => {
       setOnlineUsers(users);
     });
-  }, [user]);
+  }, [recruiter]);
 
   useEffect(() => {
     if (sendNotification !== null) {
@@ -126,10 +127,10 @@ export default function NotificationCard() {
     });
   }, []);
   useEffect(() => {
-    if (user?._id) {
+    if (recruiter?._id) {
       if (
         recieveNotification !== null
-        && recieveNotification?.recieverId === user?._id
+        && recieveNotification?.recieverId === recruiter?._id
       ) {
         toast.info(`${recieveNotification?.notification}`, {
           position: 'top-center',
@@ -155,8 +156,7 @@ export default function NotificationCard() {
               <CardContent>
                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                   <Typography sx={{ fontSize: 24 }} gutterBottom>
-                    Job Name :
-                    {el?.jobId?.jobTitle}
+                    a
                   </Typography>
                   {/* <img src={el?.jobId?.image} style={{ height: '4rem', width: '5rem' }}
                    alt="" /> */}
@@ -166,7 +166,7 @@ export default function NotificationCard() {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" onClick={() => navigate('/job_view', { state: el?.jobId?._id })}>Learn More</Button>
+                <Button size="small">Learn More</Button>
               </CardActions>
             </Card>
           ))}

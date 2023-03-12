@@ -134,3 +134,12 @@ export const AddNotification = async (formData, token) => {
     return error;
   }
 };
+
+export const getNotification = async (token) => {
+  try {
+    const { data } = await axios.get('/recruiter/get_notifications', { headers: { 'user-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

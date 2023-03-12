@@ -15,6 +15,7 @@ import NewPassword from '../pages/recruiter/Forgot-Password/NewPassword';
 import AppliedList from '../pages/recruiter/AppliedList';
 import SortedList from '../pages/recruiter/SortedList';
 import Messages from '../pages/recruiter/Messages';
+import Notification from '../pages/recruiter/Notification';
 
 function RecruiterRouter() {
   return (
@@ -51,6 +52,8 @@ function RecruiterRouter() {
         <Route path="/sorted_users" element={<SortedList />} />
 
         <Route path="/messages" element={<Messages />} />
+
+        <Route path="/notification" element={<Notification />} />
 
       </Routes>
 

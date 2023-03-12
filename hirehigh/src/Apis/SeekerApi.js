@@ -116,3 +116,12 @@ export const getNotification = async (token) => {
     return error;
   }
 };
+
+export const AddNotification = async (formData, token) => {
+  try {
+    const data = await axios.post('/add_notification', formData, { headers: { 'recruiter-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

@@ -19,15 +19,17 @@ import FormControl from '@mui/material/FormControl';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import Select from '@mui/material/Select';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import swal from 'sweetalert';
 import { CheckBox } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { FormControlLabel, FormGroup } from '@mui/material';
+import { useSelector } from 'react-redux';
 import {
-  jobListSeekerSide, jobApply, getSerachJob, getFilterJob,
+  jobListSeekerSide, jobApply, getSerachJob, getFilterJob, AddNotification,
 } from '../../../apis/SeekerApi';
 import { getCategory } from '../../../apis/RecruiterApi';
+import AuthContext from '../../../context/AppContext';
 
 const bull = (
   <Box
@@ -89,6 +91,8 @@ export default function JobCard(props) {
   const [jobCat, setJobCat] = useState('');
   const [jobType, setJobType] = useState('');
   const [jobWork, setJobWork] = useState('');
+  const { user } = useSelector((state) => state.userInfo);
+  const { sendNotification, setSendNotification } = useContext(AuthContext);
 
   useEffect(() => {
     if (token) {
@@ -102,14 +106,20 @@ export default function JobCard(props) {
       navigate('/login');
     }
   }, [refresh]);
-  const user = props?.data;
-  const apply = async (id) => {
+  const users = props?.data;
+  const apply = async (id, recruiterId) => {
     if (token) {
-      await jobApply(id, user, token).then((response) => {
+      await jobApply(id, user, token).then(async (response) => {
         if (response.data.status === 'success') {
           swal('success');
           setNoData(false);
           setRefresh(!refresh);
+          await AddNotification({
+            senderId: user.id, recieverId: recruiterId, jobId: id, content: `${user.username} Applied your job post`,
+          }, token);
+          setSendNotification({
+            senderId: user.id, recieverId: recruiterId, jobId: id, content: `${user.username} Applied your job post`,
+          });
         }
       });
     } else {
@@ -244,7 +254,7 @@ export default function JobCard(props) {
                       </Box>
                     </Box>
                     <Box sx={{ alignSelf: 'center', ml: 'auto' }}>
-                      {user?.job?.some((element) => element?.jobId === el?._id)
+                      {users?.job?.some((element) => element?.jobId === el?._id)
                         ? (
                           <Button
                         // eslint-disable-next-line no-underscore-dangle
@@ -261,7 +271,7 @@ export default function JobCard(props) {
                         : (
                           <Button
                         // eslint-disable-next-line no-underscore-dangle
-                            onClick={() => apply(el?._id)}
+                            onClick={() => apply(el?._id, el?.recruiterId)}
                             sx={{
                               ml: 1, backgroundColor: 'blue', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'green' },
                             }}

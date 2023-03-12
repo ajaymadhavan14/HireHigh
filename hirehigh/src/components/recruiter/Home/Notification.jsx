@@ -14,6 +14,8 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -25,8 +27,8 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TaskIcon from '@mui/icons-material/Task';
-import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import HomeIcon from '@mui/icons-material/Home';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import MessageIcon from '@mui/icons-material/Message';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -37,7 +39,7 @@ import Swal2 from 'sweetalert2';
 import swal from 'sweetalert';
 import axios from '../../../axios/axios';
 import { recruiterDetails } from '../../../redux/recruiter';
-import RecruiterPrfileData from '../Profile/EditProfile';
+import RecruiterHomeCard from '../Main/Home';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -96,7 +98,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-export default function RecruiterProfileEdit() {
+export default function RecruiterNotification() {
   const navigate = useNavigate();
   const dispatch = useDispatch(recruiterDetails);
   useEffect(() => {
@@ -265,7 +267,27 @@ export default function RecruiterProfileEdit() {
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
+            {/* <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'last',
+                  px: 2.5,
+                }}
+                onClick={() => navigate('/recruiter/sorted_users')}
+              >
+                <ListItemIcon sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
 
+                }}
+                >
+                  <NoteAddIcon />
+                  <ListItemText sx={{ opacity: open ? 1 : 0, pl: 3 }}>Short List</ListItemText>
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem> */}
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -320,6 +342,7 @@ export default function RecruiterProfileEdit() {
                   px: 2.5,
                 }}
                 onClick={() => navigate('/recruiter/home')}
+
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -392,7 +415,7 @@ export default function RecruiterProfileEdit() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <RecruiterPrfileData data={recruiter} />
+            <RecruiterHomeCard />
           </Container>
         </Box>
       </Box>

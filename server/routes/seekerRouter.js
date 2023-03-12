@@ -27,6 +27,7 @@ router.get('/search_job', jwtAuth.jwtSeeker, seekerController.jobSearch);
 router.post('/get_jobfilter', jwtAuth.jwtSeeker, seekerController.getFilterJob);
 router.get('/allDatas', jwtAuth.jwtSeeker, seekerController.getAllDatasSeekerSide);
 router.get('/get_notifications', jwtAuth.jwtSeeker, notificationController.GetNotification);
+router.post('/add_notification', jwtAuth.jwtSeeker, notificationController.AddNotification);
 
 router.post('/chat', chatContollers.createChat);
 router.get('/chat/:userId', chatContollers.userChats);

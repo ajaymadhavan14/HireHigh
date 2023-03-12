@@ -39,4 +39,15 @@ io.on("connection", (socket) => {
       io.to(user.socketId).emit("recieve-message", data);
     }
   });
+
+  socket.on("send-notification", (data) => {
+    console.log(data);
+    const { recieverId } = data;
+    const user = activeUsers.find((user) => {
+      return user.userId === recieverId;
+    });
+    if (user) {
+      io.to(user.socketId).emit("recieve-notification", data);
+    }
+  });
 });

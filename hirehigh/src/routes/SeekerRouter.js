@@ -15,6 +15,7 @@ import OtpPage from '../pages/seeker/Forgot-Password/OtpPage';
 import NewPassword from '../pages/seeker/Forgot-Password/NewPassword';
 import AppliedJobs from '../pages/seeker/AppliedJobs';
 import Messages from '../pages/seeker/Messages';
+import Notification from '../pages/seeker/Notification';
 
 function SeekerRouter() {
   return (
@@ -51,6 +52,8 @@ function SeekerRouter() {
         <Route path="/applied_jobs" element={<AppliedJobs />} />
 
         <Route path="/messages" element={<Messages />} />
+
+        <Route path="/notification" element={<Notification />} />
 
       </Routes>
 

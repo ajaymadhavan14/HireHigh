@@ -93,7 +93,7 @@ export default function JobCardApplied(props) {
               <Typography component="h1" variant="h5" sx={{ fontWeight: 600 }}>Replay</Typography>
               <Typography sx={{ marginTop: '2vh' }}>
                 {el?.comment}
-                {' for the post '}
+                {' for the job '}
               </Typography>
             </Box>
             )}

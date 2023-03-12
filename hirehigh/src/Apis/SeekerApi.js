@@ -107,3 +107,12 @@ export const getUser = async (userId) => {
     return error;
   }
 };
+
+export const getNotification = async (token) => {
+  try {
+    const { data } = await axios.get('/get_notifications', { headers: { 'user-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

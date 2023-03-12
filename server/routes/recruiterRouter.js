@@ -1,6 +1,7 @@
 import express from 'express';
 import recruiterController from '../controller/recruiterController.js';
 import jwtAuth from '../middlewares/jwtAuth.js';
+import notificationController from '../controller/notificationController.js';
 
 const router = express.Router();
 
@@ -26,6 +27,7 @@ router.get('/get_sorted_user', jwtAuth.jwtRecruiter, recruiterController.getSort
 router.get('/allDatas', jwtAuth.jwtRecruiter, recruiterController.getAllDatasRecruiterSide);
 router.get('/get_companyData', jwtAuth.jwtRecruiter, recruiterController.getCompanyDataForJob);
 router.get('/get_company', recruiterController.getCompanyDetails);
+router.post('/add_notification', jwtAuth.jwtRecruiter, notificationController.AddNotification);
 
 router.get('/user/:id', recruiterController.getUserForChat);
 

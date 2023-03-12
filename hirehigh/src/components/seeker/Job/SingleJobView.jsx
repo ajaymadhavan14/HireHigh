@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
@@ -14,6 +15,8 @@ import CardContent from '@mui/material/CardContent';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import swal from 'sweetalert';
+import { useSelector } from 'react-redux';
+import { element } from 'prop-types';
 import { getSingleJobData, jobApply } from '../../../apis/SeekerApi';
 
 const bull = (
@@ -60,6 +63,9 @@ export default function SingleJobView(props) {
       navigate('/login');
     }
   };
+  const { user } = useSelector((state) => state.userInfo);
+  console.log(user);
+
   return (
 
     <Grid container spacing={3}>
@@ -87,6 +93,17 @@ export default function SingleJobView(props) {
                 {data?.location}
               </Typography>
             </Box>
+            {data?.users?.map((elem) => (elem?.userId === user?.id
+             && (
+             <Box sx={{ marginLeft: '17vh' }}>
+               <Typography component="h1" variant="h5" sx={{ fontWeight: 600 }}>Replay From Recruiter</Typography>
+               <Typography sx={{ marginTop: '2vh' }}>
+                 {elem?.comment}
+                 {' for the job '}
+               </Typography>
+             </Box>
+             )
+            ))}
           </Box>
 
         </Paper>

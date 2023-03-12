@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
 /* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
@@ -25,9 +27,11 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { Typography } from '@mui/material';
-import { RecruiterComment } from '../../../apis/RecruiterApi';
+import { RecruiterComment, AddNotification } from '../../../apis/RecruiterApi';
+import AuthContext from '../../../context/AppContext';
 
 const style = {
   position: 'absolute',
@@ -81,11 +85,13 @@ export default function RecruiterJobAppliedList() {
   const [noData, setNoData] = useState(false);
   const token = localStorage.getItem('recruiterToken');
   const navigate = useNavigate();
+  const { recruiter } = useSelector((state) => state.recruiterInfo);
+  const { sendNotification, setSendNotification } = useContext(AuthContext);
 
   const handleChangeComment = async (id, event) => {
     const comment = { comment: event.target.value, userId: id, jobId: state._id };
     if (token) {
-      await RecruiterComment(token, comment).then((response) => {
+      await RecruiterComment(token, comment).then(async (response) => {
         if (response.status === 'success') {
           toast.success('🦄 Wow so easy!', {
             position: 'top-center',
@@ -96,6 +102,12 @@ export default function RecruiterJobAppliedList() {
             draggable: true,
             progress: undefined,
             theme: 'colored',
+          });
+          await AddNotification({
+            senderId: recruiter.id, recieverId: id, jobId: state._id, content: `${recruiter.username} Commented your job Application`,
+          }, token);
+          setSendNotification({
+            senderId: recruiter.id, recieverId: id, jobId: state._id, content: `${recruiter.username} Commented your job Application`,
           });
           setRefresh(!refresh);
         } else {

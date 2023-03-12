@@ -3,6 +3,7 @@ import seekerController from '../controller/seekerController.js';
 import jwtAuth from '../middlewares/jwtAuth.js';
 import chatContollers from '../controller/chatContoller.js';
 import messageContoller from '../controller/messageContoller.js';
+import notificationController from '../controller/notificationController.js';
 
 const router = express.Router();
 
@@ -25,6 +26,7 @@ router.get('/applied_jobs', jwtAuth.jwtSeeker, seekerController.getAppliedJobs);
 router.get('/search_job', jwtAuth.jwtSeeker, seekerController.jobSearch);
 router.post('/get_jobfilter', jwtAuth.jwtSeeker, seekerController.getFilterJob);
 router.get('/allDatas', jwtAuth.jwtSeeker, seekerController.getAllDatasSeekerSide);
+router.get('/get_notifications', jwtAuth.jwtSeeker, notificationController.GetNotification);
 
 router.post('/chat', chatContollers.createChat);
 router.get('/chat/:userId', chatContollers.userChats);

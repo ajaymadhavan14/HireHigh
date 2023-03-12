@@ -27,7 +27,7 @@ import { FormControlLabel, FormGroup } from '@mui/material';
 import { useSelector } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { getNotification } from '../../../apis/SeekerApi';
+import { getNotification } from '../../../apis/RecruiterApi';
 import AuthContext from '../../../context/AppContext';
 
 const bull = (
@@ -83,7 +83,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function NotificationCard() {
   const navigate = useNavigate();
-  const token = localStorage.getItem('userToken');
+  const token = localStorage.getItem('recruiterToken');
   const { recruiter } = useSelector((state) => state.recruiterInfo);
 
   const [datas, setDatas] = useState([]);
@@ -156,7 +156,14 @@ export default function NotificationCard() {
               <CardContent>
                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                   <Typography sx={{ fontSize: 24 }} gutterBottom>
-                    a
+                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                      <Typography sx={{ fontSize: 24 }} gutterBottom>
+                        Job Name :
+                        {el?.jobId?.jobTitle}
+                      </Typography>
+                      {/* <img src={el?.jobId?.image} style={{ height: '4rem', width: '5rem' }}
+                   alt="" /> */}
+                    </Box>
                   </Typography>
                   {/* <img src={el?.jobId?.image} style={{ height: '4rem', width: '5rem' }}
                    alt="" /> */}

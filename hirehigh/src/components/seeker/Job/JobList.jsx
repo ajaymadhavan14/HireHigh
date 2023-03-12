@@ -111,15 +111,15 @@ export default function JobCard(props) {
     if (token) {
       await jobApply(id, user, token).then(async (response) => {
         if (response.data.status === 'success') {
-          swal('success');
-          setNoData(false);
-          setRefresh(!refresh);
           await AddNotification({
             senderId: user.id, recieverId: recruiterId, jobId: id, content: `${user.username} Applied your job post`,
           }, token);
           setSendNotification({
             senderId: user.id, recieverId: recruiterId, jobId: id, content: `${user.username} Applied your job post`,
           });
+          swal('success');
+          setNoData(false);
+          setRefresh(!refresh);
         }
       });
     } else {

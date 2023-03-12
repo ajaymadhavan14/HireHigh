@@ -48,7 +48,6 @@ export default function RecruiterPrfileData() {
   const navigate = useNavigate();
   const [datas, setDatas] = useState({});
   const token = localStorage.getItem('recruiterToken');
-  //   console.log(recruiter, '111111111111111111');
 
   useEffect(() => {
     if (token) {
@@ -132,7 +131,7 @@ export default function RecruiterPrfileData() {
                 data.image = datas.image;
               }
               if (token) {
-                axios.post('/recruiter/profile_edit_post', data, { headers: { 'recruiter-access-token': token } }).then((response) => {
+                axios.post('/recruiter/profile-edit-post', data, { headers: { 'recruiter-access-token': token } }).then((response) => {
                   if (response.data.status === 'success') {
                     navigate('/recruiter/profile');
                   } else {

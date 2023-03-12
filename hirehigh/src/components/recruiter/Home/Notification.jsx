@@ -40,6 +40,7 @@ import swal from 'sweetalert';
 import axios from '../../../axios/axios';
 import { recruiterDetails } from '../../../redux/recruiter';
 import RecruiterHomeCard from '../Main/Home';
+import NotificationCard from '../Notification/Notification';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -415,7 +416,7 @@ export default function RecruiterNotification() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <RecruiterHomeCard />
+            <NotificationCard />
           </Container>
         </Box>
       </Box>

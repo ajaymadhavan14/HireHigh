@@ -11,7 +11,7 @@ export const recruiterSignupApi = async (recruiterData) => {
 
 export const getProfile = async (token) => {
   try {
-    const { data } = await axios.get('/recruiter/get_profile', { headers: { 'recruiter-access-token': token } });
+    const { data } = await axios.get('/recruiter/get-profile', { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;
@@ -29,7 +29,7 @@ export const RecruiterSideJobList = async (token) => {
 
 export const getCategory = async (token) => {
   try {
-    const { data } = await axios.get('/recruiter/get_cat', { headers: { 'recruiter-access-token': token } });
+    const { data } = await axios.get('/recruiter/get-cat', { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;
@@ -38,7 +38,7 @@ export const getCategory = async (token) => {
 
 export const RecruiterJobDele = async (id, token) => {
   try {
-    const data = await axios.patch(`/recruiter/job_dele?id=${id}`, { headers: { 'recruiter-access-token': token } });
+    const data = await axios.patch(`/recruiter/job-dele?id=${id}`, { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;
@@ -47,7 +47,7 @@ export const RecruiterJobDele = async (id, token) => {
 
 export const RecruiterJobEdit = async (id, token) => {
   try {
-    const { data } = await axios.get(`/recruiter/job_edit?id=${id}`, { headers: { 'recruiter-access-token': token } });
+    const { data } = await axios.get(`/recruiter/job-edit?id=${id}`, { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;
@@ -56,7 +56,7 @@ export const RecruiterJobEdit = async (id, token) => {
 
 export const getProfileData = async (token) => {
   try {
-    const { data } = await axios.get('/recruiter/get_profile_data', { headers: { 'recruiter-access-token': token } });
+    const { data } = await axios.get('/recruiter/get-profile-data', { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;
@@ -65,7 +65,7 @@ export const getProfileData = async (token) => {
 
 export const RecruiterSideJobAppliedList = async (id, token) => {
   try {
-    const { data } = await axios.get(`/recruiter/applied_users?jobId=${id}`, { headers: { 'recruiter-access-token': token } });
+    const { data } = await axios.get(`/recruiter/applied-users?jobId=${id}`, { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;
@@ -74,7 +74,7 @@ export const RecruiterSideJobAppliedList = async (id, token) => {
 
 export const RecruiterComment = async (token, reData) => {
   try {
-    const { data } = await axios.post('/recruiter/job_comment', reData, { headers: { 'recruiter-access-token': token } });
+    const { data } = await axios.post('/recruiter/job-comment', reData, { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;
@@ -83,7 +83,7 @@ export const RecruiterComment = async (token, reData) => {
 
 export const getUserSortedList = async (token) => {
   try {
-    const { data } = await axios.get('/recruiter/get_sorted_user', { headers: { 'recruiter-access-token': token } });
+    const { data } = await axios.get('/recruiter/get-sorted-user', { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;
@@ -110,7 +110,7 @@ export const getUser = async (userId) => {
 
 export const getCompany = async () => {
   try {
-    const { data } = await axios.get('/recruiter/get_company');
+    const { data } = await axios.get('/recruiter/get-company');
     return data;
   } catch (error) {
     return error;
@@ -119,7 +119,7 @@ export const getCompany = async () => {
 
 export const getCompanyData = async (token) => {
   try {
-    const { data } = await axios.get('/recruiter/get_companyData', { headers: { 'recruiter-access-token': token } });
+    const { data } = await axios.get('/recruiter/get-companyData', { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;
@@ -128,7 +128,7 @@ export const getCompanyData = async (token) => {
 
 export const AddNotification = async (formData, token) => {
   try {
-    const data = await axios.post('/recruiter/add_notification', formData, { headers: { 'recruiter-access-token': token } });
+    const data = await axios.post('/recruiter/add-notification', formData, { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;
@@ -137,7 +137,7 @@ export const AddNotification = async (formData, token) => {
 
 export const getNotification = async (token) => {
   try {
-    const { data } = await axios.get('/recruiter/get_notifications', { headers: { 'user-access-token': token } });
+    const { data } = await axios.get('/recruiter/get-notifications', { headers: { 'recruiter-access-token': token } });
     return data;
   } catch (error) {
     return error;

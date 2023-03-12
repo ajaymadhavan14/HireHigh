@@ -2,6 +2,7 @@ import notificationModel from '../model/notificationSchema.js';
 
 const AddNotification = async (req, res, next) => {
   try {
+    console.log('111111111111111');
     const {
       senderId, recieverId, jobId, content,
     } = req.body;
@@ -26,7 +27,7 @@ const GetNotification = async (req, res, next) => {
       }
     } else {
       const data = await notificationModel.find({ recieverId: req.recruiterId })
-        .sort({ createdAt: -1 });
+        .sort({ createdAt: -1 }).populate('jobId');
       if (data) {
         res.json(data);
       } else {

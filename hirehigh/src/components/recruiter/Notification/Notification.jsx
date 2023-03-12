@@ -149,7 +149,6 @@ export default function NotificationCard() {
     <Grid container spacing={3}>
       <ToastContainer />
       <Grid item xs={12} md={8} lg={9}>
-        {/* <JobCardSearch newData={jobData} data={user} /> */}
         <Box>
           {datas?.map((el) => (
             <Card sx={{ minWidth: 275 }}>
@@ -161,8 +160,6 @@ export default function NotificationCard() {
                         Job Name :
                         {el?.jobId?.jobTitle}
                       </Typography>
-                      {/* <img src={el?.jobId?.image} style={{ height: '4rem', width: '5rem' }}
-                   alt="" /> */}
                     </Box>
                   </Typography>
                   {/* <img src={el?.jobId?.image} style={{ height: '4rem', width: '5rem' }}

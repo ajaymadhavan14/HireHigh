@@ -15,7 +15,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import BusinessIcon from '@mui/icons-material/Business';
 import swal from 'sweetalert';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../../axios/axios';
 
@@ -28,6 +28,7 @@ export default function VendorSignIn() {
   const [password, setPassword] = useState(false);
   const [passwordError, setPasswordError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
+  const token = localStorage.getItem('recruiterToken');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -64,6 +65,13 @@ export default function VendorSignIn() {
       setTotalRequired('All feilds are required');
     }
   };
+  useEffect(() => {
+    if (token) {
+      navigate('/recruiter/home');
+    } else {
+      navigate('/recruiter/login');
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

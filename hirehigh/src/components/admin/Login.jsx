@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 import axios from '../../axios/axios';
@@ -20,6 +20,7 @@ const theme = createTheme({
 
 export default function ASignIn() {
   const navigate = useNavigate();
+  const token = localStorage.getItem('adminToken');
 
   const [email, setEmail] = useState(false);
   const [emailError, setEmailError] = useState('');
@@ -67,6 +68,13 @@ export default function ASignIn() {
       err();
     }
   };
+  useEffect(() => {
+    if (token) {
+      navigate('/admin/home');
+    } else {
+      navigate('/admin/login');
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

@@ -116,7 +116,7 @@ export default function CompanyNitification() {
         }
       }).catch((err) => console.log(err));
     } else {
-      navigate('/recruiter/login');
+      navigate('/company/login');
     }
   }, []);
   const theme = useTheme();

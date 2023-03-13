@@ -48,19 +48,19 @@ export default function RecruiterChat() {
   useEffect(() => {
     const getChats = async () => {
       try {
-        const { data } = await userChats(recruiter.id);
+        const { data } = await userChats(recruiter?.id);
         setChats(data);
       } catch (error) {
         console.log(error);
       }
     };
     getChats();
-  }, [recruiter.id]);
+  }, [recruiter?.id]);
 
   // Connect to Socket.io
   useEffect(() => {
     // socket.current = io('ws://localhost:8800');
-    socket.emit('new-user-add', recruiter.id);
+    socket.emit('new-user-add', recruiter?.id);
     socket.on('get-users', (users) => {
       setOnlineUsers(users);
     });
@@ -81,8 +81,8 @@ export default function RecruiterChat() {
   }, []);
 
   const checkOnlineStatus = (chat) => {
-    const chatMember = chat.members.find((member) => member !== recruiter.id);
-    const online = onlineUsers.find((el) => el.userId === chatMember);
+    const chatMember = chat?.members?.find((member) => member !== recruiter?.id);
+    const online = onlineUsers?.find((el) => el?.userId === chatMember);
     return !!online;
   };
 
@@ -102,7 +102,7 @@ export default function RecruiterChat() {
               <div className="Chat-container">
                 <h2>Chats</h2>
                 <div className="Chat-list">
-                  {chats.map((chat) => (
+                  {chats?.map((chat) => (
                     <div
                       onClick={() => {
                         setCurrentChat(chat);
@@ -110,7 +110,7 @@ export default function RecruiterChat() {
                     >
                       <Conversation
                         data={chat}
-                        currentUser={recruiter.id}
+                        currentUser={recruiter?.id}
                         online={checkOnlineStatus(chat)}
                       />
                     </div>
@@ -133,7 +133,7 @@ export default function RecruiterChat() {
           </div> */}
               <ChatBox
                 chat={currentChat}
-                currentUser={recruiter.id}
+                currentUser={recruiter?.id}
                 setSendMessage={setSendMessage}
                 receivedMessage={receivedMessage}
               />

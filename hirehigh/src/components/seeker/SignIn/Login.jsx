@@ -16,7 +16,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from '../../../axios/axios';
 
 const theme = createTheme();
@@ -28,6 +28,7 @@ export default function SignIn() {
   const [passwordError, setPasswordError] = useState('');
   const [totalRequired, setTotalRequired] = useState('');
   const navigate = useNavigate();
+  const token = localStorage.getItem('userToken');
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -66,6 +67,13 @@ export default function SignIn() {
       setTotalRequired('All feilds are required');
     }
   };
+  useEffect(() => {
+    if (token) {
+      navigate('/home');
+    } else {
+      navigate('/login');
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

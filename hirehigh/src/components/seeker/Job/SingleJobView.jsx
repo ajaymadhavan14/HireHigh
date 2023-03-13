@@ -13,11 +13,12 @@ import Moment from 'react-moment';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import swal from 'sweetalert';
 import { useSelector } from 'react-redux';
 import { element } from 'prop-types';
-import { getSingleJobData, jobApply } from '../../../apis/SeekerApi';
+import { getSingleJobData, jobApply, AddNotification } from '../../../apis/SeekerApi';
+import AuthContext from '../../../context/AppContext';
 
 const bull = (
   <Box
@@ -36,6 +37,8 @@ export default function SingleJobView(props) {
   const [refresh, setRefresh] = useState();
   const token = localStorage.getItem('userToken');
   const userData = props?.user;
+  const { user } = useSelector((state) => state.userInfo);
+  const { sendNotification, setSendNotification } = useContext(AuthContext);
 
   useEffect(() => {
     if (token) {
@@ -50,10 +53,16 @@ export default function SingleJobView(props) {
       navigate('/login');
     }
   }, [refresh]);
-  const apply = async (id) => {
+  const apply = async (id, recruiterId) => {
     if (token) {
-      await jobApply(id, userData, token).then((response) => {
+      await jobApply(id, userData, token).then(async (response) => {
         if (response.data.status === 'success') {
+          await AddNotification({
+            senderId: user.id, recieverId: recruiterId, jobId: id, content: `${user.username} Applied your job post`,
+          }, token);
+          setSendNotification({
+            senderId: user.id, recieverId: recruiterId, jobId: id, content: `${user.username} Applied your job post`,
+          });
           swal('success');
           setRefresh(!refresh);
         }
@@ -63,8 +72,6 @@ export default function SingleJobView(props) {
       navigate('/login');
     }
   };
-  const { user } = useSelector((state) => state.userInfo);
-  console.log(user);
 
   return (
 
@@ -178,7 +185,7 @@ export default function SingleJobView(props) {
             : (
               <Button
                         // eslint-disable-next-line no-underscore-dangle
-                onClick={() => apply(data?._id)}
+                onClick={() => apply(data?._id, data?.recruiterId)}
                 sx={{
                   ml: 1, backgroundColor: 'blue', color: '#fff', fontWeight: '800', ':hover': { backgroundColor: 'green' },
                 }}

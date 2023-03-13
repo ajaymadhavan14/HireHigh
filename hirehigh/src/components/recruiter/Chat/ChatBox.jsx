@@ -21,7 +21,6 @@ function ChatBox({
   const handleChange = (value) => {
     setNewMessage(value);
   };
-  console.log(chat);
 
   // fetching data for header
   useEffect(() => {
@@ -42,7 +41,7 @@ function ChatBox({
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const { data } = await getMessages(chat._id);
+        const { data } = await getMessages(chat?._id);
         setMessages(data);
       } catch (error) {
         console.log(error);
@@ -63,9 +62,9 @@ function ChatBox({
     const message = {
       senderId: currentUser,
       text: newMessage,
-      chatId: chat._id,
+      chatId: chat?._id,
     };
-    const receiverId = chat.members.find((id) => id !== currentUser);
+    const receiverId = chat?.members?.find((id) => id !== currentUser);
     // send message to socket server
     setSendMessage({ ...message, receiverId });
     // send message to database
@@ -80,8 +79,8 @@ function ChatBox({
 
   // Receive Message from parent component
   useEffect(() => {
-    console.log('Message Arrived: ', receivedMessage);
-    if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
+    // console.log('Message Arrived: ', receivedMessage);
+    if (receivedMessage !== null && receivedMessage?.chatId === chat?._id) {
       setMessages([...messages, receivedMessage]);
     }
   }, [receivedMessage]);
@@ -124,19 +123,19 @@ function ChatBox({
           </div>
           {/* chat-body */}
           <div className="chat-body">
-            {messages.map((message) => (
+            {messages?.map((message) => (
               <div
                 ref={scroll}
                 className={
-                      message.senderId === currentUser
+                      message?.senderId === currentUser
                         ? 'message own'
                         : 'message'
                     }
               >
-                <span>{message.text}</span>
+                <span>{message?.text}</span>
                 {' '}
                 {/* <span>{moment(message.createdAt).format('LT')}</span> */}
-                <span>{format(message.createdAt)}</span>
+                <span>{format(message?.createdAt)}</span>
               </div>
             ))}
           </div>

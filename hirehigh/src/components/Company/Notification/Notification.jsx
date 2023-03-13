@@ -133,22 +133,20 @@ export default function NotificationCard() {
     });
   }, []);
   useEffect(() => {
-    if (company?.id) {
-      if (
-        recieveNotification !== null
+    if (
+      recieveNotification !== null
         && recieveNotification?.recieverId === company?.id
-      ) {
-        toast.info(`${recieveNotification?.notification}`, {
-          position: 'top-center',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
-      }
+    ) {
+      toast.info(`${recieveNotification?.notification}`, {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
     }
   }, [recieveNotification]);
   return (

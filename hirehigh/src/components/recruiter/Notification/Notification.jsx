@@ -112,9 +112,7 @@ export default function NotificationCard() {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    if (socket.current == null) {
-      socket.emit('new-user-add', recruiter?.id);
-    }
+    socket.emit('new-user-add', recruiter?.id);
 
     socket.on('get-users', (users) => {
       setOnlineUsers(users);
@@ -123,7 +121,7 @@ export default function NotificationCard() {
 
   useEffect(() => {
     if (sendNotification !== null) {
-      socket?.emit('send-notification', sendNotification);
+      socket.emit('send-notification', sendNotification);
     }
   }, [sendNotification]);
 
@@ -133,22 +131,20 @@ export default function NotificationCard() {
     });
   }, []);
   useEffect(() => {
-    if (recruiter?.id) {
-      if (
-        recieveNotification !== null
+    if (
+      recieveNotification !== null
         && recieveNotification?.recieverId === recruiter?.id
-      ) {
-        toast.info(`${recieveNotification?.notification}`, {
-          position: 'top-center',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
-      }
+    ) {
+      toast.info(`${recieveNotification?.notification}22222222`, {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
     }
   }, [recieveNotification]);
   const usersList = async (id) => {

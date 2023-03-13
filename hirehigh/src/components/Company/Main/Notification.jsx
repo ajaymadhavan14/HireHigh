@@ -36,6 +36,7 @@ import Swal2 from 'sweetalert2';
 import swal from 'sweetalert';
 import axios from '../../../axios/axios';
 import { companyDetails } from '../../../redux/company';
+import NotificationCard from '../Notification/Notification';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -94,7 +95,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-export default function CompanyHome() {
+export default function CompanyNitification() {
   const navigate = useNavigate();
   const dispatch = useDispatch(companyDetails);
   useEffect(() => {
@@ -244,6 +245,7 @@ export default function CompanyHome() {
                   px: 2.5,
                 }}
                 onClick={() => navigate('/company/notification')}
+
               >
                 <ListItemIcon sx={{
                   minWidth: 0,
@@ -317,38 +319,7 @@ export default function CompanyHome() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={2}>
-              {/* Chart */}
-              <Grid item xs={12} md={12} lg={12}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <h1 style={{ fontSize: '8rem', fontWeight: 900 }}>
-                    Welcome to
-                    {' '}
-                    {company?.username}
-
-                  </h1>
-                </Paper>
-              </Grid>
-              {/* <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
-              </Grid> */}
-            </Grid>
+            <NotificationCard />
           </Container>
         </Box>
       </Box>

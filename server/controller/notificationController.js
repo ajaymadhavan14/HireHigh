@@ -2,7 +2,6 @@ import notificationModel from '../model/notificationSchema.js';
 
 const AddNotification = async (req, res, next) => {
   try {
-    console.log('111111111111111');
     const {
       senderId, recieverId, jobId, content,
     } = req.body;
@@ -19,6 +18,14 @@ const GetNotification = async (req, res, next) => {
   try {
     if (req.userId) {
       const data = await notificationModel.find({ recieverId: req.userId })
+        .sort({ createdAt: -1 }).populate('jobId');
+      if (data) {
+        res.json(data);
+      } else {
+        res.json({ status: 'failed' });
+      }
+    } else if (req.companyId) {
+      const data = await notificationModel.find({ recieverId: req.companyId })
         .sort({ createdAt: -1 }).populate('jobId');
       if (data) {
         res.json(data);

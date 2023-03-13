@@ -27,7 +27,7 @@ import { FormControlLabel, FormGroup } from '@mui/material';
 import { useSelector } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { getNotification } from '../../../apis/RecruiterApi';
+import { getNotification, RecruiterSideJobAppliedList } from '../../../apis/RecruiterApi';
 import AuthContext from '../../../context/AppContext';
 
 const bull = (
@@ -88,12 +88,18 @@ export default function NotificationCard() {
 
   const [datas, setDatas] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [noData, setNoData] = useState(false);
 
   useEffect(() => {
     if (token) {
       (async function invoke() {
         await getNotification(token).then((res) => {
-          setDatas(res);
+          if (res.length === 0) {
+            setNoData(true);
+          } else {
+            setNoData(false);
+            setDatas(res);
+          }
         });
       }());
     }
@@ -107,7 +113,7 @@ export default function NotificationCard() {
 
   useEffect(() => {
     if (socket.current == null) {
-      socket.emit('new-user-add', recruiter?._id);
+      socket.emit('new-user-add', recruiter?.id);
     }
 
     socket.on('get-users', (users) => {
@@ -127,10 +133,10 @@ export default function NotificationCard() {
     });
   }, []);
   useEffect(() => {
-    if (recruiter?._id) {
+    if (recruiter?.id) {
       if (
         recieveNotification !== null
-        && recieveNotification?.recieverId === recruiter?._id
+        && recieveNotification?.recieverId === recruiter?.id
       ) {
         toast.info(`${recieveNotification?.notification}`, {
           position: 'top-center',
@@ -145,39 +151,55 @@ export default function NotificationCard() {
       }
     }
   }, [recieveNotification]);
+  const usersList = async (id) => {
+    if (token) {
+      await RecruiterSideJobAppliedList(id, token).then((res) => {
+        navigate('/recruiter/applied_users', { state: res });
+      });
+    } else {
+      navigate('/recruiter/login');
+    }
+  };
   return (
-    <Grid container spacing={3}>
-      <ToastContainer />
-      <Grid item xs={12} md={8} lg={9}>
+    <Box>
+      {noData === true ? (
         <Box>
-          {datas?.map((el) => (
-            <Card sx={{ minWidth: 275 }}>
-              <CardContent>
-                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                  <Typography sx={{ fontSize: 24 }} gutterBottom>
-                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                      <Typography sx={{ fontSize: 24 }} gutterBottom>
-                        Job Name :
-                        {el?.jobId?.jobTitle}
-                      </Typography>
-                    </Box>
-                  </Typography>
-                  {/* <img src={el?.jobId?.image} style={{ height: '4rem', width: '5rem' }}
-                   alt="" /> */}
-                </Box>
-                <Typography variant="h5" component="div">
-                  {el?.content}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">Learn More</Button>
-              </CardActions>
-            </Card>
-          ))}
+          <img src="/nodata.jpg" alt="...loading" />
         </Box>
+      )
+        : (
+          <Grid container spacing={3}>
+            <ToastContainer />
+            <Grid item xs={12} md={8} lg={9}>
+              <Box>
+                {datas?.map((el) => (
+                  <Card sx={{ minWidth: 275, marginTop: '1rem' }}>
+                    <CardContent>
+                      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                        <Typography sx={{ fontSize: 24 }} gutterBottom>
+                          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                            <Typography sx={{ fontSize: 24 }} gutterBottom>
+                              Job Name :
+                              {el?.jobId?.jobTitle}
+                            </Typography>
+                          </Box>
+                        </Typography>
+                        {/* <img src={el?.jobId?.image} style={{ height: '4rem', width: '5rem' }}
+                   alt="" /> */}
+                      </Box>
+                      <Typography variant="h5" component="div">
+                        {el?.content}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button size="small" onClick={() => usersList(el?.jobId?._id)}>Learn More</Button>
+                    </CardActions>
+                  </Card>
+                ))}
+              </Box>
 
-      </Grid>
-      {/* <Grid item xs={12} md={4} lg={3}>
+            </Grid>
+            {/* <Grid item xs={12} md={4} lg={3}>
         <Paper
           sx={{
             p: 2,
@@ -187,10 +209,13 @@ export default function NotificationCard() {
           }}
         />
       </Grid> */}
-      {/* <Grid item xs={12}>
+            {/* <Grid item xs={12}>
         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} />
       </Grid> */}
-    </Grid>
+          </Grid>
+        )}
+
+    </Box>
 
   );
 }

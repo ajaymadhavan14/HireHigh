@@ -1,16 +1,19 @@
-import { Router } from 'express';
-import { set, connect } from 'mongoose';
+import mongoose from 'mongoose';
 
-const router = Router();
+const connectDb = async (DATABASE_URL) => {
+  mongoose.set('strictQuery', false);
+  try {
+    await mongoose.connect(DATABASE_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }).then(() => {
+      console.log('connected successfully..');
+    }).catch((err) => {
+      console.error(err);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-const mongoDB = 'mongodb://localhost:27017/hirehigh';
-set('strictQuery', false);
-connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log('Connected');
-  })
-  .catch((err) => {
-    console.log('Connection failed', err);
-  });
-
-export default router;
+export default connectDb;

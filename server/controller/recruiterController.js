@@ -153,7 +153,7 @@ const jobPost = async (req, res, next) => {
       vaccancy,
       recruiterId: Id,
     });
-    res.json({ status: 'success' });
+    res.json({ status: 'success', id: jobData._id });
     await companyModel.findByIdAndUpdate(companyName, {
       $push: {
         job: {

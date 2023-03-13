@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -18,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import swal from 'sweetalert';
 import { toast, ToastContainer } from 'react-toastify';
+import { ColorRing, Dna } from 'react-loader-spinner';
 import 'react-toastify/dist/ReactToastify.css';
 import { storage } from '../../../firebase/Config';
 import axios from '../../../axios/axios';
@@ -25,6 +27,7 @@ import { getProfileData } from '../../../apis/RecruiterApi';
 
 const theme = createTheme();
 export default function RecruiterPrfileData() {
+  const [loading, setLoading] = useState(false);
   const [userName, setUserName] = useState(false);
   const [userNameError, setUserNameError] = useState('');
   const [companyName, setCompanyName] = useState(false);
@@ -62,6 +65,7 @@ export default function RecruiterPrfileData() {
   }, []);
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     let data = new FormData(event.currentTarget);
     data = {
       email: data.get('email'),
@@ -370,7 +374,16 @@ export default function RecruiterPrfileData() {
             <p style={{ color: 'red' }}>{totalRequired}</p>
           </Box>
           <Grid container spacing={2} py={2} sx={{ justifyContent: 'flex-end' }}>
-
+            {loading && (
+            <Dna
+              visible
+              height="80"
+              width="80"
+              ariaLabel="dna-loading"
+              wrapperStyle={{}}
+              wrapperClass="dna-wrapper"
+            />
+            )}
             <Grid pl={2}>
               <Button
                 type="submit"

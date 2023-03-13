@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -26,12 +27,15 @@ import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
+import { ColorRing, Dna } from 'react-loader-spinner';
 import { auth, storage } from '../../../firebase/Config';
 import AuthContext from '../../../context/AppContext';
 import { getCompany } from '../../../apis/RecruiterApi';
 
 const theme = createTheme();
 export default function RetSingnUP() {
+  const [loading, setLoading] = useState(false);
+
   const { recruiterDetails, setRecruiterDetails } = useContext(AuthContext);
   const { recruiterOtpConf, setRecruiterOtpConf } = useContext(AuthContext);
 
@@ -72,6 +76,7 @@ export default function RetSingnUP() {
   }
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     let data = new FormData(event.currentTarget);
     data = {
       companyName: data.get('companyName'),
@@ -419,6 +424,16 @@ export default function RetSingnUP() {
           </Box>
           <Grid container spacing={2} py={2} sx={{ justifyContent: 'flex-end' }}>
             <div id="recaptcha-recruiter-container" />
+            {loading && (
+            <Dna
+              visible
+              height="80"
+              width="80"
+              ariaLabel="dna-loading"
+              wrapperStyle={{}}
+              wrapperClass="dna-wrapper"
+            />
+            )}
             <Grid>
               <Link onClick={() => { navigate('/recruiter/login'); }} component="button">
                 Already have an account? Sign in

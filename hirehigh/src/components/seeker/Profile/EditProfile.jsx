@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 import * as React from 'react';
@@ -18,6 +19,7 @@ import FormLabel from '@mui/material/FormLabel';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
+import { ColorRing, Dna } from 'react-loader-spinner';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../../firebase/Config';
 import axios from '../../../axios/axios';
@@ -25,6 +27,7 @@ import { getProfileData } from '../../../apis/SeekerApi';
 
 const theme = createTheme();
 export default function SeekerEditprofile() {
+  const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState(false);
   const [firstNameError, setFirstNameError] = useState('');
   const [lastName, setLastName] = useState(false);
@@ -95,6 +98,7 @@ export default function SeekerEditprofile() {
   });
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     let data = new FormData(event.currentTarget);
     const pdfBase = await toBase64(pdf);
     let experiance;
@@ -741,11 +745,18 @@ export default function SeekerEditprofile() {
             <p style={{ color: 'red' }}>{totalRequired}</p>
           </Box>
           <Grid container spacing={2} py={2} sx={{ justifyContent: 'flex-end' }}>
-            {/* <Grid>
-              <Link onClick={() => { navigate('/recruiter/login'); }} component="button">
-                Already have an account? Sign in
-              </Link>
-            </Grid> */}
+            <Grid>
+              {loading && (
+              <Dna
+                visible
+                height="80"
+                width="80"
+                ariaLabel="dna-loading"
+                wrapperStyle={{}}
+                wrapperClass="dna-wrapper"
+              />
+              )}
+            </Grid>
             <Grid pl={2}>
               <Button
                 type="submit"

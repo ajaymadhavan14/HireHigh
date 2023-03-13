@@ -88,7 +88,7 @@ const isCompanyAuth = async (req, res, next) => {
     if (company.isActive === true) {
       company.auth = true;
       res.json({
-        _id: company._id,
+        id: company._id,
         username: company.userName,
         email: company.email,
         auth: true,

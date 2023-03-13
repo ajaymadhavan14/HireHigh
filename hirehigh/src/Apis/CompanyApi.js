@@ -45,3 +45,12 @@ export const jobPostBlock = async (id, token) => {
     return error;
   }
 };
+
+export const getNotification = async (token) => {
+  try {
+    const { data } = await axios.get('/company/get-notifications', { headers: { 'company-access-token': token } });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

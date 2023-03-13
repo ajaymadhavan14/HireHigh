@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
@@ -14,7 +15,7 @@ import TextareaAutosize from '@mui/base/TextareaAutosize';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormLabel from '@mui/material/FormLabel';
 import Select from '@mui/material/Select';
@@ -23,12 +24,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
 import { useSelector } from 'react-redux';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { ColorRing, Dna } from 'react-loader-spinner';
 import { storage } from '../../../firebase/Config';
 import axios from '../../../axios/axios';
-import { getCategory, getCompanyData } from '../../../apis/RecruiterApi';
+import { getCategory, getCompanyData, AddNotification } from '../../../apis/RecruiterApi';
+import AuthContext from '../../../context/AppContext';
 
 const theme = createTheme();
 export default function RecruiterJobPost() {
+  const [loading, setLoading] = useState(false);
   const [jobTitle, setJobTitle] = useState(false);
   const [jobTitleError, setJobTitleError] = useState('');
   const [companyName, setCompanyName] = useState(false);
@@ -57,9 +61,12 @@ export default function RecruiterJobPost() {
   const [company, setCompany] = useState({});
   const navigate = useNavigate();
   const token = localStorage.getItem('recruiterToken');
+  const { recruiter } = useSelector((state) => state.recruiterInfo);
+  const { sendNotification, setSendNotification } = useContext(AuthContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     let data = new FormData(event.currentTarget);
     data = {
       jobTitle: data.get('jobTitle'),
@@ -119,8 +126,14 @@ export default function RecruiterJobPost() {
           data.image = '';
         }
         if (token) {
-          axios.post('/recruiter/add_job', data, { headers: { 'recruiter-access-token': token } }).then((response) => {
+          axios.post('/recruiter/add-job', data, { headers: { 'recruiter-access-token': token } }).then(async (response) => {
             if (response.data.status === 'success') {
+              await AddNotification({
+                senderId: recruiter.id, recieverId: company?.companyName?._id, jobId: response.data.id, content: `${recruiter.username} Add a job Post`,
+              }, token);
+              setSendNotification({
+                senderId: recruiter.id, recieverId: company?.companyName?._id, jobId: response.data.id, content: `${recruiter.username} Add a job Post`,
+              });
               navigate('/recruiter/jobs');
             } else {
               swal('OOPS', response.data.message, 'error');
@@ -138,7 +151,6 @@ export default function RecruiterJobPost() {
     }
   };
   const [cat, setCat] = useState([]);
-  const { recruiter } = useSelector((state) => state.recruiterInfo);
 
   useEffect(() => {
     if (token) {
@@ -205,16 +217,13 @@ export default function RecruiterJobPost() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="given-name"
                 type="text"
                 required
                 fullWidth
                 id="companyName"
-                label="Company Name"
                 value={company?.companyName?.companyName}
                 error={companyName}
                 helperText={companyNameError}
-                autoFocus
               />
 
             </Grid>
@@ -426,6 +435,16 @@ export default function RecruiterJobPost() {
                     });
                   } else {
                     setImage(e.target.files[0]);
+                    toast.success('success', {
+                      position: 'top-right',
+                      autoClose: 2000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: 'colored',
+                    });
                   }
                 }}
               />
@@ -436,11 +455,19 @@ export default function RecruiterJobPost() {
             <p style={{ color: 'red' }}>{totalRequired}</p>
           </Box>
           <Grid container spacing={2} py={2} sx={{ justifyContent: 'flex-end' }}>
-            {/* <Grid>
-              <Link onClick={() => { navigate('/recruiter/login'); }} component="button">
-                Already have an account? Sign in
-              </Link>
-            </Grid> */}
+            <Grid>
+              {loading && (
+              <Dna
+                visible
+                height="80"
+                width="80"
+                ariaLabel="dna-loading"
+                wrapperStyle={{}}
+                wrapperClass="dna-wrapper"
+              />
+              )}
+            </Grid>
+
             <Grid pl={2}>
               <Button
                 type="submit"

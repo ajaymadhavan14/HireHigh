@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-shadow */
@@ -19,6 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ColorRing, Dna } from 'react-loader-spinner';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { auth, storage } from '../../../firebase/Config';
 import AuthContext from '../../../context/AppContext';
@@ -27,6 +29,7 @@ const theme = createTheme();
 export default function SignnUPCompany() {
   const { companyDetails, setCompanyDetails } = useContext(AuthContext);
   const { companyOtpConf, setCompanyOtpConf } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
   const [userName, setUserName] = useState(false);
   const [userNameError, setUserNameError] = useState('');
@@ -403,6 +406,16 @@ export default function SignnUPCompany() {
           </Box>
           <Grid container spacing={2} py={2} sx={{ justifyContent: 'flex-end' }}>
             <div id="recaptcha-company-container" />
+            {loading && (
+            <Dna
+              visible
+              height="80"
+              width="80"
+              ariaLabel="dna-loading"
+              wrapperStyle={{}}
+              wrapperClass="dna-wrapper"
+            />
+            )}
             <Grid>
               <Link onClick={() => { navigate('/company/login'); }} component="button">
                 Already have an account? Sign in

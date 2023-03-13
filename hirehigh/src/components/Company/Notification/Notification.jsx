@@ -27,7 +27,7 @@ import { FormControlLabel, FormGroup } from '@mui/material';
 import { useSelector } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { getNotification } from '../../../apis/SeekerApi';
+import { getNotification } from '../../../apis/CompanyApi';
 import AuthContext from '../../../context/AppContext';
 
 const bull = (
@@ -83,8 +83,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function NotificationCard() {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.userInfo);
-  const token = localStorage.getItem('userToken');
+  const token = localStorage.getItem('companyToken');
+  const { company } = useSelector((state) => state.companyInfo);
+
   const [datas, setDatas] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [noData, setNoData] = useState(false);
@@ -112,13 +113,13 @@ export default function NotificationCard() {
 
   useEffect(() => {
     if (socket.current == null) {
-      socket.emit('new-user-add', user?.id);
+      socket.emit('new-user-add', company?.id);
     }
 
     socket.on('get-users', (users) => {
       setOnlineUsers(users);
     });
-  }, [user]);
+  }, [company]);
 
   useEffect(() => {
     if (sendNotification !== null) {
@@ -132,10 +133,10 @@ export default function NotificationCard() {
     });
   }, []);
   useEffect(() => {
-    if (user?.id) {
+    if (company?.id) {
       if (
         recieveNotification !== null
-        && recieveNotification?.recieverId === user?.id
+        && recieveNotification?.recieverId === company?.id
       ) {
         toast.info(`${recieveNotification?.notification}`, {
           position: 'top-center',
@@ -161,15 +162,18 @@ export default function NotificationCard() {
           <Grid container spacing={3}>
             <ToastContainer />
             <Grid item xs={12} md={8} lg={9}>
-              {/* <JobCardSearch newData={jobData} data={user} /> */}
               <Box>
                 {datas?.map((el) => (
                   <Card sx={{ minWidth: 275, marginTop: '1rem' }}>
                     <CardContent>
                       <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Typography sx={{ fontSize: 24 }} gutterBottom>
-                          Job Name :
-                          {el?.jobId?.jobTitle}
+                          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                            <Typography sx={{ fontSize: 24 }} gutterBottom>
+                              Job Name :
+                              {el?.jobId?.jobTitle}
+                            </Typography>
+                          </Box>
                         </Typography>
                         {/* <img src={el?.jobId?.image} style={{ height: '4rem', width: '5rem' }}
                    alt="" /> */}
@@ -179,7 +183,13 @@ export default function NotificationCard() {
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <Button size="small" onClick={() => navigate('/job_view', { state: el?.jobId?._id })}>Learn More</Button>
+                      <Button
+                        size="small"
+                        onClick={() => navigate('/company/jobs')}
+                      >
+                        Learn More
+
+                      </Button>
                     </CardActions>
                   </Card>
                 ))}

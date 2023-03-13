@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
@@ -21,6 +22,7 @@ import Select from '@mui/material/Select';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import swal from 'sweetalert';
+import { ColorRing, Dna } from 'react-loader-spinner';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../../firebase/Config';
 import axios from '../../../axios/axios';
@@ -28,6 +30,7 @@ import { getCategory } from '../../../apis/RecruiterApi';
 
 const theme = createTheme();
 export default function RecruiterJobEdit() {
+  const [loading, setLoading] = useState(false);
   const [jobTitle, setJobTitle] = useState(false);
   const [jobTitleError, setJobTitleError] = useState('');
   const [companyName, setCompanyName] = useState(false);
@@ -60,6 +63,7 @@ export default function RecruiterJobEdit() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     let data = new FormData(event.currentTarget);
     data = {
       jobTitle: data.get('jobTitle'),
@@ -396,6 +400,16 @@ export default function RecruiterJobEdit() {
                     });
                   } else {
                     setImage(e.target.files[0]);
+                    toast.success('success', {
+                      position: 'top-right',
+                      autoClose: 2000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: 'colored',
+                    });
                   }
                 }}
               />
@@ -410,6 +424,16 @@ export default function RecruiterJobEdit() {
             <p style={{ color: 'red' }}>{totalRequired}</p>
           </Box>
           <Grid container spacing={2} py={2} sx={{ justifyContent: 'flex-end' }}>
+            {loading && (
+            <Dna
+              visible
+              height="80"
+              width="80"
+              ariaLabel="dna-loading"
+              wrapperStyle={{}}
+              wrapperClass="dna-wrapper"
+            />
+            )}
             <Grid pl={2}>
               <Button
                 type="submit"

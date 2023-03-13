@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -18,6 +19,7 @@ import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ColorRing, Dna } from 'react-loader-spinner';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { auth } from '../../../firebase/Config';
 import AuthContext from '../../../context/AppContext';
@@ -25,6 +27,7 @@ import AuthContext from '../../../context/AppContext';
 const theme = createTheme();
 
 export default function SeekerSignUp() {
+  const [loading, setLoading] = useState(false);
   const { userDetails, setUserDetails } = useContext(AuthContext);
   const { userOtpConf, setUserOtpConf } = useContext(AuthContext);
 
@@ -55,6 +58,7 @@ export default function SeekerSignUp() {
   }
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     let data = new FormData(event.currentTarget);
     data = {
       firstName: data.get('firstName'),
@@ -274,8 +278,17 @@ export default function SeekerSignUp() {
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
-              <Grid item>
-
+              <Grid item sx={{ display: 'flex', flexDirection: 'row' }}>
+                {loading && (
+                <Dna
+                  visible
+                  height="80"
+                  width="80"
+                  ariaLabel="dna-loading"
+                  wrapperStyle={{}}
+                  wrapperClass="dna-wrapper"
+                />
+                )}
                 <Link onClick={() => { navigate('/login'); }} variant="body2" component="button">
                   Already have an account? Sign in
                 </Link>

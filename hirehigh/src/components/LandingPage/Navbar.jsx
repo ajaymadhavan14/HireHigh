@@ -56,7 +56,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function SearchAppBar() {
   const navigate = useNavigate();
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, width: '100%' }}>
       <AppBar position="static" sx={{ bgcolor: '#F1F5F9' }}>
         <Toolbar>
           <IconButton
@@ -73,7 +73,7 @@ export default function SearchAppBar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block', color: 'black' } }}
+            sx={{ flexGrow: 1, display: { color: 'black' } }}
             onClick={() => navigate('/')}
           >
             <h3 style={{ cursor: 'pointer', width: 'fit-content', color: '#6096B4' }}> HIREHIGH</h3>
@@ -81,7 +81,7 @@ export default function SearchAppBar() {
           <Button variant="contained" onClick={() => navigate('/login')} sx={{ ':hover': { backgroundColor: '#6096B4' }, marginRight: '2vh' }}>
             Login
           </Button>
-          <Search sx={{ color: 'black' }}>
+          <Search sx={{ color: 'black', display: { xs: 'none', sm: 'block' } }}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>

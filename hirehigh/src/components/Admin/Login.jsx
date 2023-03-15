@@ -45,7 +45,7 @@ export default function ASignIn() {
           if (signinData.password.length >= 6) {
             setPassword(false);
             setPasswordError('');
-            axios.post('/admin/login', signinData).then((response) => {
+            axios.post('/api/admin/login', signinData).then((response) => {
               if (!response.data.auth) {
                 swal('sorry', response.data.message, 'error');
               } else {

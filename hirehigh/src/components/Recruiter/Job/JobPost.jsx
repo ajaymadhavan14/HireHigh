@@ -126,7 +126,7 @@ export default function RecruiterJobPost() {
           data.image = '';
         }
         if (token) {
-          axios.post('/recruiter/add-job', data, { headers: { 'recruiter-access-token': token } }).then(async (response) => {
+          axios.post('/api/recruiter/add-job', data, { headers: { 'recruiter-access-token': token } }).then(async (response) => {
             if (response.data.status === 'success') {
               await AddNotification({
                 senderId: recruiter.id, recieverId: company?.companyName?._id, jobId: response.data.id, content: `${recruiter.username} Add a job Post`,

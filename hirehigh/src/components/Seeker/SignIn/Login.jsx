@@ -47,7 +47,7 @@ export default function SignIn() {
           setPassword(false);
           setPasswordError('');
 
-          axios.post('/login', data).then((response) => {
+          axios.post('/api/login', data).then((response) => {
             if (!response.data.auth) {
               swal('sorry', response.data.message, 'error');
             } else {

@@ -195,7 +195,7 @@ export default function SeekerEditprofile() {
                       data.image = datas.image;
                     }
                     if (token) {
-                      axios.post('/edit_profile_post', data, { headers: { 'user-access-token': token } }).then((response) => {
+                      axios.post('/api/edit_profile_post', data, { headers: { 'user-access-token': token } }).then((response) => {
                         if (response.data.status === 'success') {
                           navigate('/profile');
                         } else {

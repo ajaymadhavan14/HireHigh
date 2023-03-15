@@ -385,6 +385,16 @@ export default function RetSingnUP() {
                     });
                   } else {
                     setImage(e.target.files[0]);
+                    toast.success('success', {
+                      position: 'top-right',
+                      autoClose: 2000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: 'colored',
+                    });
                   }
                 }}
               />

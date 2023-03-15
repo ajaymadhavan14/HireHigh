@@ -39,7 +39,6 @@ import Swal2 from 'sweetalert2';
 import swal from 'sweetalert';
 import axios from '../../../axios/axios';
 import { recruiterDetails } from '../../../redux/recruiter';
-import RecruiterSideMessage from '../Messages/Messages';
 import RecruiterChat from '../Chat/Chat';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -105,7 +104,7 @@ export default function RecruiterMessages() {
   useEffect(() => {
     const token = localStorage.getItem('recruiterToken');
     if (token) {
-      axios.get('/recruiter/isRecruiterAuth', {
+      axios.get('/api/recruiter/isRecruiterAuth', {
         headers: { 'recruiter-access-token': token },
       }).then((response) => {
         if (!response.data.auth) {

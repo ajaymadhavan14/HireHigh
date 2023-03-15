@@ -45,7 +45,7 @@ export default function VendorSignIn() {
         if (data.password.length >= 6) {
           setPassword(false);
           setPasswordError('');
-          axios.post('/recruiter/login', data).then((response) => {
+          axios.post('/api/recruiter/login', data).then((response) => {
             if (!response.data.auth) {
               swal('sorry', response.data.message, 'error');
             } else {

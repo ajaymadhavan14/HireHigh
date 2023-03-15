@@ -124,7 +124,7 @@ export default function RecruiterJobEdit() {
           data.image = state.image;
         }
         if (token) {
-          axios.post(`/recruiter/edit-job?jobid=${id}`, data, { headers: { 'recruiter-access-token': token } }).then((response) => {
+          axios.post(`/api/recruiter/edit-job?jobid=${id}`, data, { headers: { 'recruiter-access-token': token } }).then((response) => {
             if (response.data.status === 'success') {
               navigate('/recruiter/jobs');
             } else {

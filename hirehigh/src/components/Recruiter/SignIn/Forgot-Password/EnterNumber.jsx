@@ -57,7 +57,7 @@ export default function RFPEnterNumber() {
         if (data.phoneNumber.length === 10) {
           setPhoneNumber(false);
           setPhoneNumberError('');
-          axios.post('/recruiter/enter_number', data).then(async (response) => {
+          axios.post('/api/recruiter/enter_number', data).then(async (response) => {
             if (response.data.status === 'failed') {
               swal('sorry', response.data.message, 'error');
             } else {

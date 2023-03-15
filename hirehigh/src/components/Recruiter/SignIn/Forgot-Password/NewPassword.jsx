@@ -50,7 +50,7 @@ export default function RecruiterSetNewPassword() {
           setConfPassword(false);
           setPasswordError('');
           setConfPasswordError('');
-          axios.post('/recruiter/new_password', data).then((response) => {
+          axios.post('/api/recruiter/new_password', data).then((response) => {
             if (response.data.status === 'failed') {
               swal('sorry', response.data.message, 'error');
             } else {

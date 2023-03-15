@@ -128,7 +128,7 @@ export default function SeekerAddprofile() {
             data.image = '';
           }
           if (token) {
-            axios.post('/add_profile', data, { headers: { 'user-access-token': token } }).then((response) => {
+            axios.post('/api/add_profile', data, { headers: { 'user-access-token': token } }).then((response) => {
               if (response.data.status === 'success') {
                 navigate('/home');
               } else {

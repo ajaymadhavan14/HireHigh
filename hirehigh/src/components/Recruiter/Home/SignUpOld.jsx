@@ -60,7 +60,7 @@ export default function VendorSignUp() {
               setConfPassword(false);
               setPasswordError('');
               setConfPasswordError('');
-              axios.post('/recruiter/signup', data).then((response) => {
+              axios.post('/api/recruiter/signup', data).then((response) => {
                 if (response.data.status === 'success') {
                   navigate('/recruiter/login');
                 } else {

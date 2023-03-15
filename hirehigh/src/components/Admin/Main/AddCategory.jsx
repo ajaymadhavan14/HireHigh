@@ -96,7 +96,7 @@ export default function AdminSideJobCategory() {
   const token = localStorage.getItem('adminToken');
   useEffect(() => {
     if (token) {
-      axios.get('/admin/isAdminAuth', {
+      axios.get('/api/admin/isAdminAuth', {
         headers: { 'admin-access-token': token },
       }).then((response) => {
         if (!response.data.auth) {

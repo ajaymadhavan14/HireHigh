@@ -104,7 +104,7 @@ export default function DashboardContent() {
   useEffect(() => {
     const token = localStorage.getItem('recruiterToken');
     if (token) {
-      axios.get('/recruiter/isRecruiterAuth', {
+      axios.get('/api/recruiter/isRecruiterAuth', {
         headers: { 'recruiter-access-token': token },
       }).then((response) => {
         if (!response.data.auth) {

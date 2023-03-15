@@ -69,7 +69,7 @@ export default function AdminJobCategory() {
     };
 
     if (data.category) {
-      axios.post('/admin/add_category', data, { headers: { 'admin-access-token': token } }).then((response) => {
+      axios.post('/api/admin/add_category', data, { headers: { 'admin-access-token': token } }).then((response) => {
         if (response.data.status === 'success') {
           toast.success('🦄 Wow so easy!', {
             position: 'top-center',

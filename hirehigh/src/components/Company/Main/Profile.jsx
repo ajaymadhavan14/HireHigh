@@ -101,7 +101,7 @@ export default function CompanyProfileSide() {
   useEffect(() => {
     const token = localStorage.getItem('companyToken');
     if (token) {
-      axios.get('/company/isCompanyAuth', {
+      axios.get('/api/company/isCompanyAuth', {
         headers: { 'company-access-token': token },
       }).then((response) => {
         if (!response.data.auth) {

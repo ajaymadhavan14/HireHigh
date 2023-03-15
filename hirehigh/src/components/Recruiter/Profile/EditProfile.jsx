@@ -135,7 +135,7 @@ export default function RecruiterPrfileData() {
                 data.image = datas.image;
               }
               if (token) {
-                axios.post('/recruiter/profile-edit-post', data, { headers: { 'recruiter-access-token': token } }).then((response) => {
+                axios.post('/api/recruiter/profile-edit-post', data, { headers: { 'recruiter-access-token': token } }).then((response) => {
                   if (response.data.status === 'success') {
                     navigate('/recruiter/profile');
                   } else {

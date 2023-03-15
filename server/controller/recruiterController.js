@@ -336,7 +336,7 @@ const updateJobComment = async (req, res, next) => {
 
 const getSortedList = async (req, res, next) => {
   try {
-    const data = await jobPostModel.find({ 'users.comment': 'Good' }).populate('users.userId');
+    const data = await jobPostModel.find({ _id: req.recruiterId, 'users.comment': 'Good' }).populate('users.userId');
     res.json(data);
   } catch (error) {
     next(error);

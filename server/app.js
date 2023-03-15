@@ -25,10 +25,10 @@ app.use(express.static('public'));
 app.use(cookieParser());
 app.use(logger('dev'));
 
-app.use('/', seekerRouter);
-app.use('/recruiter', recruiterRouter);
-app.use('/admin', adminRouter);
-app.use('/company', companyRouter);
+app.use('/api/', seekerRouter);
+app.use('/api/recruiter', recruiterRouter);
+app.use('/api/admin', adminRouter);
+app.use('/api/company', companyRouter);
 
 app.listen(port, () => {
   console.log(`server listening at http://127.0.0.1:${port}`);

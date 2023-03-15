@@ -158,7 +158,7 @@ export default function SeekerHome() {
   useEffect(() => {
     const token = localStorage.getItem('userToken');
     if (token) {
-      axios.get('/isUserAuth', {
+      axios.get('/api/isUserAuth', {
         headers: { 'user-access-token': token },
       }).then((response) => {
         if (!response.data.auth) {

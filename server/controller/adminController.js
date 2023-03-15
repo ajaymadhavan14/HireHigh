@@ -146,6 +146,29 @@ const getCompanys = async (req, res, next) => {
   }
 };
 
+const getDashboard = async (req, res, next) => {
+  try {
+    const jobs = await jobPostModel.find({}).count();
+    const seekers = await userModel.find({}).count();
+    const recruiters = await recruiterModel.find({}).count();
+    const companys = await companyModel.find({}).count();
+    res.json({
+      jobs, seekers, recruiters, companys,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getDashboardJobList = async (req, res, next) => {
+  try {
+    const data = await jobPostModel.find().populate('jobCategory').populate('companyName').limit(5);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   signInPost,
   isAdminAuth,
@@ -158,4 +181,6 @@ export default {
   ShowCategory,
   DeleteCategory,
   getCompanys,
+  getDashboard,
+  getDashboardJobList,
 };

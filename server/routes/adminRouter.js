@@ -15,5 +15,7 @@ router.post('/add_category', jwtAuth.jwtAdmin, adminController.AddCategory);
 router.get('/job_category', jwtAuth.jwtAdmin, adminController.ShowCategory);
 router.delete('/cat_dele', jwtAuth.jwtAdmin, adminController.DeleteCategory);
 router.get('/companys', jwtAuth.jwtAdmin, adminController.getCompanys);
+router.get('/dashboard', jwtAuth.jwtAdmin, adminController.getDashboard);
+router.get('/dashboard-job', jwtAuth.jwtAdmin, adminController.getDashboardJobList);
 
 export default router;

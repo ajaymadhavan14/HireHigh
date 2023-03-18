@@ -4,7 +4,7 @@ import ChatModel from '../model/chatSchema.js';
 const createChat = async (req, res, next) => {
   try {
     const findData = await ChatModel.findOne({
-      members: { $in: [req.body.receiverId] },
+      members: { $all: [req.body.receiverId, req.body.senderId] },
     });
     if (findData) {
       res.json({ status: 'success', Id: findData._id });

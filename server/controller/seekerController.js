@@ -88,7 +88,6 @@ const isUserAuth = async (req, res, next) => {
         username: userDetails.firstName,
         email: userDetails.email,
         auth: true,
-        image: userDetails.image || null,
         job: userDetails.job,
       });
     } else if (userDetails.isActive === false) {

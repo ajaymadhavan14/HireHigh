@@ -95,7 +95,6 @@ const isRecruiterAuth = async (req, res, next) => {
         username: recruiterDetails.userName,
         email: recruiterDetails.email,
         auth: true,
-        image: recruiterDetails.image || null,
         phoneNumber: recruiterDetails.phoneNumber,
       });
     } else if (recruiterDetails.isActive === false) {

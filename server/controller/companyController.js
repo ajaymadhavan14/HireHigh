@@ -92,7 +92,6 @@ const isCompanyAuth = async (req, res, next) => {
         username: company.userName,
         email: company.email,
         auth: true,
-        image: company.image || null,
         phoneNumber: company.phoneNumber,
       });
     } else if (company.isActive === false) {

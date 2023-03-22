@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import express from 'express';
 import cors from 'cors';
 import logger from 'morgan';
@@ -32,6 +33,11 @@ app.use('/api/company', companyRouter);
 
 app.listen(port, () => {
   console.log(`server listening at http://127.0.0.1:${port}`);
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
 export default app;

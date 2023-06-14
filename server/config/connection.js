@@ -8,8 +8,8 @@ const connectDb = async (DATABASE_URL) => {
       useUnifiedTopology: true,
     }).then(() => {
       console.log('connected successfully..');
-    }).catch((err) => {
-      console.error(err);
+    }).catch((error) => {
+      console.error(error);
     });
   } catch (error) {
     console.log(error);

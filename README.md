@@ -15,11 +15,11 @@ HireHigh is a full-stack job portal platform built using the MERN (MongoDB, Expr
 
 ## Technologies Used
 
-- **Front-end**: React.js, Redux, HTML5, CSS3, JavaScript, Semantic UI React.
+- **Front-end**: React.js, Redux, HTML5, CSS3, JavaScript, Material-UI.
 - **Back-end**: Node.js, Express.js, MongoDB (with Mongoose), Socket.IO.
 - **Authentication**: JSON Web Tokens (JWT), bcrypt.js for password hashing.
 - **API Testing**: Postman, Jest.
-- **Deployment**: Heroku, Netlify.
+- **Deployment**:  Netlify.
 
 ## Installation
 

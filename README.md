@@ -26,7 +26,8 @@ HireHigh is a full-stack job portal platform built using the MERN (MongoDB, Expr
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/HireHigh.git
+   git clone https://github.com/ajaymadhavan14/HireHigh.git
+   
 2. Install the dependencies for both the server and client:
    npm install
    

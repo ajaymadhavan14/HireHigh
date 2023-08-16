@@ -10,15 +10,25 @@ import companyModel from '../model/companySchema.js';
 const recruiterSignUpPost = async (req, res, next) => {
   try {
     const {
-      userName, phoneNumber, companyName, email, tagLine, discription,
-      website, password, image,
+      userName,
+      phoneNumber,
+      companyName,
+      email,
+      tagLine,
+      discription,
+      website,
+      password,
+      image,
     } = req.body;
     const recruiter = await recruiterModel.findOne({ email });
     const number = await recruiterModel.findOne({ phoneNumber });
     if (recruiter) {
       res.json({ status: 'failed', message: 'Email already exist login now' });
     } else if (number) {
-      res.json({ status: 'failed', message: 'Phone Number already exist login now' });
+      res.json({
+        status: 'failed',
+        message: 'Phone Number already exist login now',
+      });
     } else {
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hash(password.trim(), salt);
@@ -109,9 +119,12 @@ const isRecruiterAuth = async (req, res, next) => {
 
 const recruiterBlock = async (req, res, next) => {
   try {
-    await recruiterModel.updateOne({ _id: req.query.recruiterId }, {
-      isActive: false,
-    });
+    await recruiterModel.updateOne(
+      { _id: req.query.recruiterId },
+      {
+        isActive: false,
+      },
+    );
     res.json({ status: 'success' });
   } catch (error) {
     next(error);
@@ -120,9 +133,12 @@ const recruiterBlock = async (req, res, next) => {
 
 const recruiterActive = async (req, res, next) => {
   try {
-    await recruiterModel.updateOne({ _id: req.query.recruiterId }, {
-      isActive: true,
-    });
+    await recruiterModel.updateOne(
+      { _id: req.query.recruiterId },
+      {
+        isActive: true,
+      },
+    );
     res.json({ status: 'success' });
   } catch (error) {
     next(error);
@@ -132,8 +148,18 @@ const recruiterActive = async (req, res, next) => {
 const jobPost = async (req, res, next) => {
   try {
     const {
-      jobTitle, companyName, jobCategory, jobQualification, jobDiscription,
-      responsibilities, workPlace, salaryRange, jobType, image, location, vaccancy,
+      jobTitle,
+      companyName,
+      jobCategory,
+      jobQualification,
+      jobDiscription,
+      responsibilities,
+      workPlace,
+      salaryRange,
+      jobType,
+      image,
+      location,
+      vaccancy,
     } = req.body;
     const data = await recruiterModel.findById(req.recruiterId);
     const Id = req.recruiterId;
@@ -156,7 +182,8 @@ const jobPost = async (req, res, next) => {
     await companyModel.findByIdAndUpdate(companyName, {
       $push: {
         job: {
-          jobId: jobData._id, name: data.userName,
+          jobId: jobData._id,
+          name: data.userName,
         },
       },
     });
@@ -167,7 +194,9 @@ const jobPost = async (req, res, next) => {
 
 const getProfile = async (req, res, next) => {
   try {
-    const data = await recruiterModel.findById(req.recruiterId).populate('companyName');
+    const data = await recruiterModel
+      .findById(req.recruiterId)
+      .populate('companyName');
     res.json(data);
   } catch (error) {
     next(error);
@@ -176,7 +205,9 @@ const getProfile = async (req, res, next) => {
 
 const jobsList = async (req, res, next) => {
   try {
-    const data = await jobPostModel.find({ recruiterId: req.recruiterId }).populate('jobCategory');
+    const data = await jobPostModel
+      .find({ recruiterId: req.recruiterId })
+      .populate('jobCategory');
     if (data.length > 0) {
       res.json({ data });
     } else {
@@ -209,7 +240,9 @@ const DeleteJob = async (req, res, next) => {
 
 const getDataForEdit = async (req, res, next) => {
   try {
-    const data = await jobPostModel.findById(req.query.id).populate('companyName');
+    const data = await jobPostModel
+      .findById(req.query.id)
+      .populate('companyName');
     res.json(data);
   } catch (error) {
     next(error);
@@ -219,8 +252,18 @@ const getDataForEdit = async (req, res, next) => {
 const EditJobPostData = async (req, res, next) => {
   try {
     const {
-      jobTitle, companyName, jobCategory, jobQualification, jobDiscription,
-      responsibilities, workPlace, salaryRange, jobType, image, location, vaccancy,
+      jobTitle,
+      companyName,
+      jobCategory,
+      jobQualification,
+      jobDiscription,
+      responsibilities,
+      workPlace,
+      salaryRange,
+      jobType,
+      image,
+      location,
+      vaccancy,
     } = req.body;
     await jobPostModel.findByIdAndUpdate(req.query.jobid, {
       $set: {
@@ -236,7 +279,6 @@ const EditJobPostData = async (req, res, next) => {
         image,
         location,
         vaccancy,
-
       },
     });
     res.json({ status: 'success' });
@@ -247,7 +289,9 @@ const EditJobPostData = async (req, res, next) => {
 
 const getProfileData = async (req, res, next) => {
   try {
-    const data = await recruiterModel.findById(req.recruiterId).populate('companyName');
+    const data = await recruiterModel
+      .findById(req.recruiterId)
+      .populate('companyName');
     res.json(data);
   } catch (error) {
     next(error);
@@ -257,11 +301,27 @@ const getProfileData = async (req, res, next) => {
 const editProfilePost = async (req, res, next) => {
   try {
     const {
-      userName, companyName, phoneNumber, email, tagLine, discription, website, image, location,
+      userName,
+      companyName,
+      phoneNumber,
+      email,
+      tagLine,
+      discription,
+      website,
+      image,
+      location,
     } = req.body;
     await recruiterModel.findByIdAndUpdate(req.recruiterId, {
       $set: {
-        tagLine, userName, companyName, phoneNumber, email, discription, website, image, location,
+        tagLine,
+        userName,
+        companyName,
+        phoneNumber,
+        email,
+        discription,
+        website,
+        image,
+        location,
       },
     });
     res.json({ status: 'success' });
@@ -290,9 +350,12 @@ const setNewPassword = async (req, res, next) => {
     if (password && confPassword && phoneNumber) {
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hash(password.trim(), salt);
-      await recruiterModel.findOneAndUpdate({ phoneNumber }, {
-        $set: { password: hashPassword },
-      });
+      await recruiterModel.findOneAndUpdate(
+        { phoneNumber },
+        {
+          $set: { password: hashPassword },
+        },
+      );
       res.json({ status: 'success' });
     } else {
       res.json({ status: 'failed', message: 'Please Retry' });
@@ -304,7 +367,9 @@ const setNewPassword = async (req, res, next) => {
 
 const jobAppliedUsers = async (req, res, next) => {
   try {
-    const data = await jobPostModel.findById(req.query.jobId).populate('users.userId');
+    const data = await jobPostModel
+      .findById(req.query.jobId)
+      .populate('users.userId');
     res.json(data);
   } catch (error) {
     next(error);
@@ -314,16 +379,22 @@ const jobAppliedUsers = async (req, res, next) => {
 const updateJobComment = async (req, res, next) => {
   try {
     if (req.body.userId && req.body.jobId && req.body.comment) {
-      await jobPostModel.updateOne({ _id: req.body.jobId, 'users.userId': req.body.userId }, {
-        $set: {
-          'users.$.comment': req.body.comment,
+      await jobPostModel.updateOne(
+        { _id: req.body.jobId, 'users.userId': req.body.userId },
+        {
+          $set: {
+            'users.$.comment': req.body.comment,
+          },
         },
-      });
-      await userModel.updateOne({ _id: req.body.userId, 'job.jobId': req.body.jobId }, {
-        $set: {
-          'job.$.comment': req.body.comment,
+      );
+      await userModel.updateOne(
+        { _id: req.body.userId, 'job.jobId': req.body.jobId },
+        {
+          $set: {
+            'job.$.comment': req.body.comment,
+          },
         },
-      });
+      );
       res.json({ status: 'success' });
     } else {
       res.json({ status: 'failed', message: 'comment is not added' });
@@ -335,7 +406,9 @@ const updateJobComment = async (req, res, next) => {
 
 const getSortedList = async (req, res, next) => {
   try {
-    const data = await jobPostModel.find({ _id: req.recruiterId, 'users.comment': 'Good' }).populate('users.userId');
+    const data = await jobPostModel
+      .find({ _id: req.recruiterId, 'users.comment': 'Good' })
+      .populate('users.userId');
     res.json(data);
   } catch (error) {
     next(error);
@@ -371,7 +444,9 @@ const getCompanyDetails = async (req, res, next) => {
 
 const getCompanyDataForJob = async (req, res, next) => {
   try {
-    const data = await recruiterModel.findById(req.recruiterId).populate('companyName');
+    const data = await recruiterModel
+      .findById(req.recruiterId)
+      .populate('companyName');
     res.json(data);
   } catch (error) {
     next(error);

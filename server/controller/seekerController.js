@@ -15,7 +15,10 @@ const signupPost = async (req, res, next) => {
     if (user) {
       res.json({ status: 'failed', message: 'Email already exist login now' });
     } else if (number) {
-      res.json({ status: 'failed', message: 'Phone Number already exist login now' });
+      res.json({
+        status: 'failed',
+        message: 'Phone Number already exist login now',
+      });
     } else {
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hash(password.trim(), salt);
@@ -102,9 +105,12 @@ const isUserAuth = async (req, res, next) => {
 
 const userBlock = async (req, res, next) => {
   try {
-    await userModel.updateOne({ _id: req.query.userId }, {
-      isActive: false,
-    });
+    await userModel.updateOne(
+      { _id: req.query.userId },
+      {
+        isActive: false,
+      },
+    );
     res.json({ status: 'success' });
   } catch (error) {
     next(error);
@@ -113,9 +119,12 @@ const userBlock = async (req, res, next) => {
 
 const userActive = async (req, res, next) => {
   try {
-    await userModel.updateOne({ _id: req.query.userId }, {
-      isActive: true,
-    });
+    await userModel.updateOne(
+      { _id: req.query.userId },
+      {
+        isActive: true,
+      },
+    );
     res.json({ status: 'success' });
   } catch (error) {
     next(error);
@@ -124,7 +133,11 @@ const userActive = async (req, res, next) => {
 
 const JobListShow = async (req, res, next) => {
   try {
-    const data = await jobModel.find({ $and: [{ 'users.userId': { $ne: req.userId } }, { companyOk: true }] }).populate('companyName');
+    const data = await jobModel
+      .find({
+        $and: [{ 'users.userId': { $ne: req.userId } }, { companyOk: true }],
+      })
+      .populate('companyName');
     res.json(data);
   } catch (error) {
     next(error);
@@ -133,12 +146,18 @@ const JobListShow = async (req, res, next) => {
 
 const jobApply = async (req, res, next) => {
   try {
-    await userModel.findOneAndUpdate({ _id: req.body.id }, {
-      $push: { job: { jobId: req.query.id, applied: true } },
-    });
-    await jobModel.findOneAndUpdate({ _id: req.query.id }, {
-      $push: { users: { userId: req.body.id } },
-    });
+    await userModel.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $push: { job: { jobId: req.query.id, applied: true } },
+      },
+    );
+    await jobModel.findOneAndUpdate(
+      { _id: req.query.id },
+      {
+        $push: { users: { userId: req.body.id } },
+      },
+    );
     res.json({ status: 'success' });
   } catch (error) {
     next(error);
@@ -147,12 +166,20 @@ const jobApply = async (req, res, next) => {
 
 const getSingleView = async (req, res, next) => {
   try {
-    const singleData = await jobModel.findById(req.query.id).populate('companyName');
+    const singleData = await jobModel
+      .findById(req.query.id)
+      .populate('companyName');
     const catId = singleData.jobCategory;
-    const fullData = await jobModel.find({
-      $and: [{ jobCategory: catId },
-        { _id: { $ne: req.query.id } }, { 'users.userId': { $ne: req.userId } }, { companyOk: true }],
-    }).populate('companyName');
+    const fullData = await jobModel
+      .find({
+        $and: [
+          { jobCategory: catId },
+          { _id: { $ne: req.query.id } },
+          { 'users.userId': { $ne: req.userId } },
+          { companyOk: true },
+        ],
+      })
+      .populate('companyName');
     res.json({ data: singleData, category: fullData });
   } catch (error) {
     next(error);
@@ -162,8 +189,16 @@ const getSingleView = async (req, res, next) => {
 const AddProfile = async (req, res, next) => {
   try {
     const {
-      headline, position, location, qualifications, discription, salaryRange, age, image,
-      experiances, resume,
+      headline,
+      position,
+      location,
+      qualifications,
+      discription,
+      salaryRange,
+      age,
+      image,
+      experiances,
+      resume,
     } = req.body;
     await userModel.findByIdAndUpdate(req.userId, {
       $set: {
@@ -219,8 +254,19 @@ const userDataEditGet = async (req, res, next) => {
 const editUserProfilePost = async (req, res, next) => {
   try {
     const {
-      experiances, age, salaryRange, discription, qualifications, location, position, headline,
-      image, phoneNumber, email, firstName, lastName,
+      experiances,
+      age,
+      salaryRange,
+      discription,
+      qualifications,
+      location,
+      position,
+      headline,
+      image,
+      phoneNumber,
+      email,
+      firstName,
+      lastName,
     } = req.body;
     await userModel.findByIdAndUpdate(req.userId, {
       $set: {
@@ -265,9 +311,12 @@ const setNewPassword = async (req, res, next) => {
     if (password && confPassword && phoneNumber) {
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hash(password.trim(), salt);
-      await userModel.findOneAndUpdate({ phoneNumber }, {
-        $set: { password: hashPassword },
-      });
+      await userModel.findOneAndUpdate(
+        { phoneNumber },
+        {
+          $set: { password: hashPassword },
+        },
+      );
       res.json({ status: 'success' });
     } else {
       res.json({ status: 'failed', message: 'Please Retry' });
@@ -308,39 +357,40 @@ const getFilterJob = async (req, res, next) => {
     if (req.body.jobCategory && req.body.workPlace && req.body.jobType) {
       const data = await jobModel.find({
         $and: [
-          { jobType: req.body.jobType }, { workPlace: req.body.workPlace },
-          { jobCategory: req.body.jobCategory }],
+          { jobType: req.body.jobType },
+          { workPlace: req.body.workPlace },
+          { jobCategory: req.body.jobCategory },
+        ],
       });
       res.json(data);
     } else if (req.body.jobCategory && req.body.jobType) {
       const data = await jobModel.find({
         $and: [
           { jobType: req.body.jobType },
-          { jobCategory: req.body.jobCategory }],
+          { jobCategory: req.body.jobCategory },
+        ],
       });
       res.json(data);
     } else if (req.body.jobCategory && req.body.workPlace) {
       const data = await jobModel.find({
         $and: [
           { workPlace: req.body.workPlace },
-          { jobCategory: req.body.jobCategory }],
+          { jobCategory: req.body.jobCategory },
+        ],
       });
       res.json(data);
     } else if (req.body.jobCategory) {
       const data = await jobModel.find({
-
         jobCategory: req.body.jobCategory,
       });
       res.json(data);
     } else if (req.body.workPlace) {
       const data = await jobModel.find({
-
         workPlace: req.body.workPlace,
       });
       res.json(data);
     } else if (req.body.jobType) {
       const data = await jobModel.find({
-
         jobType: req.body.jobType,
       });
       res.json(data);

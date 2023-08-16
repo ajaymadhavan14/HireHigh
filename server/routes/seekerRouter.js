@@ -17,17 +17,41 @@ router.post('/job_apply', jwtAuth.jwtSeeker, seekerController.jobApply);
 router.get('/single_view', jwtAuth.jwtSeeker, seekerController.getSingleView);
 router.post('/add_profile', jwtAuth.jwtSeeker, seekerController.AddProfile);
 router.get('/get_data', jwtAuth.jwtSeeker, seekerController.getProfileData);
-router.get('/profile_search', jwtAuth.jwtSeeker, seekerController.searchProfilData);
-router.get('/get_profiledata', jwtAuth.jwtSeeker, seekerController.userDataEditGet);
-router.post('/edit_profile_post', jwtAuth.jwtSeeker, seekerController.editUserProfilePost);
+router.get(
+  '/profile_search',
+  jwtAuth.jwtSeeker,
+  seekerController.searchProfilData,
+);
+router.get(
+  '/get_profiledata',
+  jwtAuth.jwtSeeker,
+  seekerController.userDataEditGet,
+);
+router.post(
+  '/edit_profile_post',
+  jwtAuth.jwtSeeker,
+  seekerController.editUserProfilePost,
+);
 router.post('/enter_number', seekerController.NumberCheck);
 router.post('/new_password', seekerController.setNewPassword);
 router.get('/applied_jobs', jwtAuth.jwtSeeker, seekerController.getAppliedJobs);
 router.get('/search_job', jwtAuth.jwtSeeker, seekerController.jobSearch);
 router.post('/get_jobfilter', jwtAuth.jwtSeeker, seekerController.getFilterJob);
-router.get('/allDatas', jwtAuth.jwtSeeker, seekerController.getAllDatasSeekerSide);
-router.get('/get_notifications', jwtAuth.jwtSeeker, notificationController.GetNotification);
-router.post('/add_notification', jwtAuth.jwtSeeker, notificationController.AddNotification);
+router.get(
+  '/allDatas',
+  jwtAuth.jwtSeeker,
+  seekerController.getAllDatasSeekerSide,
+);
+router.get(
+  '/get_notifications',
+  jwtAuth.jwtSeeker,
+  notificationController.GetNotification,
+);
+router.post(
+  '/add_notification',
+  jwtAuth.jwtSeeker,
+  notificationController.AddNotification,
+);
 
 router.post('/chat', chatContollers.createChat);
 router.get('/chat/:userId', chatContollers.userChats);

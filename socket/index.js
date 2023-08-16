@@ -1,5 +1,5 @@
 const io = require("socket.io")(8800, {
-  cors: '*'
+  cors: "*",
 });
 
 let activeUsers = [];
@@ -43,7 +43,6 @@ io.on("connection", (socket) => {
       console.log("Sending from socket to :", recieverId);
       console.log("Data: ", data);
       return user.userId === recieverId;
-
     });
     if (user) {
       io.to(user.socketId).emit("recieve-notification", data);

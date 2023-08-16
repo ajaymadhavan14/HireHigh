@@ -80,7 +80,10 @@ const getRecruitersList = async (req, res, next) => {
 
 const getAllJobs = async (req, res, next) => {
   try {
-    const data = await jobPostModel.find().populate('jobCategory').populate('companyName');
+    const data = await jobPostModel
+      .find()
+      .populate('jobCategory')
+      .populate('companyName');
     res.json(data);
   } catch (error) {
     next(error);
@@ -89,9 +92,12 @@ const getAllJobs = async (req, res, next) => {
 
 const jobPostBlock = async (req, res, next) => {
   try {
-    await jobPostModel.updateOne({ _id: req.query.jobId }, {
-      isActive: false,
-    });
+    await jobPostModel.updateOne(
+      { _id: req.query.jobId },
+      {
+        isActive: false,
+      },
+    );
     res.json({ status: 'success' });
   } catch (error) {
     next(error);
@@ -100,9 +106,12 @@ const jobPostBlock = async (req, res, next) => {
 
 const jobPostActive = async (req, res, next) => {
   try {
-    await jobPostModel.updateOne({ _id: req.query.jobId }, {
-      isActive: true,
-    });
+    await jobPostModel.updateOne(
+      { _id: req.query.jobId },
+      {
+        isActive: true,
+      },
+    );
     res.json({ status: 'success' });
   } catch (error) {
     next(error);
@@ -153,7 +162,10 @@ const getDashboard = async (req, res, next) => {
     const recruiters = await recruiterModel.find({}).count();
     const companys = await companyModel.find({}).count();
     res.json({
-      jobs, seekers, recruiters, companys,
+      jobs,
+      seekers,
+      recruiters,
+      companys,
     });
   } catch (error) {
     next(error);
@@ -162,7 +174,11 @@ const getDashboard = async (req, res, next) => {
 
 const getDashboardJobList = async (req, res, next) => {
   try {
-    const data = await jobPostModel.find().populate('jobCategory').populate('companyName').limit(5);
+    const data = await jobPostModel
+      .find()
+      .populate('jobCategory')
+      .populate('companyName')
+      .limit(5);
     res.json(data);
   } catch (error) {
     next(error);

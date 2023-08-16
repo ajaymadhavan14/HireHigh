@@ -7,15 +7,25 @@ import jobPostModel from '../model/jobPostSchema.js';
 const companySignUpPost = async (req, res, next) => {
   try {
     const {
-      userName, phoneNumber, companyName, email, tagLine, discription,
-      website, password, image,
+      userName,
+      phoneNumber,
+      companyName,
+      email,
+      tagLine,
+      discription,
+      website,
+      password,
+      image,
     } = req.body;
     const company = await companyModel.findOne({ email });
     const number = await companyModel.findOne({ phoneNumber });
     if (company) {
       res.json({ status: 'failed', message: 'Email already exist login now' });
     } else if (number) {
-      res.json({ status: 'failed', message: 'Phone Number already exist login now' });
+      res.json({
+        status: 'failed',
+        message: 'Phone Number already exist login now',
+      });
     } else {
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hash(password.trim(), salt);
@@ -115,7 +125,9 @@ const getProfile = async (req, res, next) => {
 
 const jobList = async (req, res, next) => {
   try {
-    const data = await companyModel.findById(req.companyId).populate('job.jobId');
+    const data = await companyModel
+      .findById(req.companyId)
+      .populate('job.jobId');
     res.json(data);
   } catch (error) {
     next(error);
@@ -125,8 +137,13 @@ const jobList = async (req, res, next) => {
 const jobApproval = async (req, res, next) => {
   try {
     if (req.companyId && req.query.jobId) {
-      await companyModel.findOneAndUpdate({ _id: req.companyId, 'job.jobId': req.query.jobId }, { $set: { 'job.$.isActive': true } });
-      await jobPostModel.findByIdAndUpdate(req.query.jobId, { $set: { companyOk: true } });
+      await companyModel.findOneAndUpdate(
+        { _id: req.companyId, 'job.jobId': req.query.jobId },
+        { $set: { 'job.$.isActive': true } },
+      );
+      await jobPostModel.findByIdAndUpdate(req.query.jobId, {
+        $set: { companyOk: true },
+      });
       res.json({ status: 'success' });
     } else {
       res.json({ message: 'Not Approved' });
@@ -139,8 +156,13 @@ const jobApproval = async (req, res, next) => {
 const jobBlock = async (req, res, next) => {
   try {
     if (req.companyId && req.query.jobId) {
-      await companyModel.findOneAndUpdate({ _id: req.companyId, 'job.jobId': req.query.jobId }, { $set: { 'job.$.isActive': false } });
-      await jobPostModel.findByIdAndUpdate(req.query.jobId, { $set: { companyOk: false } });
+      await companyModel.findOneAndUpdate(
+        { _id: req.companyId, 'job.jobId': req.query.jobId },
+        { $set: { 'job.$.isActive': false } },
+      );
+      await jobPostModel.findByIdAndUpdate(req.query.jobId, {
+        $set: { companyOk: false },
+      });
       res.json({ status: 'success' });
     } else {
       res.json({ message: 'Not Approved' });

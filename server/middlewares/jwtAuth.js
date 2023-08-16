@@ -8,7 +8,11 @@ const jwtSeeker = async (req, res, next) => {
     } else {
       jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
         if (err) {
-          res.json({ auth: false, status: 'failed', message: 'failed to authenticate' });
+          res.json({
+            auth: false,
+            status: 'failed',
+            message: 'failed to authenticate',
+          });
         } else {
           req.userId = decoded.userId;
           next();
@@ -28,7 +32,11 @@ const jwtRecruiter = async (req, res, next) => {
     } else {
       jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
         if (err) {
-          res.json({ auth: false, status: 'failed', message: 'failed to authenticate' });
+          res.json({
+            auth: false,
+            status: 'failed',
+            message: 'failed to authenticate',
+          });
         } else {
           req.recruiterId = decoded.recruiterId;
           next();
@@ -48,7 +56,11 @@ const jwtAdmin = async (req, res, next) => {
     } else {
       jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
         if (err) {
-          res.json({ auth: false, status: 'failed', message: 'failed to authenticate' });
+          res.json({
+            auth: false,
+            status: 'failed',
+            message: 'failed to authenticate',
+          });
         } else {
           req.adminId = decoded.adminId;
           next();
@@ -68,7 +80,11 @@ const jwtCompany = async (req, res, next) => {
     } else {
       jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
         if (err) {
-          res.json({ auth: false, status: 'failed', message: 'failed to authenticate' });
+          res.json({
+            auth: false,
+            status: 'failed',
+            message: 'failed to authenticate',
+          });
         } else {
           req.companyId = decoded.companyId;
           next();
@@ -81,5 +97,8 @@ const jwtCompany = async (req, res, next) => {
 };
 
 export default {
-  jwtSeeker, jwtRecruiter, jwtAdmin, jwtCompany,
+  jwtSeeker,
+  jwtRecruiter,
+  jwtAdmin,
+  jwtCompany,
 };

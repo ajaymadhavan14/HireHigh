@@ -47,7 +47,6 @@ const companySignup = new Schema(
     isActive: {
       type: Boolean,
       default: true,
-
     },
     location: {
       type: String,

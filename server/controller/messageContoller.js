@@ -3,7 +3,9 @@ import MessageModel from '../model/messageSchema.js';
 const addMessage = async (req, res, next) => {
   const { chatId, senderId, text } = req.body;
   const message = new MessageModel({
-    chatId, senderId, text,
+    chatId,
+    senderId,
+    text,
   });
   try {
     const result = await message.save();

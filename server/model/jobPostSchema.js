@@ -10,13 +10,11 @@ const jobPosts = new Schema(
     jobTitle: {
       type: String,
       required: true,
-
     },
     companyName: {
       type: Schema.Types.ObjectId,
       ref: 'company',
       required: true,
-
     },
     jobCategory: {
       type: Schema.Types.ObjectId,
@@ -27,7 +25,6 @@ const jobPosts = new Schema(
     jobQualification: {
       type: String,
       required: true,
-
     },
     vaccancy: {
       type: Number,
